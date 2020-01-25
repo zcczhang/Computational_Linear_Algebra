@@ -1,0 +1,110 @@
+# Math 365 / Comp 365: Homework 1
+
+### Please submit a *stapled* hard copy of your work
+
+Reminder: you are allowed---in fact encouraged---to work on and discuss homework together. You should, however, write up your own assignments in your own words. If you work with another person or if you get significant help from a classmate or external resource, you should give that person or resource credit in your solution (at no penalty to you)
+
+## INSERT YOUR NAME HERE 
+
+### Problem 1
+Implement a general version of Horner's method. It should be of the form `Horner(coeffs,x)` and it should return the value of the polynomial whose coefficients are given by the vector `coeffs`, evaluated at the scalar (or vector of scalars) $x$. Make sure to include comments describing what your function is doing, and also test your function with sample inputs.
+
+### Problem 2
+The point of this problem is twofold: (i) to illustrate what can happen if you accumulate many truncations of numbers and (ii) to give you practice writing programs.
+
+In the 1999 movie Office Space, a character creates a program that takes fractions of cents that are truncated in a bank's transactions and deposits them into his own account. This is not a new idea, and hackers who have actually attempted it have been arrested. In this exercise, you will simulate the program to determine how long it would take to become a millionaire this way. 
+
+Assume the following details:
+
+* You have access to 10,000 bank accounts
+
+* Initially, the bank accounts have values that are uniformly distributed between $100 and $100,000
+
+* The nominal annual interest rate on the accounts is 5%
+
+* The daily interest rate is thus .05/365
+
+* Interest is compounded each day and added to the accounts, except that fractions of a cent are truncated 
+
+* The truncated fractions are deposited into an illegal account that initially has a balance of $0
+
+* The illegal account can hold fractional values and it also accrues daily interest
+
+Your job is to write an R script that simulates this situation and finds how long it takes for the illegal account to reach a million dollars.
+
+
+-------------------
+
+Here is some R help:
+
+The following code generates the initial accounts:
+```{r}
+options(digits=10)
+accounts=runif(10000,100,100000)
+accounts = floor(accounts*100)/100
+```
+The first line expands the number of digits displayed. The second sets up 10,000 accounts with values uniformly between 100 and 100,000. The third line removes the fractions of cents (look at the data before and after that line is applied). To calculate interest for one day:
+```{r}
+interest = accounts*(.05/365)
+```
+Depending on how you do it, you might want to use an if-then statement. For example, you might use something like
+
+```
+if (illegal > 1000000) break
+```
+
+The `break` command breaks out of a loop. Or, perhaps more elegantly, you might use a `while` loop
+
+```
+while (illegal < 1000000) { do stuff here }
+```
+
+You can find help on syntax in the Help Menu under "The R Language Definition." That's where I went to remind myself about the syntax for an if-then statement and a while loop.
+
+
+
+### Problem 3
+We'll be using polynomial approximation techniques regularly in the class, and it may have been a while since you learned Taylor's Theorem, so here is a chance to review it quickly in Section 0.5:
+
+Problem 8 in Section 0.5 in the book (Taylor polynomial approximation of cosine).
+
+Additional part c) Using R, make a single plot with 3 different curves: cos(x) and the 2nd and 4th degree Tayolor approximations of cosine around x=0. Plot these on the interval $[-\pi/2,\pi/2]$.
+
+### Problem 4
+
+Problem 4 in the Section 0.2 Exercises, parts (a), (b), and (f) only (on converting to binary). Do all computations by hand.
+
+### Problem 5
+Section 0.3: Exercise 9. In this problem, you should do the following: write 7/3, 4/3, and 1/3 in binary and in their IEEE machine expressions. Then perform the required subtractions using machine arithmetic. Finally, use the command `options(digits=20)` before doing the computations in R. Recall that the command `.Machine$double.eps` will give you machine epsilon in R.
+
+### Problem 6
+Using R, compute:  1000000000000000000 + 100 - 1000000000000000000.
+What happens?  Explain why this is. 
+
+### Problem 7
+Find the smallest positive integer $i$ such that $i$ is not exactly representable using the IEEE standard in double precision; i.e., $\hbox{fl}(i)\neq i$.
+
+
+###  R Markdown Tips
+You can assemble your homework writeup however you like, but I strongly encourage you to give R Markdown a shot. I was skeptical of learning yet another new tool, but it only takes 15 minutes to get a pretty good handle, and I really like it.  
+
+If the R code you place inside the hash marks has printed output, it will display like this:
+```{r}
+(uniformSamples<-runif(10,0,1))
+mean(uniformSamples)
+```
+You can also include comments and embed plots:
+```{r fig.width=5, fig.height=5}
+# Define a polynomial function
+f = function(x) {x^3 + x^2 - 24*x + 36}
+# Plot the function
+x = seq(-8,4,len=10000)
+plot(x,f(x),type="l",lwd=3,main="f(x) = x^3 + x^2-24 * x +36")
+abline(0,0,col="red")
+```
+
+
+
+
+
+
