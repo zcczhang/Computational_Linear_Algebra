@@ -4,10 +4,40 @@
 
 Reminder: you are allowed---in fact encouraged---to work on and discuss homework together. You should, however, write up your own assignments in your own words. If you work with another person or if you get significant help from a classmate or external resource, you should give that person or resource credit in your solution (at no penalty to you)
 
-## INSERT YOUR NAME HERE 
+## Charles Zhang
 
 ### Problem 1
 Implement a general version of Horner's method. It should be of the form `Horner(coeffs,x)` and it should return the value of the polynomial whose coefficients are given by the vector `coeffs`, evaluated at the scalar (or vector of scalars) $x$. Make sure to include comments describing what your function is doing, and also test your function with sample inputs.
+
+```{r}
+Horner<-function(coeffs,x) {
+  res <- vector()
+  for (i in 1:length(x)) {
+    temp = coeffs[1]
+    for (j in 2:length(coeffs)) { 
+      temp = temp*x[i] + coeffs[j]
+      res[i] <- temp
+    }
+  }
+  return(res)
+}
+
+coeffs<-c(1,2,3)
+x<-c(1,2,3)
+(Horner(coeffs,x))
+```
+
+```{r}
+horner <- function(x, coef) {
+    px <- coef(1)
+    for (i in length(coef)) {
+      px <- px*x+coef(i)
+    }
+    return(px)
+}
+
+
+```
 
 ### Problem 2
 The point of this problem is twofold: (i) to illustrate what can happen if you accumulate many truncations of numbers and (ii) to give you practice writing programs.
@@ -60,7 +90,23 @@ while (illegal < 1000000) { do stuff here }
 ```
 
 You can find help on syntax in the Help Menu under "The R Language Definition." That's where I went to remind myself about the syntax for an if-then statement and a while loop.
+```{r}
 
+accounts = runif(10000,100,100000); #Create accounts
+accounts = floor(accounts*100)/100; 
+illegal  = 0;
+cnt      = 0;
+
+while(illegal<1000000){
+  cnt      = cnt+1;
+  interest = accounts*(.05/365);
+  deposit  = floor(interest*100)/100;
+  illegal  = illegal+sum(interest-deposit); 
+  accounts = accounts+deposit;
+}
+print(cnt/365);
+
+```
 
 
 ### Problem 3
@@ -80,6 +126,10 @@ Section 0.3: Exercise 9. In this problem, you should do the following: write 7/3
 ### Problem 6
 Using R, compute:  1000000000000000000 + 100 - 1000000000000000000.
 What happens?  Explain why this is. 
+
+```{r}
+1000000000000000000 + 100 - 1000000000000000000
+```
 
 ### Problem 7
 Find the smallest positive integer $i$ such that $i$ is not exactly representable using the IEEE standard in double precision; i.e., $\hbox{fl}(i)\neq i$.

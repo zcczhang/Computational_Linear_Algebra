@@ -371,11 +371,49 @@ summary {
 <h3>Please submit a <em>stapled</em> hard copy of your work</h3>
 <p>Reminder: you are allowed—in fact encouraged—to work on and discuss homework together. You should, however, write up your own assignments in your own words. If you work with another person or if you get significant help from a classmate or external resource, you should give that person or resource credit in your solution (at no penalty to you)</p>
 </div>
-<div id="insert-your-name-here" class="section level2">
-<h2>INSERT YOUR NAME HERE</h2>
+<div id="charles-zhang" class="section level2">
+<h2>Charles Zhang</h2>
 <div id="problem-1" class="section level3">
 <h3>Problem 1</h3>
 <p>Implement a general version of Horner’s method. It should be of the form <code>Horner(coeffs,x)</code> and it should return the value of the polynomial whose coefficients are given by the vector <code>coeffs</code>, evaluated at the scalar (or vector of scalars) <span class="math inline">\(x\)</span>. Make sure to include comments describing what your function is doing, and also test your function with sample inputs.</p>
+<pre class="r"><code>Horner&lt;-function(coeffs,x) {
+  res &lt;- vector()
+  for (i in 1:length(x)) {
+    temp = coeffs[1]
+    for (j in 2:length(coeffs)) { 
+      temp = temp*x[i] + coeffs[j]
+      res[i] &lt;- temp
+    }
+  }
+  return(res)
+}
+
+coeffs&lt;-c(1,2,3)
+x&lt;-c(1,2,3)
+(Horner(coeffs,x))</code></pre>
+<pre><code>## [1]  6 11 18</code></pre>
+<pre class="r"><code>horner &lt;- function(x, coef) {
+    n &lt;- length(coef);
+    b &lt;- rep(0, n);
+    b[n] &lt;- coef[n];
+    while (n &gt; 0) {
+        n &lt;- n - 1;
+        b[n] &lt;- coef[n] + b[n + 1] *x
+    }
+    return(b[1]);
+}
+horner(1:3,1:3)</code></pre>
+<pre><code>## Warning in b[n] &lt;- coef[n] + b[n + 1] * x: number of items to replace is
+## not a multiple of replacement length
+
+## Warning in b[n] &lt;- coef[n] + b[n + 1] * x: number of items to replace is
+## not a multiple of replacement length</code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code>Horner &lt;- function(coef,x) {
+  
+}
+sapply(1:3, horner, c(-1, 16, 4))</code></pre>
+<pre><code>## [1] 19 47 83</code></pre>
 </div>
 <div id="problem-2" class="section level3">
 <h3>Problem 2</h3>
@@ -433,10 +471,10 @@ accounts = floor(accounts*100)/100</code></pre>
 <p>You can assemble your homework writeup however you like, but I strongly encourage you to give R Markdown a shot. I was skeptical of learning yet another new tool, but it only takes 15 minutes to get a pretty good handle, and I really like it.</p>
 <p>If the R code you place inside the hash marks has printed output, it will display like this:</p>
 <pre class="r"><code>(uniformSamples&lt;-runif(10,0,1))</code></pre>
-<pre><code>##  [1] 0.95281547494 0.47932438133 0.18770668656 0.56505284063 0.03694408014
-##  [6] 0.33823600365 0.58702101605 0.72370691737 0.63704007375 0.95981329307</code></pre>
+<pre><code>##  [1] 0.2391497251 0.2160287071 0.3988620935 0.4292310304 0.3646892710
+##  [6] 0.8858745950 0.3711981513 0.5715118970 0.3885181961 0.1408824266</code></pre>
 <pre class="r"><code>mean(uniformSamples)</code></pre>
-<pre><code>## [1] 0.5467660767</code></pre>
+<pre><code>## [1] 0.4005946093</code></pre>
 <p>You can also include comments and embed plots:</p>
 <pre class="r"><code># Define a polynomial function
 f = function(x) {x^3 + x^2 - 24*x + 36}
