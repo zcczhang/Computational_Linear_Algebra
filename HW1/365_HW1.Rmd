@@ -7,7 +7,7 @@ Reminder: you are allowed---in fact encouraged---to work on and discuss homework
 ## Charles Zhang
 
 ### Problem 1
-Implement a general version of Horner's method. It should be of the form `Horner(coeffs,x)` and it should return the value of the polynomial whose coefficients are given by the vector `coeffs`, evaluated at the scalar (or vector of scalars) $x$. Make sure to include comments describing what your function is doing, and also test your function with sample inputs.
+Implement a general version of Horner's method. It should be of the form `Horner(coeffs,x)` and it should return the value of the polynomial whose coefficients are given by the vector `coeffs`, evaluated at the scalar (or vector of scalars) $x$. Make sure to include comments describing what your function is doing. Test your function by solving $f(x)=2x^5-8x^3+3x^2+7$ at $x=3$ and then at $x=3,6,9,12$.
 
 ```{r}
 Horner<-function(coeffs,x) {
@@ -22,22 +22,13 @@ Horner<-function(coeffs,x) {
   return(res)
 }
 
-coeffs<-c(1,2,3)
-x<-c(1,2,3)
-(Horner(coeffs,x))
-```
-
-```{r}
-horner <- function(x, coef) {
-    px <- coef(1)
-    for (i in length(coef)) {
-      px <- px*x+coef(i)
-    }
-    return(px)
-}
-
+coeffs<-c(2,-8,3,7)
+x<-c(3,6,9,12)
+Horner(coeffs,x)
 
 ```
+
+> This nested loop function directly evaluates the polynomial for each number in vector x. 
 
 ### Problem 2
 The point of this problem is twofold: (i) to illustrate what can happen if you accumulate many truncations of numbers and (ii) to give you practice writing programs.
@@ -91,30 +82,59 @@ while (illegal < 1000000) { do stuff here }
 
 You can find help on syntax in the Help Menu under "The R Language Definition." That's where I went to remind myself about the syntax for an if-then statement and a while loop.
 ```{r}
-
-accounts = runif(10000,100,100000); #Create accounts
-accounts = floor(accounts*100)/100; 
-illegal  = 0;
-cnt      = 0;
-
-while(illegal<1000000){
-  cnt      = cnt+1;
-  interest = accounts*(.05/365);
-  deposit  = floor(interest*100)/100;
-  illegal  = illegal+sum(interest-deposit); 
-  accounts = accounts+deposit;
+day <- 0
+illegal <- 0
+while (illegal<1000000) {
+  day <- day+1
+  interest = accounts*(.05/365)
+  dep <- floor(interest*100)/100
+  illegal <- illegal + sum(interest-dep)
+  accounts <- accounts+dep
 }
-print(cnt/365);
+print(day/365)
 
 ```
 
+> The approximate average number of years to accumulate a million dollars is in 55 years
 
 ### Problem 3
 We'll be using polynomial approximation techniques regularly in the class, and it may have been a while since you learned Taylor's Theorem, so here is a chance to review it quickly in Section 0.5:
 
 Problem 8 in Section 0.5 in the book (Taylor polynomial approximation of cosine).
 
-Additional part c) Using R, make a single plot with 3 different curves: cos(x) and the 2nd and 4th degree Tayolor approximations of cosine around x=0. Plot these on the interval $[-\pi/2,\pi/2]$.
+(a) Find the degree 5 Taylor polynomial P(x) centered at x = 0 for f(x) = cosx. 
+
+> $f(x)=cosx$<br>
+$f(0)=1$<br>
+$f'(0)=0$<br>
+$f''(0)=-1$<br>
+$f'''(0)=0$<br>
+$f''''(0)=1$<br>
+$f'''''(0)=0$<br>
+$P(x) = f(0)+f'(0)x+\frac{f''(0)}{2!}x^2+\frac{f'''(0)}{3!}x^3+\frac{f''''(0)}{4!}x^4+\frac{f'''''(0)}{5!}x^5 =1-\frac{1}{2}x^2+\frac{1}{24}x^4$<br>
+
+
+(b) Find an upper bound for the error in approximating f(x) = cosx for x in [−π/4,π/4] by P(x).
+
+> The error in the approximation $R_5(x)=\frac{max(cos(a))}{(5+1)!}x^{(5+1)}=\frac{1}{720}x^6$, 
+since x in [−π/4,π/4] by P(x) and max(cos(a))=1. Let x = π/4, then the upper bound for the error is 0.0003259918869.
+
+```{r}
+(1/720)*(pi/4)^6
+```
+Additional part (c) Using R, make a single plot with 3 different curves: cos(x) and the 2nd and 4th degree Tayolor approximations of cosine around x=0. Plot these on the interval $[-\pi/2,\pi/2]$.
+
+> 2nd degree:$1-\frac{1}{2}x^2$<br>4th degree:$1-\frac{1}{2}x^2+\frac{1}{24}x^4$<br>
+
+```{r}
+x=seq(-pi/2,pi/2,0.1)
+y1=cos(x)
+plot(x,y1,type="l")
+y2=1-1/2*x^2
+lines(x,y2)
+y3=1-1/2*x^2+(1/24)*x^4
+lines(x,y3)
+```
 
 ### Problem 4
 
