@@ -197,17 +197,29 @@ Using R, compute:  1000000000000000000 + 100 - 1000000000000000000.
 What happens?  Explain why this is. 
 
 ```{r}
-1000000000000000000 + 100 - 1000000000000000000
+  1000000000000000000 + 100 - 1000000000000000000
 ```
 
 > Because of the loss of significance, 
+
+
+
+> $1000000000000000000 = 1.1011110000010110110101100111010011101100100000000000\times2^{59}$<br>
+$100 = 1.1001000...\times2^{6}$
+
+
+
+
+
+
 
 ### Problem 7
 Find the smallest positive integer $i$ such that $i$ is not exactly representable using the IEEE standard in double precision; i.e., $\hbox{fl}(i)\neq i$.
 
 > The IEEE standard floating expression for the largest number that can be stored is<br> $0 || 11111111110 || 111...111$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1+11+52 bits)<br> Then the largest number that can be stored <br>$= 1.11...11\times2^{2046-1023} = 1.11...11\times2^{1023}$ &nbsp;&nbsp;&nbsp;&nbsp;(52 bits in the fraction) 
-<br>$= 111...111\times2^{1023-52}$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(52+1=53 '1' in total)<br>
-$= 11..11\times2^{971}=(2^{53}-1)\times2^{971} = 2^{1024}-2^{971}$<br> Therefore, the smallest positive integer $i$ such that $i$ is not exactly representable using the IEEE standard in double precision is $2^{1024}-2^{971}+1$
+<br>$= 111...111\times2^{1023-52} = 11..11\times2^{971}$<br>
+$=(2^{53}-1)\times2^{971}$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(52+1=53 '1' in total)<br>
+$= 2^{1024}-2^{971}$<br> Therefore, the smallest positive integer $i$ such that $i$ is not exactly representable using the IEEE standard in double precision is $2^{1024}-2^{971}+1$
 
 ### Problem 8: 
 Consider a vector $\vec{x}$ with very large entries:
