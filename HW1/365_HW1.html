@@ -434,7 +434,7 @@ while (illegal&lt;1000000) {
   accounts &lt;- accounts+dep
 }
 print(day/365)</code></pre>
-<pre><code>## [1] 54.77808219</code></pre>
+<pre><code>## [1] 54.77534247</code></pre>
 <blockquote>
 <p>The approximate average number of years to accumulate a million dollars is in 55 years</p>
 </blockquote>
@@ -494,6 +494,9 @@ lines(x,y3)</code></pre>
 <p>Using R, compute: 1000000000000000000 + 100 - 1000000000000000000. What happens? Explain why this is.</p>
 <pre class="r"><code>1000000000000000000 + 100 - 1000000000000000000</code></pre>
 <pre><code>## [1] 128</code></pre>
+<blockquote>
+<p>Because of loss of significance,</p>
+</blockquote>
 </div>
 <div id="problem-7" class="section level3">
 <h3>Problem 7</h3>
@@ -513,10 +516,10 @@ lines(x,y3)</code></pre>
 <p>You can assemble your homework writeup however you like, but I strongly encourage you to give R Markdown a shot. I was skeptical of learning yet another new tool, but it only takes 15 minutes to get a pretty good handle, and I really like it.</p>
 <p>If the R code you place inside the hash marks has printed output, it will display like this:</p>
 <pre class="r"><code>(uniformSamples&lt;-runif(10,0,1))</code></pre>
-<pre><code>##  [1] 0.50236916007 0.15426439862 0.42016036692 0.11166052078 0.05671689915
-##  [6] 0.70217248285 0.41365494672 0.07977771922 0.47595877340 0.66929362458</code></pre>
+<pre><code>##  [1] 0.7947648291 0.3089980229 0.8254532062 0.3452132719 0.8431543002
+##  [6] 0.8473122548 0.9780576192 0.6352929000 0.6876132914 0.5609457926</code></pre>
 <pre class="r"><code>mean(uniformSamples)</code></pre>
-<pre><code>## [1] 0.3586028892</code></pre>
+<pre><code>## [1] 0.6826805488</code></pre>
 <p>You can also include comments and embed plots:</p>
 <pre class="r"><code># Define a polynomial function
 f = function(x) {x^3 + x^2 - 24*x + 36}
