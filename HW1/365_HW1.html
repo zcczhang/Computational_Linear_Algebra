@@ -434,7 +434,7 @@ while (illegal&lt;1000000) {
   accounts &lt;- accounts+dep
 }
 print(day/365)</code></pre>
-<pre><code>## [1] 54.78082192</code></pre>
+<pre><code>## [1] 54.77534247</code></pre>
 <blockquote>
 <p>The approximate average number of years to accumulate a million dollars is in 55 years</p>
 </blockquote>
@@ -477,19 +477,19 @@ lines(x,y3)</code></pre>
 <li>11.25</li>
 </ol>
 <blockquote>
-<p>for integer: <span class="math inline">\(11/2=5...1, 5/2=2...1, 2/2=1...0, 1/2=0...1\)</span>; So <span class="math inline">\((11)_{10}\)</span> = <span class="math inline">\((1011)_{2}\)</span><br> for fraction: <span class="math inline">\(.25*2=.5+0; .5*2=0+1; 0*0=0+0....\)</span> So <span class="math inline">\((0.25)_{10}=(.010)_{2}\)</span><br>Therefore, <span class="math inline">\((11.25)_{10}=(1011.010)_{2}\)</span></p>
+<p>for integer: <span class="math inline">\(11/2=5...1, 5/2=2...1, 2/2=1...0, 1/2=0...1\)</span>; So <span class="math inline">\((11)_{10}\)</span> = <span class="math inline">\((1011)_{2}\)</span><br> for fraction: <span class="math inline">\(.25\times2=.5+0; .5\times2=0+1; 0\times0=0+0....\)</span> So <span class="math inline">\((0.25)_{10}=(.010)_{2}\)</span><br>Therefore, <span class="math inline">\((11.25)_{10}=(1011.010)_{2}\)</span></p>
 </blockquote>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>2/3</li>
 </ol>
 <blockquote>
-<p>for integer: 0<br>for fration: <span class="math inline">\(2/3*2 = 1/3+1, 1/3*2 = 2/3+0, 2/3*2=1/3+1... =&gt; (0.\overline{10})_{2}\)</span> <br>So <span class="math inline">\((11)_{10}\)</span> = <span class="math inline">\((1011)_{2}\)</span> <span class="math inline">\((2/3)_{10}=(0.\overline{10})_{2}\)</span></p>
+<p>for integer: 0<br>for fration: <span class="math inline">\(2/3\times2 = 1/3+1, 1/3\times2 = 2/3+0, 2/3\times2=1/3+1... =&gt; (0.\overline{10})_{2}\)</span> <br>So <span class="math inline">\((11)_{10}\)</span> = <span class="math inline">\((1011)_{2}\)</span> <span class="math inline">\((2/3)_{10}=(0.\overline{10})_{2}\)</span></p>
 </blockquote>
 <ol start="6" style="list-style-type: lower-alpha">
 <li>99.9</li>
 </ol>
 <blockquote>
-<p>for integer, <span class="math inline">\(99/2=49...1, 49/2=24...1, 24/2=12...0, 12/2=6...0, 6/2=3...0, 3/2=1...1, 1/2=0...1\)</span>, so <span class="math inline">\((99)_{10}\)</span> = <span class="math inline">\((1100011)_{2}\)</span><br> for fraction, <span class="math inline">\(0.9*2=.8+1, .8*2=.6+1, .6*2=.2+1, .2*2=.4+0, .4*2=.8+0, .8*2=.6+1......\)</span>, so <span class="math inline">\((0.9)_{10}\)</span> = <span class="math inline">\((0.1\overline{1100})_{2}\)</span><br> Therefore, <span class="math inline">\((99.9)_{10} = (1100011.1\overline{1100})_{2}\)</span></p>
+<p>for integer, <span class="math inline">\(99/2=49...1, 49/2=24...1, 24/2=12...0, 12/2=6...0, 6/2=3...0, 3/2=1...1, 1/2=0...1\)</span>, so <span class="math inline">\((99)_{10}\)</span> = <span class="math inline">\((1100011)_{2}\)</span><br> for fraction, <span class="math inline">\(0.9\times2=.8+1, .8\times2=.6+1, .6\times2=.2+1, .2\times2=.4+0, .4\times2=.8+0, .8\times2=.6+1......\)</span>, so <span class="math inline">\((0.9)_{10}\)</span> = <span class="math inline">\((0.1\overline{1100})_{2}\)</span><br> Therefore, <span class="math inline">\((99.9)_{10} = (1100011.1\overline{1100})_{2}\)</span></p>
 </blockquote>
 </div>
 <div id="problem-5" class="section level3">
@@ -504,13 +504,16 @@ lines(x,y3)</code></pre>
 .Machine$double.eps</code></pre>
 <pre><code>## [1] 2.2204460492503130808e-16</code></pre>
 <blockquote>
-<p><span class="math inline">\((7/3)_{10} = (10.\overline{01})_{2} = 1.0010101010101010101010101010101010101010101010101010*2^{1}\)</span><br> after rounding, <span class="math inline">\(= 1.0010101010101010101010101010101010101010101010101011*2^{1}\)</span><br> <span class="math inline">\((4/3)_{10} = (1.\overline{01})_{2}=1.0101010101010101010101010101010101010101010101010101*2^{0} =\)</span><br> <span class="math inline">\(0.1010101010101010101010101010101010101010101010101010*2^{1}\)</span><br><br> <span class="math inline">\(1.0010101010101010101010101010101010101010101010101011*2^{1} -\)</span><br> <span class="math inline">\(0.1010101010101010101010101010101010101010101010101010*2^{1} =\)</span><br> <span class="math inline">\(0.1000000000000000000000000000000000000000000000000001*2^{1}\)</span> (after rounding) <span class="math inline">\(= 1+\epsilon_{mach}\)</span><br><br> Therefore, <span class="math inline">\((7/4-3/4)-1=\epsilon_{mach}\)</span>, I can determine machine epsilon on a computer using IEEE double precision and the IEEE Rounding to Nearest Rule by calculating (7/3 − 4/3) − 1.</p>
+<p><span class="math inline">\((7/3)_{10} = (10.\overline{01})_{2} = 1.0010101010101010101010101010101010101010101010101010 \times 2^{1}\)</span><br> after rounding, <span class="math inline">\(= 1.0010101010101010101010101010101010101010101010101011\times2^{1}\)</span><br> <span class="math inline">\((4/3)_{10} = (1.\overline{01})_{2}=1.0101010101010101010101010101010101010101010101010101\times2^{0} =\)</span><br> <span class="math inline">\(0.1010101010101010101010101010101010101010101010101010\times2^{1}\)</span><br><br> <span class="math inline">\(1.0010101010101010101010101010101010101010101010101011\times2^{1} -\)</span><br> <span class="math inline">\(0.1010101010101010101010101010101010101010101010101010\times2^{1} =\)</span><br> <span class="math inline">\(0.1000000000000000000000000000000000000000000000000001\times2^{1}\)</span> (after rounding) <span class="math inline">\(= 1+\epsilon_{mach}\)</span><br><br> Therefore, <span class="math inline">\((7/3-4/3)-1=\epsilon_{mach}\)</span>, I can determine machine epsilon on a computer using IEEE double precision and the IEEE Rounding to Nearest Rule by calculating (7/3 − 4/3) − 1.</p>
 </blockquote>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Does (4/3 − 1/3) − 1 also give mach? Explain by converting to floating point numbers and carrying out the machine arithmetic.</li>
 </ol>
 <pre class="r"><code>(4/3-1/3)-1</code></pre>
 <pre><code>## [1] 0</code></pre>
+<blockquote>
+<p><span class="math inline">\((4/3)_{10} = (1.\overline{01})_{2}=1.0101010101010101010101010101010101010101010101010101\times2^{0}\)</span><br> <span class="math inline">\((1/3)_{10} = (0.\overline{10})_{2}=0.1010101010101010101010101010101010101010101010101010\times2^{0} =\)</span><br> <span class="math inline">\(0.1010101010101010101010101010101010101010101010101011\times2^{0}\)</span> after rounding <br> <span class="math inline">\((4/3)_{10}-(1/3)_{10}=\)</span><br> <span class="math inline">\(1.0101010101010101010101010101010101010101010101010101\times2^{0} -\)</span><br> <span class="math inline">\(0.1010101010101010101010101010101010101010101010101011\times2^{0} =\)</span><br> <span class="math inline">\(1.0000000000000000000000000000000000000000000000000000\times2^{0} = 1\)</span> 2^{0}<br> Therefore, (4/3 − 1/3) − 1 = 0, which can’t determine machine epsilon by calculating (4/3 − 1/3) − 1.</p>
+</blockquote>
 </div>
 <div id="problem-6" class="section level3">
 <h3>Problem 6</h3>
@@ -539,12 +542,12 @@ lines(x,y3)</code></pre>
 <p>You can assemble your homework writeup however you like, but I strongly encourage you to give R Markdown a shot. I was skeptical of learning yet another new tool, but it only takes 15 minutes to get a pretty good handle, and I really like it.</p>
 <p>If the R code you place inside the hash marks has printed output, it will display like this:</p>
 <pre class="r"><code>(uniformSamples&lt;-runif(10,0,1))</code></pre>
-<pre><code>##  [1] 0.4714954760856926441193 0.0051296136807650327682 0.3296744674444198608398
-##  [4] 0.5211710368748754262924 0.4389460019301623106003 0.3306807777844369411469
-##  [7] 0.6174977703485637903214 0.4856406659819185733795 0.0213536743540316820145
-## [10] 0.7946932080667465925217</code></pre>
+<pre><code>##  [1] 0.543786626076325774193 0.122035189531743526459 0.407948824577033519745
+##  [4] 0.731891604373231530190 0.069992040982469916344 0.637592383427545428276
+##  [7] 0.554343456169590353966 0.212898760335519909859 0.105279981391504406929
+## [10] 0.651187985204160213470</code></pre>
 <pre class="r"><code>mean(uniformSamples)</code></pre>
-<pre><code>## [1] 0.4016282692551612632</code></pre>
+<pre><code>## [1] 0.40369568520691245794</code></pre>
 <p>You can also include comments and embed plots:</p>
 <pre class="r"><code># Define a polynomial function
 f = function(x) {x^3 + x^2 - 24*x + 36}
