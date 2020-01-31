@@ -434,9 +434,9 @@ while (illegal&lt;1000000) {
   accounts &lt;- accounts+dep
 }
 print(day)</code></pre>
-<pre><code>## [1] 19993</code></pre>
+<pre><code>## [1] 19995</code></pre>
 <pre class="r"><code>print(day/365)</code></pre>
-<pre><code>## [1] 54.77534247</code></pre>
+<pre><code>## [1] 54.78082192</code></pre>
 <blockquote>
 <p>After several runnings for this simulation, the approximate average time to accumulate a million dollars is around 20000 days or in 55 years.</p>
 </blockquote>
@@ -523,12 +523,15 @@ lines(x,y3)</code></pre>
 <pre class="r"><code>1000000000000000000 + 100 - 1000000000000000000</code></pre>
 <pre><code>## [1] 128</code></pre>
 <blockquote>
-<p>Because of loss of significance,</p>
+<p>Because of the loss of significance,</p>
 </blockquote>
 </div>
 <div id="problem-7" class="section level3">
 <h3>Problem 7</h3>
 <p>Find the smallest positive integer <span class="math inline">\(i\)</span> such that <span class="math inline">\(i\)</span> is not exactly representable using the IEEE standard in double precision; i.e., <span class="math inline">\(\hbox{fl}(i)\neq i\)</span>.</p>
+<blockquote>
+<p>The IEEE standard floating expression for the largest number that can be stored is<br> <span class="math inline">\(0 || 11111111110 || 111...111\)</span>                                  (1+11+52 bits)<br> Then the largest number that can be stored <br><span class="math inline">\(= 1.11...11\times2^{2046-1023} = 1.11...11\times2^{1023}\)</span>     (52 bits in the fraction) <br><span class="math inline">\(= 111...111\times2^{1023-52}\)</span>                                         (52+1=53 ‘1’ in total)<br> <span class="math inline">\(= 11..11\times2^{971}=(2^{53}-1)\times2^{971} = 2^{1024}-2^{971}\)</span><br> Therefore, the smallest positive integer <span class="math inline">\(i\)</span> such that <span class="math inline">\(i\)</span> is not exactly representable using the IEEE standard in double precision is <span class="math inline">\(2^{1024}-2^{971}+1\)</span></p>
+</blockquote>
 </div>
 <div id="problem-8" class="section level3">
 <h3>Problem 8:</h3>
@@ -544,12 +547,12 @@ lines(x,y3)</code></pre>
 <p>You can assemble your homework writeup however you like, but I strongly encourage you to give R Markdown a shot. I was skeptical of learning yet another new tool, but it only takes 15 minutes to get a pretty good handle, and I really like it.</p>
 <p>If the R code you place inside the hash marks has printed output, it will display like this:</p>
 <pre class="r"><code>(uniformSamples&lt;-runif(10,0,1))</code></pre>
-<pre><code>##  [1] 0.0722225217614322900772 0.6332530244253575801849 0.1924984066281467676163
-##  [4] 0.9719619464594870805740 0.7777507752180099487305 0.1884956399444490671158
-##  [7] 0.4195458753965795040131 0.0075506640132516622543 0.2249883667100220918655
-## [10] 0.8696006957907229661942</code></pre>
+<pre><code>##  [1] 0.833357147173956036568 0.246147192083299160004 0.253671426558867096901
+##  [4] 0.321160367457196116447 0.532811050536110997200 0.061194593552500009537
+##  [7] 0.892798813059926033020 0.223150885431095957756 0.912545064231380820274
+## [10] 0.370117455953732132912</code></pre>
 <pre class="r"><code>mean(uniformSamples)</code></pre>
-<pre><code>## [1] 0.43578679163474587366</code></pre>
+<pre><code>## [1] 0.46469539960380645827</code></pre>
 <p>You can also include comments and embed plots:</p>
 <pre class="r"><code># Define a polynomial function
 f = function(x) {x^3 + x^2 - 24*x + 36}
