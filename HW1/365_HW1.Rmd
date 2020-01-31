@@ -91,11 +91,11 @@ while (illegal<1000000) {
   illegal <- illegal + sum(interest-dep)
   accounts <- accounts+dep
 }
+print(day)
 print(day/365)
-
 ```
 
-> The approximate average number of years to accumulate a million dollars is in 55 years
+> After several runnings for this simulation, the approximate average time to accumulate a million dollars is around 20000 days or in 55 years.
 
 ### Problem 3
 We'll be using polynomial approximation techniques regularly in the class, and it may have been a while since you learned Taylor's Theorem, so here is a chance to review it quickly in Section 0.5:
@@ -188,7 +188,7 @@ $0.1010101010101010101010101010101010101010101010101011\times2^{0}$ after roundi
 $(4/3)_{10}-(1/3)_{10}=$<br>
 $1.0101010101010101010101010101010101010101010101010101\times2^{0} -$<br>
 $0.1010101010101010101010101010101010101010101010101011\times2^{0} =$<br>
-$1.0000000000000000000000000000000000000000000000000000\times2^{0} = 1$ \times2^{0}<br>
+$1.0000000000000000000000000000000000000000000000000000\times2^{0} = 1 \times2^{0}$<br>
 Therefore, (4/3 − 1/3) − 1 = 0, which can't determine machine epsilon by calculating (4/3 − 1/3) − 1.
 
 

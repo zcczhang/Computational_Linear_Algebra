@@ -433,10 +433,12 @@ while (illegal&lt;1000000) {
   illegal &lt;- illegal + sum(interest-dep)
   accounts &lt;- accounts+dep
 }
-print(day/365)</code></pre>
+print(day)</code></pre>
+<pre><code>## [1] 19993</code></pre>
+<pre class="r"><code>print(day/365)</code></pre>
 <pre><code>## [1] 54.77534247</code></pre>
 <blockquote>
-<p>The approximate average number of years to accumulate a million dollars is in 55 years</p>
+<p>After several runnings for this simulation, the approximate average time to accumulate a million dollars is around 20000 days or in 55 years.</p>
 </blockquote>
 </div>
 <div id="problem-3" class="section level3">
@@ -512,7 +514,7 @@ lines(x,y3)</code></pre>
 <pre class="r"><code>(4/3-1/3)-1</code></pre>
 <pre><code>## [1] 0</code></pre>
 <blockquote>
-<p><span class="math inline">\((4/3)_{10} = (1.\overline{01})_{2}=1.0101010101010101010101010101010101010101010101010101\times2^{0}\)</span><br> <span class="math inline">\((1/3)_{10} = (0.\overline{10})_{2}=0.1010101010101010101010101010101010101010101010101010\times2^{0} =\)</span><br> <span class="math inline">\(0.1010101010101010101010101010101010101010101010101011\times2^{0}\)</span> after rounding <br> <span class="math inline">\((4/3)_{10}-(1/3)_{10}=\)</span><br> <span class="math inline">\(1.0101010101010101010101010101010101010101010101010101\times2^{0} -\)</span><br> <span class="math inline">\(0.1010101010101010101010101010101010101010101010101011\times2^{0} =\)</span><br> <span class="math inline">\(1.0000000000000000000000000000000000000000000000000000\times2^{0} = 1\)</span> 2^{0}<br> Therefore, (4/3 − 1/3) − 1 = 0, which can’t determine machine epsilon by calculating (4/3 − 1/3) − 1.</p>
+<p><span class="math inline">\((4/3)_{10} = (1.\overline{01})_{2}=1.0101010101010101010101010101010101010101010101010101\times2^{0}\)</span><br> <span class="math inline">\((1/3)_{10} = (0.\overline{10})_{2}=0.1010101010101010101010101010101010101010101010101010\times2^{0} =\)</span><br> <span class="math inline">\(0.1010101010101010101010101010101010101010101010101011\times2^{0}\)</span> after rounding <br> <span class="math inline">\((4/3)_{10}-(1/3)_{10}=\)</span><br> <span class="math inline">\(1.0101010101010101010101010101010101010101010101010101\times2^{0} -\)</span><br> <span class="math inline">\(0.1010101010101010101010101010101010101010101010101011\times2^{0} =\)</span><br> <span class="math inline">\(1.0000000000000000000000000000000000000000000000000000\times2^{0} = 1 \times2^{0}\)</span><br> Therefore, (4/3 − 1/3) − 1 = 0, which can’t determine machine epsilon by calculating (4/3 − 1/3) − 1.</p>
 </blockquote>
 </div>
 <div id="problem-6" class="section level3">
@@ -542,12 +544,12 @@ lines(x,y3)</code></pre>
 <p>You can assemble your homework writeup however you like, but I strongly encourage you to give R Markdown a shot. I was skeptical of learning yet another new tool, but it only takes 15 minutes to get a pretty good handle, and I really like it.</p>
 <p>If the R code you place inside the hash marks has printed output, it will display like this:</p>
 <pre class="r"><code>(uniformSamples&lt;-runif(10,0,1))</code></pre>
-<pre><code>##  [1] 0.543786626076325774193 0.122035189531743526459 0.407948824577033519745
-##  [4] 0.731891604373231530190 0.069992040982469916344 0.637592383427545428276
-##  [7] 0.554343456169590353966 0.212898760335519909859 0.105279981391504406929
-## [10] 0.651187985204160213470</code></pre>
+<pre><code>##  [1] 0.0722225217614322900772 0.6332530244253575801849 0.1924984066281467676163
+##  [4] 0.9719619464594870805740 0.7777507752180099487305 0.1884956399444490671158
+##  [7] 0.4195458753965795040131 0.0075506640132516622543 0.2249883667100220918655
+## [10] 0.8696006957907229661942</code></pre>
 <pre class="r"><code>mean(uniformSamples)</code></pre>
-<pre><code>## [1] 0.40369568520691245794</code></pre>
+<pre><code>## [1] 0.43578679163474587366</code></pre>
 <p>You can also include comments and embed plots:</p>
 <pre class="r"><code># Define a polynomial function
 f = function(x) {x^3 + x^2 - 24*x + 36}
