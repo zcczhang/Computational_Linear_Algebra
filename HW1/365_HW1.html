@@ -434,7 +434,7 @@ while (illegal&lt;1000000) {
   accounts &lt;- accounts+dep
 }
 print(day/365)</code></pre>
-<pre><code>## [1] 54.78082192</code></pre>
+<pre><code>## [1] 54.77808219</code></pre>
 <blockquote>
 <p>The approximate average number of years to accumulate a million dollars is in 55 years</p>
 </blockquote>
@@ -483,15 +483,22 @@ lines(x,y3)</code></pre>
 <li>2/3</li>
 </ol>
 <blockquote>
-<p>for integer: 0<br>for fration: <span class="math inline">\(2/3*2 = 1/3+1, 1/3*2 = 2/3+0, 2/3*2=1/3+1... =&gt; (0.\overline{10})_{2}\)</span> <br>So <span class="math inline">\((2/3)_{10}=(0.\overline{10})_{2}\)</span></p>
+<p>for integer: 0<br>for fration: <span class="math inline">\(2/3*2 = 1/3+1, 1/3*2 = 2/3+0, 2/3*2=1/3+1... =&gt; (0.\overline{10})_{2}\)</span> <br>So <span class="math inline">\((11)_{10}\)</span> = <span class="math inline">\((1011)_{2}\)</span> <span class="math inline">\((2/3)_{10}=(0.\overline{10})_{2}\)</span></p>
 </blockquote>
 <ol start="6" style="list-style-type: lower-alpha">
 <li>99.9</li>
 </ol>
+<blockquote>
+<p>for integer, <span class="math inline">\(99/2=49...1, 49/2=24...1, 24/2=12...0, 12/2=6...0, 6/2=3...0, 3/2=1...1, 1/2=0...1\)</span>, so <span class="math inline">\((99)_{10}\)</span> = <span class="math inline">\((1100011)_{2}\)</span><br> for fraction, <span class="math inline">\(0.9*2=.8+1, .8*2=.6+1, .6*2=.2+1, .2*2=.4+0, .4*2=.8+0, .8*2=.6+1......\)</span>, so <span class="math inline">\((0.9)_{10}\)</span> = <span class="math inline">\((0.1\overline{1100})_{2}\)</span><br> Therefore, <span class="math inline">\((99.9)_{10} = (1100011.1\overline{1100})_{2}\)</span></p>
+</blockquote>
 </div>
 <div id="problem-5" class="section level3">
 <h3>Problem 5</h3>
 <p>Section 0.3: Exercise 9. In this problem, you should do the following: write 7/3, 4/3, and 1/3 in binary and in their IEEE machine expressions. Then perform the required subtractions using machine arithmetic. Finally, use the command <code>options(digits=20)</code> before doing the computations in R. Recall that the command <code>.Machine$double.eps</code> will give you machine epsilon in R.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Explain why you can determine machine epsilon on a computer using IEEE double precision and the IEEE Rounding to Nearest Rule by calculating (7/3 − 4/3) − 1.</li>
+<li>Does (4/3 − 1/3) − 1 also give mach? Explain by converting to floating point numbers and carrying out the machine arithmetic.</li>
+</ol>
 </div>
 <div id="problem-6" class="section level3">
 <h3>Problem 6</h3>
@@ -520,10 +527,10 @@ lines(x,y3)</code></pre>
 <p>You can assemble your homework writeup however you like, but I strongly encourage you to give R Markdown a shot. I was skeptical of learning yet another new tool, but it only takes 15 minutes to get a pretty good handle, and I really like it.</p>
 <p>If the R code you place inside the hash marks has printed output, it will display like this:</p>
 <pre class="r"><code>(uniformSamples&lt;-runif(10,0,1))</code></pre>
-<pre><code>##  [1] 0.47055504518 0.85057099583 0.33526530699 0.37147478247 0.33131988673
-##  [6] 0.81873167795 0.95140630053 0.70066529862 0.77174035460 0.07389221131</code></pre>
+<pre><code>##  [1] 0.876894013723 0.002260983456 0.856644835090 0.581649000756 0.002582664602
+##  [6] 0.423962807748 0.244954126654 0.179885930615 0.506637011655 0.909300291911</code></pre>
 <pre class="r"><code>mean(uniformSamples)</code></pre>
-<pre><code>## [1] 0.567562186</code></pre>
+<pre><code>## [1] 0.4584771666</code></pre>
 <p>You can also include comments and embed plots:</p>
 <pre class="r"><code># Define a polynomial function
 f = function(x) {x^3 + x^2 - 24*x + 36}
