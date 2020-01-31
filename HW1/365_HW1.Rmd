@@ -228,7 +228,19 @@ Trying to find the Euclidean length, recall $\|\vec{x}\|=\sqrt{x_1^2+x_2^2\ldots
 ```
 In fact, the correct value of $L\approx 10^{202}$ is well within the range of representable numbers in the double-precision floating-point system, but the bad method above calcuates $L^2\approx 10^{404}$ as an intermediate step. This number is too big! Write a function called **my.safe.length** which can correctly compute the length of a vector with very large, but representable entries. As a hint, note that $\|(-500,1000)\| = 1000 \|(-0.5,1)\|$; on the right-hand side we never take the square of a number greater than one. Test your function by evaluating $\|\vec{x}\|$ correctly. 
 
+```{r}
+my.safe.length <- function(x) {
+  power<-0
+  max<-max(abs(x))
+  while (max>1) {
+    max<-max/10
+    power<-power+1
+  }
+  return((10^power)*sqrt(sum((x/10^power)^2)))
+}
 
+my.safe.length(x)
+```
 
 
 

@@ -434,9 +434,9 @@ while (illegal&lt;1000000) {
   accounts &lt;- accounts+dep
 }
 print(day)</code></pre>
-<pre><code>## [1] 19995</code></pre>
+<pre><code>## [1] 19994</code></pre>
 <pre class="r"><code>print(day/365)</code></pre>
-<pre><code>## [1] 54.78082192</code></pre>
+<pre><code>## [1] 54.77808219</code></pre>
 <blockquote>
 <p>After several runnings for this simulation, the approximate average time to accumulate a million dollars is around 20000 days or in 55 years.</p>
 </blockquote>
@@ -541,18 +541,30 @@ lines(x,y3)</code></pre>
 <pre class="r"><code>(L &lt;- sqrt(sum(x^2)))</code></pre>
 <pre><code>## [1] Inf</code></pre>
 <p>In fact, the correct value of <span class="math inline">\(L\approx 10^{202}\)</span> is well within the range of representable numbers in the double-precision floating-point system, but the bad method above calcuates <span class="math inline">\(L^2\approx 10^{404}\)</span> as an intermediate step. This number is too big! Write a function called <strong>my.safe.length</strong> which can correctly compute the length of a vector with very large, but representable entries. As a hint, note that <span class="math inline">\(\|(-500,1000)\| = 1000 \|(-0.5,1)\|\)</span>; on the right-hand side we never take the square of a number greater than one. Test your function by evaluating <span class="math inline">\(\|\vec{x}\|\)</span> correctly.</p>
+<pre class="r"><code>my.safe.length &lt;- function(x) {
+  power&lt;-0
+  max&lt;-max(abs(x))
+  while (max&gt;1) {
+    max&lt;-max/10
+    power&lt;-power+1
+  }
+  return((10^power)*sqrt(sum((x/10^power)^2)))
+}
+
+my.safe.length(x)</code></pre>
+<pre><code>## [1] 1.0766794721815779105e+202</code></pre>
 </div>
 <div id="r-markdown-tips" class="section level3">
 <h3>R Markdown Tips</h3>
 <p>You can assemble your homework writeup however you like, but I strongly encourage you to give R Markdown a shot. I was skeptical of learning yet another new tool, but it only takes 15 minutes to get a pretty good handle, and I really like it.</p>
 <p>If the R code you place inside the hash marks has printed output, it will display like this:</p>
 <pre class="r"><code>(uniformSamples&lt;-runif(10,0,1))</code></pre>
-<pre><code>##  [1] 0.035695382161065936089 0.046095512108877301216 0.965358605608344078064
-##  [4] 0.986487631686031818390 0.167911573080345988274 0.069706923095509409904
-##  [7] 0.282570264302194118500 0.585433413507416844368 0.622354377293959259987
-## [10] 0.924892187584191560745</code></pre>
+<pre><code>##  [1] 0.498380415840074419975 0.063471364323049783707 0.734233661089092493057
+##  [4] 0.225505892653018236160 0.777217752533033490181 0.281557587673887610435
+##  [7] 0.373921271646395325661 0.494300226215273141861 0.972615420119836926460
+## [10] 0.701447790022939443588</code></pre>
 <pre class="r"><code>mean(uniformSamples)</code></pre>
-<pre><code>## [1] 0.46865058704279360935</code></pre>
+<pre><code>## [1] 0.51226513821166008711</code></pre>
 <p>You can also include comments and embed plots:</p>
 <pre class="r"><code># Define a polynomial function
 f = function(x) {x^3 + x^2 - 24*x + 36}
