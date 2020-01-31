@@ -200,18 +200,14 @@ What happens?  Explain why this is.
   1000000000000000000 + 100 - 1000000000000000000
 ```
 
-> Because of the loss of significance, 
-
-
-
-> $1000000000000000000 = 1.1011110000010110110101100111010011101100100000000000\times2^{59}$<br>
-$100 = 1.1001000...\times2^{6}$
-
-
-
-
-
-
+> In IEEE double precision, $1000000000000000000 = 1.1011110000010110110101100111010011101100100000000000(52bits)\times2^{59}$<br>
+$100 = 1.1001000...(52bits)\times2^{6} = 0.00..0011001\times2^{59}$(57 bits in total(52 0 before 11001))<br>
+Then, 1000000000000000000 + 100 = 1.1011110000010110110101100111010011101100100000000000|11001$\times2^{59}$ = 1.1011110000010110110101100111010011101100100000000001$\times2^{59}$ after rounding.<br>
+To calculate the substraction part, the computer will calculate:<br>
+$1.1011110000010110110101100111010011101100100000000001\times2^{59} -$<br>
+$1.1011110000010110110101100111010011101100100000000000\times2^{59}$<br>
+$= 0.00...001\times2^{59}$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(52 bits in fraction)<br>
+$=2^{59-52}=2^{7}=128$
 
 ### Problem 7
 Find the smallest positive integer $i$ such that $i$ is not exactly representable using the IEEE standard in double precision; i.e., $\hbox{fl}(i)\neq i$.

@@ -523,10 +523,7 @@ lines(x,y3)</code></pre>
 <pre class="r"><code>  1000000000000000000 + 100 - 1000000000000000000</code></pre>
 <pre><code>## [1] 128</code></pre>
 <blockquote>
-<p>Because of the loss of significance,</p>
-</blockquote>
-<blockquote>
-<p><span class="math inline">\(1000000000000000000 = 1.1011110000010110110101100111010011101100100000000000\times2^{59}\)</span><br> <span class="math inline">\(100 = 1.1001000...\times2^{6}\)</span></p>
+<p>In IEEE double precision, <span class="math inline">\(1000000000000000000 = 1.1011110000010110110101100111010011101100100000000000(52bits)\times2^{59}\)</span><br> <span class="math inline">\(100 = 1.1001000...(52bits)\times2^{6} = 0.00..0011001\times2^{59}\)</span>(57 bits in total(52 0 before 11001))<br> Then, 1000000000000000000 + 100 = 1.1011110000010110110101100111010011101100100000000000|11001<span class="math inline">\(\times2^{59}\)</span> = 1.1011110000010110110101100111010011101100100000000001<span class="math inline">\(\times2^{59}\)</span> after rounding.<br> To calculate the substraction part, the computer will calculate:<br> <span class="math inline">\(1.1011110000010110110101100111010011101100100000000001\times2^{59} -\)</span><br> <span class="math inline">\(1.1011110000010110110101100111010011101100100000000000\times2^{59}\)</span><br> <span class="math inline">\(= 0.00...001\times2^{59}\)</span>                  (52 bits in fraction)<br> <span class="math inline">\(=2^{59-52}=2^{7}=128\)</span></p>
 </blockquote>
 </div>
 <div id="problem-7" class="section level3">
@@ -550,13 +547,13 @@ lines(x,y3)</code></pre>
 <p>You can assemble your homework writeup however you like, but I strongly encourage you to give R Markdown a shot. I was skeptical of learning yet another new tool, but it only takes 15 minutes to get a pretty good handle, and I really like it.</p>
 <p>If the R code you place inside the hash marks has printed output, it will display like this:</p>
 <pre class="r"><code>(uniformSamples&lt;-runif(10,0,1))</code></pre>
-<pre><code>##  [1] 0.276147979544475674629 0.024300767341628670692
-##  [3] 0.176439609611406922340 0.371863713720813393593
-##  [5] 0.548015029635280370712 0.230764584848657250404
-##  [7] 0.865689397091045975685 0.543095912085846066475
-##  [9] 0.283940802561119198799 0.622693638317286968231</code></pre>
+<pre><code>##  [1] 0.564504873938858509064 0.389421682804822921753
+##  [3] 0.053048084024339914322 0.697355575626716017723
+##  [5] 0.548585685435682535172 0.996390927582979202271
+##  [7] 0.962142547126859426498 0.400755838258191943169
+##  [9] 0.387258769944310188293 0.023601610679179430008</code></pre>
 <pre class="r"><code>mean(uniformSamples)</code></pre>
-<pre><code>## [1] 0.39429514347575606026</code></pre>
+<pre><code>## [1] 0.50230655954219405324</code></pre>
 <p>You can also include comments and embed plots:</p>
 <pre class="r"><code># Define a polynomial function
 f = function(x) {x^3 + x^2 - 24*x + 36}
