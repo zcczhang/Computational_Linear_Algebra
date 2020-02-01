@@ -128,7 +128,9 @@ $$\begin{bmatrix}
 \end{bmatrix}
 $$
 ```{r}
-(t(matrix(1:80,10,8)))
+v1=1:8
+v2=1:10
+(B=v1%o%v2)
 ```
 
 c.
@@ -144,6 +146,10 @@ $$
 
 ```{r}
 (matrix((1:11)^2,11,5))
+# Or
+w1=1:11
+w2=rep(1,5)
+(C=w1^2%o%w2) # or w1^2 %*% t(w2)
 ```
 
 ### Part II: Functions and Polynomial Evaluation
@@ -176,10 +182,7 @@ set.seed(1234) # Set seed for random number generation
 N = 10^7
 x = runif(N) # Create 10^7 random values of x between 0 and 1
 # You will need to code the next line and uncomment all the remaining lines
-P = function(x){
-  p=2*x^5-3*x^4+x^3+10*x^2-x+1
-  return(p)
-}
+P = function(x){2*x^5-3*x^4+x^3+10*x^2-x+1}
 t1 <- system.time(
   for (thisx in x){
   P(thisx)
@@ -190,27 +193,15 @@ t1 <- system.time(
 
 b. Now time how long it takes to evaluate the function in a vectorized manner, plugging in all values of $x$ at once rather than iterating over them in a for-loop.
 ```{r}
-set.seed(1234) # Set seed for random number generation
-P2 = function(x){
-  p=2*x^5-3*x^4+x^3+10*x^2-x+1
-  return(p)
-}
-t2 <- system.time(
-  P2(x)
-)[3]
- print(t2)
+t2 <- system.time(P(x))[3]
+print(t2)
 ```
 c. Now time how long it takes to evaluate the function again using a for loop, but now where the polynomial evaluation is done via Horner's method.
 ```{r}
-set.seed(1234) # Set seed for random number generation
-
-P3 = function(x){
-  p=1+x*(-1+x*(10+x*(1+x*(-3+2*x))))
-  return(p)
-}
+horner = function(x){1+x*(-1+x*(10+x*(1+x*(-3+2*x))))}
 t3 <- system.time(
-  for (thisx in x){
-  P3(thisx)
+  for (thisx in 1:N){
+  horner(x[thisx])
 }
 )[3]
  print(t3)
@@ -218,37 +209,20 @@ t3 <- system.time(
 ```
 d. Time how long it takes to evaluae the function in a vectorized manner using Horner's method for the polynomial evaluation.
 ```{r}
-set.seed(1234) # Set seed for random number generation
-
-P4 = function(x){
-  p=1+x*(-1+x*(10+x*(1+x*(-3+2*x))))
-  return(p)
-}
 t4 <- system.time(
-  P4(x)
+  horner(x)
 )[3]
  print(t4)
 ```
 e. What is the speedup factor from the slowest case to the fastest case? (Note: the answer will vary from comptuer to computer.)
 
-> For loop and the algorithms to calculate the polynomials.
+speedup factor is `t1/t4`
+```{r}
+t1/t4
+```
 
 f. Finally, implement a more general version of Horner's method. It should be of the form `Horner(coeffs,x)` and it should return the value of the polynomial whose coefficients are given by the vector `coeffs`, evaluated at the scalar (or vector of scalars) $x$. Make sure to include comments describing what your function is doing, and also test your function with sample inputs.
 
-```{r}
-set.seed(1234)
-Horner<-function(coeffs,x){
-  result = x[0]
-  for (i in coeffs) 
-        result = result*x + x[i]
-    return(result)
-}
-t5 <- system.time(
-  Horner(c(2,-3,1,10,-1,1),x)
-)[3]
- print(t4)
- 
-```
 
 ### Part III: The Office Space Problem
 
