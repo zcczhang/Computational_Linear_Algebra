@@ -1,0 +1,278 @@
+# Math 365 / Comp 365: Activity 1
+# Introduction to R, Polynomial Evaluation, and Programming Practice
+
+## Charles Zhang
+
+### Objectives
+- R and R Markdown introduction
+- Understand vectors, matrices, and functions in R
+- Review basic programming skills (functions, for loops, if-then statements)
+- Perform polynomial evaluation and test timing of various algorithms
+
+
+### Part I: Vectors and Matrices in R
+
+Here are a few different ways to create vectors in R:
+```{r}
+v=c(2,3,6) # this is a column vector
+print(v) # just so you can see what we created
+v # here is another way to see what we created
+(v=c(2,3,6)) #putting parentheses around a command will also display the output
+w=2:5
+print(w)
+y=seq(0, 10, 2) #The syntax of this is seq(from, to, by=)
+print(y)
+```
+
+
+#### Inner and outer products
+
+There are several different ways to "multiply" vectors $\vec{x}$ and $\vec{y}$:
+
+1. Element-wise. Just multiply each element of $\vec{x}$ with the element in the corresponding poisiotn in $\vec{y}$. Note that $\vec{x}$ and $\vec{y}$ must have the same number of elements, and the result is a vector with the same number of elements.
+
+2. Dot product, also known as the inner product. To compute, calculate $x \cdot y \equiv \vec{x}^T\vec{y}$ where the superscript $T$ indicates transpose. Dot product is related to the angle $\theta$ between the two vectors as $\vec{x} \cdot \vec{y} = |\vec{x}||\vec{y}| \cos \theta$. Rearranging this as $\vec{x} \cdot \vec{y}/|\vec{y}| = |\vec{x}| \cos \theta$ suggests the intuition of the dot product. It calculates a *projection* of one vector onto the other, or restated, it tells us how much of one vector is pointing in the direction of the other vector. Note that $\vec{x}$ and $\vec{y}$ must have the same number of elements, and the result is a scalar.
+
+3. Outer product. To compute, calculate $x \otimes y \equiv \vec{x}\vec{y}^T$. Note that $\vec{x}$ and $\vec{y}$ do not need to have the same number of elements, and the result is a matrix. If $\vec{x}$ is $m \times 1$ and $\vec{y}$ is $n \times 1$ then $x \otimes y$ is $m \times n$.
+
+4. Cross product. We are not going to worry about this one for now.
+
+Let's calculate some examples.
+
+```{r cache=TRUE}
+x <- c(1,2,3)
+y <- c(4,5,6)
+z <- c(7,8,9,10)
+x*y # element-wise
+t(x)%*%y # dot product
+sum(x*y) # dot product
+x%*%t(z) # outer product
+x%o%z # outer product
+```
+
+
+
+#### Creating matrices
+
+There are also a few different ways to generate matrices in R. One is to use the commands `rbind` or `cbind` to bind together multiple row and column vectors. Here are some examples:
+```{r}
+(G=cbind(c(1,4,7),c(2,5,8),c(3,6,9))) # note that if you put parentheses around the entire line, the result is printed
+(H=rbind(c(1,2,3),c(4,5,6),c(7,8,9)))
+```
+
+This works fine for small matrices but is not ideal if we have larger matrices with nice structured entries. Here is a way to create a matrix filled with entries of the same value:
+```{r}
+(Z = matrix(0, nrow = 10, ncol = 10))
+```
+
+As we saw before, can also generate matrices as the products of vectors. Here is an example:
+```{r}
+v1=c(-1,0,2)
+v2=c(0,1,1)
+M=v1%*%t(v2) #Notice the t transposes the vector. This is an outer product.
+print(M)
+```
+
+What are the dimensions of the vectors in the above example? 
+
+We'll talk about other ways to create matrices (particularly sparse matrices with many zero entries) as the semester progresses.
+
+Once you have a matrix, you can change specific entries with square brackets after the matrix. Here are some examples:
+```{r}
+G[2,2]=22
+print(G)
+H[2,]=c(-4,-5,-6)
+print(H)
+```
+Note that by leaving the column index blank in the second example, I'm telling R that I want to access the entire column.
+
+To create a for loop in R, follow the syntax below:
+```{r}
+y=rep(0,10) #This repeats the element 0 ten times
+for (i in 1:10){
+  y[i]=i
+}
+print(y)
+```
+This is a silly way to create a vector, which can be done in only one line with the commands above. 
+
+1. Now it's your turn. Generate the following matrices. You can do it with `for` loops, but try instead to generate them with just a line or two of shorter code.
+
+a. 
+
+$$\begin{bmatrix}
+1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+1 & 1 & 1 & 5 & 5 & 5 & 1 \\
+1 & 1 & 1 & 5 & 5 & 5 & 1 \\
+1 & 1 & 1 & 1 & 1 & 1 & 1 
+\end{bmatrix}$$
+
+```{r}
+A=matrix(1, nrow = 8, ncol = 7)
+A[6:7,4:6]<-5
+A
+```
+
+b.
+
+$$\begin{bmatrix}
+1 & 2 & 3 & \cdots & 10 \\
+2 & 4 & 6 & \cdots & 20 \\
+3 & 6 & 9 & \cdots & 30 \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+8 & 16 & 24 & \cdots & 80
+\end{bmatrix}
+$$
+```{r}
+(t(matrix(1:80,10,8)))
+```
+
+c.
+
+$$\begin{bmatrix}
+1 & 1 & 1 & 1 & 1 \\
+4 & 4 & 4 & 4 & 4 \\
+9 & 9 & 9 & 9 & 9 \\
+\vdots & \vdots & \vdots & \vdots & \vdots \\
+121 & 121 & 121 & 121 & 121
+\end{bmatrix}
+$$
+
+```{r}
+(matrix((1:11)^2,11,5))
+```
+
+### Part II: Functions and Polynomial Evaluation
+
+
+Here is an example of how to create a function in R:
+```{r}
+myfunction=function(x){
+  y=2*x-3
+  return(y)
+}
+```
+I can evaluate the function at a specific value of $x$:
+```{r}
+myfunction(2)
+```
+or at multiple values of $x$:
+```{r}
+xx=3:7
+myfunction(xx)
+```
+
+
+Now consider the polynomial $P(x)=2x^5-3x^4+x^3+10x^2-x+1$. We will evaluate $P(x)$ for $10^7$ random values three different ways.
+
+a. First, use a for loop with standard polynomial evaluation. The for loop is written for you. You need to fill in the line that defines $P(x)$. The `system.time` command will tell you how long it takes to execute everything inside that command.
+
+```{r}
+set.seed(1234) # Set seed for random number generation
+N = 10^7
+x = runif(N) # Create 10^7 random values of x between 0 and 1
+# You will need to code the next line and uncomment all the remaining lines
+P = function(x){
+  p=2*x^5-3*x^4+x^3+10*x^2-x+1
+  return(p)
+}
+t1 <- system.time(
+  for (thisx in x){
+  P(thisx)
+}
+)[3]
+ print(t1)
+```
+
+b. Now time how long it takes to evaluate the function in a vectorized manner, plugging in all values of $x$ at once rather than iterating over them in a for-loop.
+```{r}
+set.seed(1234) # Set seed for random number generation
+P2 = function(x){
+  p=2*x^5-3*x^4+x^3+10*x^2-x+1
+  return(p)
+}
+t2 <- system.time(
+  P2(x)
+)[3]
+ print(t2)
+```
+c. Now time how long it takes to evaluate the function again using a for loop, but now where the polynomial evaluation is done via Horner's method.
+```{r}
+set.seed(1234) # Set seed for random number generation
+
+P3 = function(x){
+  p=1+x*(-1+x*(10+x*(1+x*(-3+2*x))))
+  return(p)
+}
+t3 <- system.time(
+  for (thisx in x){
+  P3(thisx)
+}
+)[3]
+ print(t3)
+
+```
+d. Time how long it takes to evaluae the function in a vectorized manner using Horner's method for the polynomial evaluation.
+```{r}
+set.seed(1234) # Set seed for random number generation
+
+P4 = function(x){
+  p=1+x*(-1+x*(10+x*(1+x*(-3+2*x))))
+  return(p)
+}
+t4 <- system.time(
+  P4(x)
+)[3]
+ print(t4)
+```
+e. What is the speedup factor from the slowest case to the fastest case? (Note: the answer will vary from comptuer to computer.)
+
+> For loop and the algorithms to calculate the polynomials.
+
+f. Finally, implement a more general version of Horner's method. It should be of the form `Horner(coeffs,x)` and it should return the value of the polynomial whose coefficients are given by the vector `coeffs`, evaluated at the scalar (or vector of scalars) $x$. Make sure to include comments describing what your function is doing, and also test your function with sample inputs.
+
+```{r}
+set.seed(1234)
+Horner<-function(coeffs,x){
+  result = x[0]
+  for (i in coeffs) 
+        result = result*x + x[i]
+    return(result)
+}
+t5 <- system.time(
+  Horner(c(2,-3,1,10,-1,1),x)
+)[3]
+ print(t4)
+ 
+```
+
+### Part III: The Office Space Problem
+
+If you've finished the above exercises, you can start with the following problem, which will be on HW1.
+
+The point of this problem is twofold: (i) to illustrate what can happen if you accumulate many truncations of numbers and (ii) to give you practice writing programs.
+
+In the 1999 movie Office Space, a character creates a program that takes fractions of cents that are truncated in a bank's transactions and deposits them into his own account. This is not a new idea, and hackers who have actually attempted it have been arrested. In this exercise, you will simulate the program to determine how long it would take to become a millionaire this way. 
+
+Assume the following details:
+
+* You have access to 10,000 bank accounts
+
+* Initially, the bank accounts have values that are uniformly distributed between $100 and $100,000
+
+* The annual interest rate on the accounts is 5%
+
+* Interest is compounded each day and added to the accounts, except that fractions of a cent are truncated  
+
+* The daily interest rate is thus .05/365
+
+* The truncated fractions are deposited into an illegal account that initially has a balance of $0
+
+* The illegal account can hold fractional values and it also accrues daily interest
+
+Your job is to write R code that simulates this situation and finds how long it takes for the illegal account to reach a million dollars.
+
