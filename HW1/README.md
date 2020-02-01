@@ -16,14 +16,14 @@ Implement a general version of Horner's method. It should be of the form `Horner
 
 
 ```r
-Horner<-function(coeffs,x) {
-  res <- vector()
-  for (i in 1:length(x)) {
-    temp = coeffs[1]
-    for (j in 2:length(coeffs)) { 
-      temp = temp*x[i] + coeffs[j]
-      res[i] <- temp
-    }
+Horner <- function(coeffs,x) {
+  # create result vector
+  res<-rep(coeffs[1],length(x))
+  i <- 1
+  while (i < length(coeffs)) {
+    # based on the Horner method, repeate the procedure to time vector x and add the next coefficient
+    res <- res*x + coeffs[i+1]
+    i<-i+1
   }
   return(res)
 }
@@ -36,8 +36,6 @@ Horner(coeffs,x)
 ```
 ## [1]   -2  169  844 2347
 ```
-
-> This nested loop function directly evaluates the polynomial for each number in vector x. As the horner method shows that a polynomial $a_{n}x^{n-1}+a_{n-1}x^{n-2}+...+a_{2}x^{1}+a_{1} =$
 
 ### Problem 2
 The point of this problem is twofold: (i) to illustrate what can happen if you accumulate many truncations of numbers and (ii) to give you practice writing programs.
@@ -322,10 +320,10 @@ If the R code you place inside the hash marks has printed output, it will displa
 ```
 
 ```
-##  [1] 0.557537856278941035271 0.706377396360039710999 0.019125836901366710663
-##  [4] 0.418021524092182517052 0.637512969085946679115 0.690621407236903905869
-##  [7] 0.325436689192429184914 0.953093506628647446632 0.587478077504783868790
-## [10] 0.301905614091083407402
+##  [1] 0.18024407490156590939 0.10305841104127466679 0.43703211983665823936
+##  [4] 0.27392488904297351837 0.85793637880124151707 0.64167444780468940735
+##  [7] 0.02112734038382768631 0.65598288760520517826 0.64953993679955601692
+## [10] 0.57675934652797877789
 ```
 
 ```r
@@ -333,7 +331,7 @@ mean(uniformSamples)
 ```
 
 ```
-## [1] 0.51971108773723240226
+## [1] 0.43972798327449708067
 ```
 You can also include comments and embed plots:
 

@@ -15,14 +15,14 @@ Reminder: you are allowed---in fact encouraged---to work on and discuss homework
 Implement a general version of Horner's method. It should be of the form `Horner(coeffs,x)` and it should return the value of the polynomial whose coefficients are given by the vector `coeffs`, evaluated at the scalar (or vector of scalars) $x$. Make sure to include comments describing what your function is doing. Test your function by solving $f(x)=2x^5-8x^3+3x^2+7$ at $x=3$ and then at $x=3,6,9,12$.
 
 ```{r}
-Horner<-function(coeffs,x) {
-  res <- vector()
-  for (i in 1:length(x)) {
-    temp = coeffs[1]
-    for (j in 2:length(coeffs)) { 
-      temp = temp*x[i] + coeffs[j]
-      res[i] <- temp
-    }
+Horner <- function(coeffs,x) {
+  # create result vector
+  res<-rep(coeffs[1],length(x))
+  i <- 1
+  while (i < length(coeffs)) {
+    # based on the Horner method, repeate the procedure to time vector x and add the next coefficient
+    res <- res*x + coeffs[i+1]
+    i<-i+1
   }
   return(res)
 }
@@ -30,24 +30,7 @@ Horner<-function(coeffs,x) {
 coeffs<-c(2,-8,3,7)
 x<-c(3,6,9,12)
 Horner(coeffs,x)
-
 ```
-```{r}
-
-Horner2 <- function(c,x) {
-  res <- vector()
-  res[1] = coeffs[1]
-  i<-1
-  while (i < length(x)) {
-    i <- i+1
-    res[i] <- res[i-1]%o%x + coeffs[i]
-  } 
-  return(res)
-}
-Horner2(coeffs,x)
-```
-
-> This nested loop function directly evaluates the polynomial for each number in vector x. As the horner method shows that a polynomial $a_{n}x^{n-1}+a_{n-1}x^{n-2}+...+a_{2}x^{1}+a_{1} =$
 
 ### Problem 2
 The point of this problem is twofold: (i) to illustrate what can happen if you accumulate many truncations of numbers and (ii) to give you practice writing programs.
