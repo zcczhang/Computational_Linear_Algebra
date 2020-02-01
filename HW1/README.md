@@ -17,14 +17,10 @@ Implement a general version of Horner's method. It should be of the form `Horner
 
 ```r
 Horner <- function(coeffs,x) {
-  # create result vector
+  # create the result vector and set the initial value
   res<-rep(coeffs[1],length(x))
-  i <- 1
-  while (i < length(coeffs)) {
-    # based on the Horner method, repeate the procedure to time vector x and add the next coefficient
-    res <- res*x + coeffs[i+1]
-    i<-i+1
-  }
+  # based on the Horner method, repeate the procedure to time vector x and add the next coefficient
+  for(i in 1:(length(coeffs)-1)) {res <- res*x + coeffs[i+1]}
   return(res)
 }
 
@@ -36,7 +32,10 @@ Horner(coeffs,x)
 ```
 ## [1]   -2  169  844 2347
 ```
-
+  while (i < length(coeffs)) {
+    # based on the Horner method, repeate the procedure to time vector x and add the next coefficient
+    res <- res*x + coeffs[i+1]
+    i<-i+1
 ### Problem 2
 The point of this problem is twofold: (i) to illustrate what can happen if you accumulate many truncations of numbers and (ii) to give you practice writing programs.
 
@@ -320,10 +319,10 @@ If the R code you place inside the hash marks has printed output, it will displa
 ```
 
 ```
-##  [1] 0.18024407490156590939 0.10305841104127466679 0.43703211983665823936
-##  [4] 0.27392488904297351837 0.85793637880124151707 0.64167444780468940735
-##  [7] 0.02112734038382768631 0.65598288760520517826 0.64953993679955601692
-## [10] 0.57675934652797877789
+##  [1] 0.57242902857251465321 0.93282503634691238403 0.34562868950888514519
+##  [4] 0.34676262224093079567 0.74541157647036015987 0.10905317659489810467
+##  [7] 0.64746591029688715935 0.24811417120508849621 0.31667040404863655567
+## [10] 0.25200629094615578651
 ```
 
 ```r
@@ -331,7 +330,7 @@ mean(uniformSamples)
 ```
 
 ```
-## [1] 0.43972798327449708067
+## [1] 0.45163669062312694624
 ```
 You can also include comments and embed plots:
 

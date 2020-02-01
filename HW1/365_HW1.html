@@ -377,14 +377,10 @@ summary {
 <h3>Problem 1</h3>
 <p>Implement a general version of Horner’s method. It should be of the form <code>Horner(coeffs,x)</code> and it should return the value of the polynomial whose coefficients are given by the vector <code>coeffs</code>, evaluated at the scalar (or vector of scalars) <span class="math inline">\(x\)</span>. Make sure to include comments describing what your function is doing. Test your function by solving <span class="math inline">\(f(x)=2x^5-8x^3+3x^2+7\)</span> at <span class="math inline">\(x=3\)</span> and then at <span class="math inline">\(x=3,6,9,12\)</span>.</p>
 <pre class="r"><code>Horner &lt;- function(coeffs,x) {
-  # create result vector
+  # create the result vector and set the initial value
   res&lt;-rep(coeffs[1],length(x))
-  i &lt;- 1
-  while (i &lt; length(coeffs)) {
-    # based on the Horner method, repeate the procedure to time vector x and add the next coefficient
-    res &lt;- res*x + coeffs[i+1]
-    i&lt;-i+1
-  }
+  # based on the Horner method, repeate the procedure to time vector x and add the next coefficient
+  for(i in 1:(length(coeffs)-1)) {res &lt;- res*x + coeffs[i+1]}
   return(res)
 }
 
@@ -392,10 +388,7 @@ coeffs&lt;-c(2,-8,3,7)
 x&lt;-c(3,6,9,12)
 Horner(coeffs,x)</code></pre>
 <pre><code>## [1]   -2  169  844 2347</code></pre>
-</div>
-<div id="problem-2" class="section level3">
-<h3>Problem 2</h3>
-<p>The point of this problem is twofold: (i) to illustrate what can happen if you accumulate many truncations of numbers and (ii) to give you practice writing programs.</p>
+<p>while (i &lt; length(coeffs)) { # based on the Horner method, repeate the procedure to time vector x and add the next coefficient res &lt;- res*x + coeffs[i+1] i&lt;-i+1 ### Problem 2 The point of this problem is twofold: (i) to illustrate what can happen if you accumulate many truncations of numbers and (ii) to give you practice writing programs.</p>
 <p>In the 1999 movie Office Space, a character creates a program that takes fractions of cents that are truncated in a bank’s transactions and deposits them into his own account. This is not a new idea, and hackers who have actually attempted it have been arrested. In this exercise, you will simulate the program to determine how long it would take to become a millionaire this way.</p>
 <p>Assume the following details:</p>
 <ul>
@@ -556,12 +549,12 @@ my.safe.length(x)</code></pre>
 <p>You can assemble your homework writeup however you like, but I strongly encourage you to give R Markdown a shot. I was skeptical of learning yet another new tool, but it only takes 15 minutes to get a pretty good handle, and I really like it.</p>
 <p>If the R code you place inside the hash marks has printed output, it will display like this:</p>
 <pre class="r"><code>(uniformSamples&lt;-runif(10,0,1))</code></pre>
-<pre><code>##  [1] 0.18024407490156590939 0.10305841104127466679 0.43703211983665823936
-##  [4] 0.27392488904297351837 0.85793637880124151707 0.64167444780468940735
-##  [7] 0.02112734038382768631 0.65598288760520517826 0.64953993679955601692
-## [10] 0.57675934652797877789</code></pre>
+<pre><code>##  [1] 0.57242902857251465321 0.93282503634691238403 0.34562868950888514519
+##  [4] 0.34676262224093079567 0.74541157647036015987 0.10905317659489810467
+##  [7] 0.64746591029688715935 0.24811417120508849621 0.31667040404863655567
+## [10] 0.25200629094615578651</code></pre>
 <pre class="r"><code>mean(uniformSamples)</code></pre>
-<pre><code>## [1] 0.43972798327449708067</code></pre>
+<pre><code>## [1] 0.45163669062312694624</code></pre>
 <p>You can also include comments and embed plots:</p>
 <pre class="r"><code># Define a polynomial function
 f = function(x) {x^3 + x^2 - 24*x + 36}
