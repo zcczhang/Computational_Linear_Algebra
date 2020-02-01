@@ -89,12 +89,12 @@ You can find help on syntax in the Help Menu under "The R Language Definition." 
 ```{r}
 day <- 0
 illegal <- 0
-while (illegal<1000000) {
-  day <- day+1
-  interest = accounts*(.05/365)
-  dep <- floor(interest*100)/100
-  illegal <- illegal + sum(interest-dep)
-  accounts <- accounts+dep
+while (illegal < 1000000) {
+  day <- day+1  # accumulative days
+  interest = accounts*(.05/365) # interest per day
+  dep <- floor(interest*100)/100  # interest that can be deposited 
+  illegal <- illegal + sum(interest-dep)  # add up the difference between the deserved interest and the actually deposited interest to the illegal account
+  accounts <- accounts+dep  # add the interest that can be deposited to the account for next day
 }
 print(day)
 print(day/365)

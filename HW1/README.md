@@ -96,18 +96,18 @@ You can find help on syntax in the Help Menu under "The R Language Definition." 
 ```r
 day <- 0
 illegal <- 0
-while (illegal<1000000) {
-  day <- day+1
-  interest = accounts*(.05/365)
-  dep <- floor(interest*100)/100
-  illegal <- illegal + sum(interest-dep)
-  accounts <- accounts+dep
+while (illegal < 1000000) {
+  day <- day+1  # accumulative days
+  interest = accounts*(.05/365) # interest per day
+  dep <- floor(interest*100)/100  # interest that can be deposited 
+  illegal <- illegal + sum(interest-dep)  # add up the difference between the deserved interest and the actually deposited interest to the illegal account
+  accounts <- accounts+dep  # add the interest that can be deposited to the account for next day
 }
 print(day)
 ```
 
 ```
-## [1] 19993
+## [1] 19994
 ```
 
 ```r
@@ -115,7 +115,7 @@ print(day/365)
 ```
 
 ```
-## [1] 54.77534247
+## [1] 54.77808219
 ```
 
 > After several runnings for this simulation, the approximate average time to accumulate a million dollars is around 20000 days or in 55 years.
@@ -322,10 +322,10 @@ If the R code you place inside the hash marks has printed output, it will displa
 ```
 
 ```
-##  [1] 0.082082546781748533249 0.882751081371679902077 0.178245863411575555801
-##  [4] 0.777388273738324642181 0.788998624775558710098 0.381226909346878528595
-##  [7] 0.731751741142943501472 0.346530935959890484810 0.628889767453074455261
-## [10] 0.564838496269658207893
+##  [1] 0.557537856278941035271 0.706377396360039710999 0.019125836901366710663
+##  [4] 0.418021524092182517052 0.637512969085946679115 0.690621407236903905869
+##  [7] 0.325436689192429184914 0.953093506628647446632 0.587478077504783868790
+## [10] 0.301905614091083407402
 ```
 
 ```r
@@ -333,7 +333,7 @@ mean(uniformSamples)
 ```
 
 ```
-## [1] 0.53627042402513325214
+## [1] 0.51971108773723240226
 ```
 You can also include comments and embed plots:
 

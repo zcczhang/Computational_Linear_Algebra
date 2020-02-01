@@ -426,17 +426,17 @@ accounts = floor(accounts*100)/100</code></pre>
 <p>You can find help on syntax in the Help Menu under “The R Language Definition.” That’s where I went to remind myself about the syntax for an if-then statement and a while loop.</p>
 <pre class="r"><code>day &lt;- 0
 illegal &lt;- 0
-while (illegal&lt;1000000) {
-  day &lt;- day+1
-  interest = accounts*(.05/365)
-  dep &lt;- floor(interest*100)/100
-  illegal &lt;- illegal + sum(interest-dep)
-  accounts &lt;- accounts+dep
+while (illegal &lt; 1000000) {
+  day &lt;- day+1  # accumulative days
+  interest = accounts*(.05/365) # interest per day
+  dep &lt;- floor(interest*100)/100  # interest that can be deposited 
+  illegal &lt;- illegal + sum(interest-dep)  # add up the difference between the deserved interest and the actually deposited interest to the illegal account
+  accounts &lt;- accounts+dep  # add the interest that can be deposited to the account for next day
 }
 print(day)</code></pre>
-<pre><code>## [1] 19993</code></pre>
+<pre><code>## [1] 19994</code></pre>
 <pre class="r"><code>print(day/365)</code></pre>
-<pre><code>## [1] 54.77534247</code></pre>
+<pre><code>## [1] 54.77808219</code></pre>
 <blockquote>
 <p>After several runnings for this simulation, the approximate average time to accumulate a million dollars is around 20000 days or in 55 years.</p>
 </blockquote>
@@ -559,12 +559,12 @@ my.safe.length(x)</code></pre>
 <p>You can assemble your homework writeup however you like, but I strongly encourage you to give R Markdown a shot. I was skeptical of learning yet another new tool, but it only takes 15 minutes to get a pretty good handle, and I really like it.</p>
 <p>If the R code you place inside the hash marks has printed output, it will display like this:</p>
 <pre class="r"><code>(uniformSamples&lt;-runif(10,0,1))</code></pre>
-<pre><code>##  [1] 0.082082546781748533249 0.882751081371679902077 0.178245863411575555801
-##  [4] 0.777388273738324642181 0.788998624775558710098 0.381226909346878528595
-##  [7] 0.731751741142943501472 0.346530935959890484810 0.628889767453074455261
-## [10] 0.564838496269658207893</code></pre>
+<pre><code>##  [1] 0.557537856278941035271 0.706377396360039710999 0.019125836901366710663
+##  [4] 0.418021524092182517052 0.637512969085946679115 0.690621407236903905869
+##  [7] 0.325436689192429184914 0.953093506628647446632 0.587478077504783868790
+## [10] 0.301905614091083407402</code></pre>
 <pre class="r"><code>mean(uniformSamples)</code></pre>
-<pre><code>## [1] 0.53627042402513325214</code></pre>
+<pre><code>## [1] 0.51971108773723240226</code></pre>
 <p>You can also include comments and embed plots:</p>
 <pre class="r"><code># Define a polynomial function
 f = function(x) {x^3 + x^2 - 24*x + 36}
