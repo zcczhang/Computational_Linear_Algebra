@@ -128,8 +128,8 @@ Additional part (c) Using R, make a single plot with 3 different curves: cos(x) 
 
 ```{r}
 x=seq(-pi/2,pi/2,0.1)
-y1=cos(x)
-plot(x,y1,type="l")
+y=cos(x)
+plot(x,y,type="l")
 y2=1-1/2*x^2
 lines(x,y2)
 y3=1-1/2*x^2+(1/24)*x^4
