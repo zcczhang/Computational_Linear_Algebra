@@ -107,7 +107,7 @@ print(day)
 ```
 
 ```
-## [1] 19994
+## [1] 19993
 ```
 
 ```r
@@ -115,7 +115,7 @@ print(day/365)
 ```
 
 ```
-## [1] 54.77808219
+## [1] 54.77534247
 ```
 
 > After several runnings for this simulation, the approximate average time to accumulate a million dollars is around 20000 days or in 55 years.
@@ -260,7 +260,8 @@ To calculate the substraction part, the computer will calculate:<br>
 $1.1011110000010110110101100111010011101100100000000001\times2^{59} -$<br>
 $1.1011110000010110110101100111010011101100100000000000\times2^{59}$<br>
 $= 0.00...001\times2^{59}$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(52 bits in fraction)<br>
-$=2^{59-52}=2^{7}=128$
+$=2^{59-52}=2^{7}=128$<br>
+Since the computer will systematically round after the 52 bit, the computer wll have the rounding error while caculating 1000000000000000000 + 100 - 1000000000000000000, showing above. 
 
 ### Problem 7
 Find the smallest positive integer $i$ such that $i$ is not exactly representable using the IEEE standard in double precision; i.e., $\hbox{fl}(i)\neq i$.
@@ -321,10 +322,10 @@ If the R code you place inside the hash marks has printed output, it will displa
 ```
 
 ```
-##  [1] 0.60436460073105990887 0.69346493063494563103 0.95154280960559844971
-##  [4] 0.67472713463939726353 0.71096176723949611187 0.39684815541841089725
-##  [7] 0.76574864005669951439 0.45512397773563861847 0.58281180448830127716
-## [10] 0.39553252514451742172
+##  [1] 0.082082546781748533249 0.882751081371679902077 0.178245863411575555801
+##  [4] 0.777388273738324642181 0.788998624775558710098 0.381226909346878528595
+##  [7] 0.731751741142943501472 0.346530935959890484810 0.628889767453074455261
+## [10] 0.564838496269658207893
 ```
 
 ```r
@@ -332,7 +333,7 @@ mean(uniformSamples)
 ```
 
 ```
-## [1] 0.62311263456940646499
+## [1] 0.53627042402513325214
 ```
 You can also include comments and embed plots:
 
