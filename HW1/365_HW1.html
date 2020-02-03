@@ -384,11 +384,14 @@ summary {
   return(res)
 }
 
-coeffs&lt;-c(2,-8,3,7)
+coeffs&lt;-c(2,0,-8,3,0,7)
 x&lt;-c(3,6,9,12)
 Horner(coeffs,x)</code></pre>
-<pre><code>## [1]   -2  169  844 2347</code></pre>
-<p>while (i &lt; length(coeffs)) { # based on the Horner method, repeate the procedure to time vector x and add the next coefficient res &lt;- res*x + coeffs[i+1] i&lt;-i+1 ### Problem 2 The point of this problem is twofold: (i) to illustrate what can happen if you accumulate many truncations of numbers and (ii) to give you practice writing programs.</p>
+<pre><code>## [1]    304  13939 112516 484279</code></pre>
+</div>
+<div id="problem-2" class="section level3">
+<h3>Problem 2</h3>
+<p>The point of this problem is twofold: (i) to illustrate what can happen if you accumulate many truncations of numbers and (ii) to give you practice writing programs.</p>
 <p>In the 1999 movie Office Space, a character creates a program that takes fractions of cents that are truncated in a bank’s transactions and deposits them into his own account. This is not a new idea, and hackers who have actually attempted it have been arrested. In this exercise, you will simulate the program to determine how long it would take to become a millionaire this way.</p>
 <p>Assume the following details:</p>
 <ul>
@@ -424,9 +427,9 @@ while (illegal &lt; 1000000) {
   accounts &lt;- accounts+dep  # add the interest that can be deposited to the account for next day
 }
 print(day)</code></pre>
-<pre><code>## [1] 19993</code></pre>
+<pre><code>## [1] 19992</code></pre>
 <pre class="r"><code>print(day/365)</code></pre>
-<pre><code>## [1] 54.77534247</code></pre>
+<pre><code>## [1] 54.77260274</code></pre>
 <blockquote>
 <p>After several runnings for this simulation, the approximate average time to accumulate a million dollars is around 20000 days or in 55 years.</p>
 </blockquote>
@@ -549,13 +552,13 @@ my.safe.length(x)</code></pre>
 <p>You can assemble your homework writeup however you like, but I strongly encourage you to give R Markdown a shot. I was skeptical of learning yet another new tool, but it only takes 15 minutes to get a pretty good handle, and I really like it.</p>
 <p>If the R code you place inside the hash marks has printed output, it will display like this:</p>
 <pre class="r"><code>(uniformSamples&lt;-runif(10,0,1))</code></pre>
-<pre><code>##  [1] 0.114022553199902176857 0.428042178507894277573
-##  [3] 0.036574270576238632202 0.121723836986348032951
-##  [5] 0.857749215792864561081 0.637385483365505933762
-##  [7] 0.719665642362087965012 0.550521235913038253784
-##  [9] 0.876081476919353008270 0.612030970165506005287</code></pre>
+<pre><code>##  [1] 0.7088274422567337751389 0.9384758672676980495453
+##  [3] 0.3963435948826372623444 0.3500124744605273008347
+##  [5] 0.0390920341014862060547 0.9675682364031672477722
+##  [7] 0.7962276702746748924255 0.6246129842475056648254
+##  [9] 0.3152630853001028299332 0.0089941194746643304825</code></pre>
 <pre class="r"><code>mean(uniformSamples)</code></pre>
-<pre><code>## [1] 0.49537968637887386247</code></pre>
+<pre><code>## [1] 0.51454175086691977814</code></pre>
 <p>You can also include comments and embed plots:</p>
 <pre class="r"><code># Define a polynomial function
 f = function(x) {x^3 + x^2 - 24*x + 36}

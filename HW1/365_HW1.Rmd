@@ -23,14 +23,11 @@ Horner <- function(coeffs,x) {
   return(res)
 }
 
-coeffs<-c(2,-8,3,7)
+coeffs<-c(2,0,-8,3,0,7)
 x<-c(3,6,9,12)
 Horner(coeffs,x)
 ```
-  while (i < length(coeffs)) {
-    # based on the Horner method, repeate the procedure to time vector x and add the next coefficient
-    res <- res*x + coeffs[i+1]
-    i<-i+1
+
 ### Problem 2
 The point of this problem is twofold: (i) to illustrate what can happen if you accumulate many truncations of numbers and (ii) to give you practice writing programs.
 

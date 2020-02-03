@@ -24,18 +24,15 @@ Horner <- function(coeffs,x) {
   return(res)
 }
 
-coeffs<-c(2,-8,3,7)
+coeffs<-c(2,0,-8,3,0,7)
 x<-c(3,6,9,12)
 Horner(coeffs,x)
 ```
 
 ```
-## [1]   -2  169  844 2347
+## [1]    304  13939 112516 484279
 ```
-  while (i < length(coeffs)) {
-    # based on the Horner method, repeate the procedure to time vector x and add the next coefficient
-    res <- res*x + coeffs[i+1]
-    i<-i+1
+
 ### Problem 2
 The point of this problem is twofold: (i) to illustrate what can happen if you accumulate many truncations of numbers and (ii) to give you practice writing programs.
 
@@ -104,7 +101,7 @@ print(day)
 ```
 
 ```
-## [1] 19993
+## [1] 19992
 ```
 
 ```r
@@ -112,7 +109,7 @@ print(day/365)
 ```
 
 ```
-## [1] 54.77534247
+## [1] 54.77260274
 ```
 
 > After several runnings for this simulation, the approximate average time to accumulate a million dollars is around 20000 days or in 55 years.
@@ -319,11 +316,11 @@ If the R code you place inside the hash marks has printed output, it will displa
 ```
 
 ```
-##  [1] 0.114022553199902176857 0.428042178507894277573
-##  [3] 0.036574270576238632202 0.121723836986348032951
-##  [5] 0.857749215792864561081 0.637385483365505933762
-##  [7] 0.719665642362087965012 0.550521235913038253784
-##  [9] 0.876081476919353008270 0.612030970165506005287
+##  [1] 0.7088274422567337751389 0.9384758672676980495453
+##  [3] 0.3963435948826372623444 0.3500124744605273008347
+##  [5] 0.0390920341014862060547 0.9675682364031672477722
+##  [7] 0.7962276702746748924255 0.6246129842475056648254
+##  [9] 0.3152630853001028299332 0.0089941194746643304825
 ```
 
 ```r
@@ -331,7 +328,7 @@ mean(uniformSamples)
 ```
 
 ```
-## [1] 0.49537968637887386247
+## [1] 0.51454175086691977814
 ```
 You can also include comments and embed plots:
 
