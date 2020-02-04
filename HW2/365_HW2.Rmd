@@ -1,0 +1,88 @@
+# Math 365 / Comp 365: Homework 2
+
+### *Please bring a stapled hard copy of your answers to class, citing any collaborators.*
+
+## INSERT YOUR NAME HERE 
+
+### Problem 1
+
+The function
+```
+f(x)=(cos(x))^2+sin(x)-1
+```
+has roots at both $\pi$ and $\pi/2$. 
+
+a) Using the convergence properties we discussed in class, estimate how many iterations of the bisection method are necessary to find the accurate solution to eight correct decimal places, when we start with a bracketing interval of [2.5,3.5].
+
+b) Use your `bisect` function to see how many iterations it actually takes.
+
+c) By hand, compute a formula for Newton's iteration for this particular choice of $f(x)$; i.e., write a formula for $x_{i+1}$ in terms of $x_{i}$.
+
+d) Set $x_0$ to 4.25, run 50 iterations of your Newton's formula from c) to compute $\{x_i\}_{i=0,1,\ldots,50}$, and compute $e_i=|x_i-\pi|$ for all $i$. When does the iteration converge? Now plot $e_i / e_{i-1}$ over all $i$ until convergence. What is the convergence order and rate to $\pi$?
+
+e) Repeat d) with $x_0$=1.5. What is the convergence order and rate to $\pi/2$? If your answer is different from d), explain why.
+
+### Problem 2
+Computer Problem 7 from Section 1.1 of the book (involving a determinant). 
+
+### Problem 3
+Computer Problem 8 from Section 1.1 of the book (involving the Hilbert matrix)
+
+#### *Some hints for Problems 2 and 3:*
+
+1. To bind rows together into a matrix:
+```{r}
+rbind(c(1,2,3,44),c(4,5,44,6),c(7,44,8,9),c(44,10,11,12)) 
+```
+
+2. If A is a matrix, then `det(A)` is its determinant
+
+3. For Problem 3, make a function of `x` that puts `x` on the backward diagonal, computes its determinant, and subtracts 1000. Then use your `bisect` on this function.
+
+4. For Problem 4, to get the Hilbert matrix, `H`, you can use the `Hilbert` function from the `Matrix` package. Here is an example of how to generate a Hilbert matrix and change the first entry:
+```{r}
+require(Matrix)
+H=Hilbert(5)
+H[1,1]=132
+```
+
+5. To get the maximum eigenvalue of a matrix `A`, use 
+```
+max(eigen(A)$values)
+```
+6. In R, your favorite irrational and transcendatal number is written as `pi`:
+```{r}
+pi
+```
+
+### Problem 4
+Write your own function to find square roots, using the idea that $sqrt(t)$ is a root of the function $f(x) = x^2 - t$, where $t$ is a positive number. Come up with an initial interval carefully inside your function. Make sure your function is commented, and use it to compute $\sqrt{4}, \sqrt{9}, \sqrt{16}$.
+
+
+#### *A hint for Problem 4:*
+You can write a function that creates a function and returns the function handle. Here is an example:
+```{r}
+generate.line.fn=function(slope,intercept){
+  my.line.fn=function(x){
+    y=slope*x+intercept
+    return(y)
+  }
+  return(my.line.fn)
+}
+flat.line=generate.line.fn(0,2)
+xx=seq(-10,10,by=.1)
+plot(xx,flat.line(xx),type="l")
+```
+
+### Problem 5
+
+This problem involves solving the equation
+$$ \frac{r^3(2r^2+5\epsilon^2)}{2(r^2+\epsilon^2)^{5/2}}=0.9$$
+Use the value $\epsilon=0.1$. From the context of the problem, it's clear that $r$ must be positive and $r$ might be close to $\epsilon$. 
+
+a. Use your bisection code to solve the equation for $r$. Give ten digits of accuracy and report the number of bisection steps you used. _Hint:_ the R command **options(digits = 12)** can be used to print lots of digits.
+
+b. Implement the secant method for rootfinding (it is OK to modify your `bisect` code). Then use your secant code to solve for $r$. How many secant steps were used?
+
+c. Determine the order of convergence by making a log-log plot of the errors, observing linearity, and then determining slope.
+
