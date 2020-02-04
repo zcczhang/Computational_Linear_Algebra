@@ -539,15 +539,8 @@ lines(x,y3)</code></pre>
 <pre><code>## [1] Inf</code></pre>
 <p>In fact, the correct value of <span class="math inline">\(L\approx 10^{202}\)</span> is well within the range of representable numbers in the double-precision floating-point system, but the bad method above calcuates <span class="math inline">\(L^2\approx 10^{404}\)</span> as an intermediate step. This number is too big! Write a function called <strong>my.safe.length</strong> which can correctly compute the length of a vector with very large, but representable entries. As a hint, note that <span class="math inline">\(\|(-500,1000)\| = 1000 \|(-0.5,1)\|\)</span>; on the right-hand side we never take the square of a number greater than one. Test your function by evaluating <span class="math inline">\(\|\vec{x}\|\)</span> correctly.</p>
 <pre class="r"><code>my.safe.length &lt;- function(x) {
-  power&lt;-0
-  max&lt;-max(abs(x))
-  while (max&gt;1) {
-    max&lt;-max/10
-    power&lt;-power+1
-  }
-  return((10^power)*sqrt(sum((x/10^power)^2)))
+  return(max(abs(x))*sqrt(sum((x/max(abs(x)))^2)))
 }
-
 my.safe.length(x)</code></pre>
 <pre><code>## [1] 1.0766794721815779105e+202</code></pre>
 </div>
@@ -556,12 +549,13 @@ my.safe.length(x)</code></pre>
 <p>You can assemble your homework writeup however you like, but I strongly encourage you to give R Markdown a shot. I was skeptical of learning yet another new tool, but it only takes 15 minutes to get a pretty good handle, and I really like it.</p>
 <p>If the R code you place inside the hash marks has printed output, it will display like this:</p>
 <pre class="r"><code>(uniformSamples&lt;-runif(10,0,1))</code></pre>
-<pre><code>##  [1] 0.48674738011322915554 0.37658234965056180954 0.21795469499193131924
-##  [4] 0.65176106686703860760 0.21652332693338394165 0.65681026363745331764
-##  [7] 0.31040719663724303246 0.78859963151626288891 0.14500494766980409622
-## [10] 0.58933214331045746803</code></pre>
+<pre><code>##  [1] 0.072881948202848434448 0.627995900111272931099
+##  [3] 0.150612321449443697929 0.328450656030327081680
+##  [5] 0.646619400940835475922 0.194336756132543087006
+##  [7] 0.359569013118743896484 0.053616746561601758003
+##  [9] 0.195596188073977828026 0.639378689695149660110</code></pre>
 <pre class="r"><code>mean(uniformSamples)</code></pre>
-<pre><code>## [1] 0.44397230013273658589</code></pre>
+<pre><code>## [1] 0.32690576203167437397</code></pre>
 <p>You can also include comments and embed plots:</p>
 <pre class="r"><code># Define a polynomial function
 f = function(x) {x^3 + x^2 - 24*x + 36}

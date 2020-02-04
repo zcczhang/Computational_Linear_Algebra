@@ -232,19 +232,10 @@ In fact, the correct value of $L\approx 10^{202}$ is well within the range of re
 
 ```{r}
 my.safe.length <- function(x) {
-  power<-0
-  max<-max(abs(x))
-  while (max>1) {
-    max<-max/10
-    power<-power+1
-  }
-  return((10^power)*sqrt(sum((x/10^power)^2)))
+  return(max(abs(x))*sqrt(sum((x/max(abs(x)))^2)))
 }
-
 my.safe.length(x)
 ```
-
-
 
 
 
