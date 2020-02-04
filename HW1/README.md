@@ -94,14 +94,14 @@ while (illegal < 1000000) {
   day <- day+1  # accumulative days
   interest = accounts*(.05/365) # interest per day
   dep <- floor(interest*100)/100  # interest that can be deposited 
-  illegal <- illegal + sum(interest-dep)  # add up the difference between the deserved interest and the actually deposited interest to the illegal account
+  illegal <- illegal*(1+.05/365) + sum(interest-dep)  # add up the difference between the deserved interest and the actually deposited interest to the illegal account
   accounts <- accounts+dep  # add the interest that can be deposited to the account for next day
 }
 print(day)
 ```
 
 ```
-## [1] 19992
+## [1] 9627
 ```
 
 ```r
@@ -109,10 +109,10 @@ print(day/365)
 ```
 
 ```
-## [1] 54.77260274
+## [1] 26.37534247
 ```
 
-> After several runnings for this simulation, the approximate average time to accumulate a million dollars is around 20000 days or in 55 years.
+> After several runnings for this simulation, the approximate average time to accumulate a million dollars is around 9630 days or in 26.4 years.
 
 ### Problem 3
 We'll be using polynomial approximation techniques regularly in the class, and it may have been a while since you learned Taylor's Theorem, so here is a chance to review it quickly in Section 0.5:
@@ -206,10 +206,10 @@ options(digits=20)
 ```
 
 > $(7/3)_{10} = (10.\overline{01})_{2} = 1.0010101010101010101010101010101010101010101010101010 \times 2^{1}$<br> after rounding, $= 1.0010101010101010101010101010101010101010101010101011\times2^{1}$<br>
-$(4/3)_{10} = (1.\overline{01})_{2}=1.0101010101010101010101010101010101010101010101010101\times2^{0} =$<br> $0.1010101010101010101010101010101010101010101010101010\times2^{1}$<br><br>
-$1.0010101010101010101010101010101010101010101010101011\times2^{1} -$<br>
-$0.1010101010101010101010101010101010101010101010101010\times2^{1} =$<br>
-$0.1000000000000000000000000000000000000000000000000001\times2^{1}$ (after rounding) $= 1+\epsilon_{mach}$<br><br>
+$(4/3)_{10} = (1.\overline{01})_{2}=1.0101010101010101010101010101010101010101010101010101\times2^{0} =$<br> $0.10101010101010101010101010101010101010101010101010101\times2^{1}$ (53 bits in fraction now)<br><br>
+$1.00101010101010101010101010101010101010101010101010110\times2^{1} -$<br>
+$0.10101010101010101010101010101010101010101010101010101\times2^{1} =$<br>
+$1.0000000000000000000000000000000000000000000000000001\times2^{0}$ (after rounding) $= 1+2^{-52}=1+\epsilon_{mach}$<br><br>
 Therefore, $(7/3-4/3)-1=\epsilon_{mach}$, I can determine machine epsilon on a computer using IEEE double precision and the IEEE Rounding to Nearest Rule by calculating (7/3 − 4/3) − 1. 
 
 (b) Does (4/3 − 1/3) − 1 also give mach? Explain by converting to floating point numbers and
@@ -225,12 +225,11 @@ carrying out the machine arithmetic.
 ```
 
 > $(4/3)_{10} = (1.\overline{01})_{2}=1.0101010101010101010101010101010101010101010101010101\times2^{0}$<br>
-$(1/3)_{10} = (0.\overline{10})_{2}=0.1010101010101010101010101010101010101010101010101010\times2^{0} =$<br>
-$0.1010101010101010101010101010101010101010101010101011\times2^{0}$ after rounding <br>
+$(1/3)_{10} = (0.0\overline{10})_{2}=0.0101010101010101010101010101010101010101010101010101\times2^{0}$<br>
 $(4/3)_{10}-(1/3)_{10}=$<br>
 $1.0101010101010101010101010101010101010101010101010101\times2^{0} -$<br>
-$0.1010101010101010101010101010101010101010101010101011\times2^{0} =$<br>
-$1.0000000000000000000000000000000000000000000000000000\times2^{0} = 1 \times2^{0}$<br>
+$0.0101010101010101010101010101010101010101010101010101\times2^{0} =$<br>
+$= 1 \times2^{0}$ after rounding<br>
 Therefore, (4/3 − 1/3) − 1 = 0, which can't determine machine epsilon by calculating (4/3 − 1/3) − 1.
 
 
@@ -260,10 +259,8 @@ Since the computer will systematically round after the 52 bit, the computer wll 
 ### Problem 7
 Find the smallest positive integer $i$ such that $i$ is not exactly representable using the IEEE standard in double precision; i.e., $\hbox{fl}(i)\neq i$.
 
-> The IEEE standard floating expression for the largest number that can be stored is<br> $0 || 11111111110 || 111...111$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1+11+52 bits)<br> Then the largest number that can be stored <br>$= 1.11...11\times2^{2046-1023} = 1.11...11\times2^{1023}$ &nbsp;&nbsp;&nbsp;&nbsp;(52 bits in the fraction) 
-<br>$= 111...111\times2^{1023-52} = 11..11\times2^{971}$<br>
-$=(2^{53}-1)\times2^{971}$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(52+1=53 '1' in total)<br>
-$= 2^{1024}-2^{971}$<br> Therefore, the smallest positive integer $i$ such that $i$ is not exactly representable using the IEEE standard in double precision is $2^{1024}-2^{971}+1$
+> The smallest positive integer that cannot be represented is $2^{53}+1=1.00..00*2^{53}+0.00...001*2^{53}=1.00..01*2^{53}$ (53 bits in fraction) due to the rounding error. Therefore, it will be $2^{53}+1$
+
 
 ### Problem 8: 
 Consider a vector $\vec{x}$ with very large entries:
@@ -316,11 +313,10 @@ If the R code you place inside the hash marks has printed output, it will displa
 ```
 
 ```
-##  [1] 0.7088274422567337751389 0.9384758672676980495453
-##  [3] 0.3963435948826372623444 0.3500124744605273008347
-##  [5] 0.0390920341014862060547 0.9675682364031672477722
-##  [7] 0.7962276702746748924255 0.6246129842475056648254
-##  [9] 0.3152630853001028299332 0.0089941194746643304825
+##  [1] 0.20753228082321584225 0.33229228318668901920 0.20347545528784394264
+##  [4] 0.44133048551157116890 0.34297958575189113617 0.22603271645493805408
+##  [7] 0.31175471283495426178 0.40630843932740390301 0.77310527465306222439
+## [10] 0.83948033954948186874
 ```
 
 ```r
@@ -328,7 +324,7 @@ mean(uniformSamples)
 ```
 
 ```
-## [1] 0.51454175086691977814
+## [1] 0.40842915733810514212
 ```
 You can also include comments and embed plots:
 
