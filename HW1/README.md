@@ -226,9 +226,11 @@ carrying out the machine arithmetic.
 
 > $(4/3)_{10} = (1.\overline{01})_{2}=1.0101010101010101010101010101010101010101010101010101\times2^{0}$<br>
 $(1/3)_{10} = (0.0\overline{10})_{2}=0.0101010101010101010101010101010101010101010101010101\times2^{0}$<br>
+$=1.0101010101010101010101010101010101010101010101010101\times2^{-2}$(52 bits in fraction)<br>
 $(4/3)_{10}-(1/3)_{10}=$<br>
-$1.0101010101010101010101010101010101010101010101010101\times2^{0} -$<br>
-$0.0101010101010101010101010101010101010101010101010101\times2^{0} =$<br>
+$1.0101010101010101010101010101010101010101010101010101|00\times2^{0} -$<br>
+$0.0101010101010101010101010101010101010101010101010101|01\times2^{0} =$<br>
+$=0.11...111\times2^{0}$(54 bits in fraction)
 $= 1 \times2^{0}$ after rounding<br>
 Therefore, (4/3 − 1/3) − 1 = 0, which can't determine machine epsilon by calculating (4/3 − 1/3) − 1.
 
@@ -259,8 +261,24 @@ Since the computer will systematically round after the 52 bit, the computer wll 
 ### Problem 7
 Find the smallest positive integer $i$ such that $i$ is not exactly representable using the IEEE standard in double precision; i.e., $\hbox{fl}(i)\neq i$.
 
-> The smallest positive integer that cannot be represented is $2^{53}+1=1.00..00*2^{53}+0.00...001*2^{53}=1.00..01*2^{53}$ (53 bits in fraction) due to the rounding error. Therefore, it will be $2^{53}+1$
+> The smallest positive integer that cannot be represented is $2^{53}+1=1.00..00*2^{53}+0.00...001*2^{53}=1.00..01*2^{53}$ (53 bits in fraction) due to the rounding error. Therefore, it will be $2^{53}+1$(9007199254740993)
 
+
+```r
+2^53
+```
+
+```
+## [1] 9007199254740992
+```
+
+```r
+2^53+1
+```
+
+```
+## [1] 9007199254740992
+```
 
 ### Problem 8: 
 Consider a vector $\vec{x}$ with very large entries:
@@ -313,10 +331,10 @@ If the R code you place inside the hash marks has printed output, it will displa
 ```
 
 ```
-##  [1] 0.20753228082321584225 0.33229228318668901920 0.20347545528784394264
-##  [4] 0.44133048551157116890 0.34297958575189113617 0.22603271645493805408
-##  [7] 0.31175471283495426178 0.40630843932740390301 0.77310527465306222439
-## [10] 0.83948033954948186874
+##  [1] 0.48674738011322915554 0.37658234965056180954 0.21795469499193131924
+##  [4] 0.65176106686703860760 0.21652332693338394165 0.65681026363745331764
+##  [7] 0.31040719663724303246 0.78859963151626288891 0.14500494766980409622
+## [10] 0.58933214331045746803
 ```
 
 ```r
@@ -324,7 +342,7 @@ mean(uniformSamples)
 ```
 
 ```
-## [1] 0.40842915733810514212
+## [1] 0.44397230013273658589
 ```
 You can also include comments and embed plots:
 
@@ -337,7 +355,7 @@ plot(x,f(x),type="l",lwd=3,main="f(x) = x^3 + x^2-24 * x +36")
 abline(0,0,col="red")
 ```
 
-![](365_HW1_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+![](365_HW1_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
 
 
 
