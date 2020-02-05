@@ -159,7 +159,7 @@ A[1,1]<-2.948011
 max(eigen(A)$values)
 ```
 
-> Use \(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\) to calculate the eigenvalue, I got $A_{11} = 2.948011$ with the max eignevalue $\pi$
+> Use \(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\) to calculate the eigenvalue, I got $A_{11} = 2.948011$ with the max eignevalue $\pi$.
 
 
 ### Problem 4
