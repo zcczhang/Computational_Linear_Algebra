@@ -149,7 +149,12 @@ Determine \(A_{11}\) within six correct decimal places.
 require(Matrix)
 A=Hilbert(5)
 
-max(eigen(A)$values)
+my.det=function(x){
+  A(1,1)=x
+  return(det(x))
+}
+
+
 ```
 
 > Use \(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\) to calculate the eigenvalue
