@@ -20,7 +20,7 @@ bisect = function(f,interval,tol=0.5*10^-10,max.its=40){
   a<-interval[1]
   b<-interval[2]
   if(f(a)*f(b)<0) {
-    while((a+b)/2>tol | max.its>0){
+    while((a-b)/2>tol | max.its>0){
       c=(b+a)/2
       max.its <- max.its-1
       if(f(c)==0){
