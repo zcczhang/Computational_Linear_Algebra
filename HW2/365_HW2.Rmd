@@ -190,21 +190,18 @@ pi
 ### Problem 4
 Write your own function to find square roots, using the idea that $sqrt(t)$ is a root of the function $f(x) = x^2 - t$, where $t$ is a positive number. Come up with an initial interval carefully inside your function. Make sure your function is commented, and use it to compute $\sqrt{4}, \sqrt{9}, \sqrt{16}$.
 
-
-#### *A hint for Problem 4:*
-You can write a function that creates a function and returns the function handle. Here is an example:
 ```{r}
-generate.line.fn=function(slope,intercept){
-  my.line.fn=function(x){
-    y=slope*x+intercept
-    return(y)
+my.sqrt=function(x){
+  f=function(t){
+    return(t^2-x)
   }
-  return(my.line.fn)
+  return(bisect(f,c(1,10))$root)
 }
-flat.line=generate.line.fn(0,2)
-xx=seq(-10,10,by=.1)
-plot(xx,flat.line(xx),type="l")
+my.sqrt(4)
+my.sqrt(9)
+my.sqrt(16)
 ```
+
 
 ### Problem 5
 
