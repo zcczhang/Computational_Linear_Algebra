@@ -14,7 +14,51 @@ has roots at both $\pi$ and $\pi/2$.
 
 a) Using the convergence properties we discussed in class, estimate how many iterations of the bisection method are necessary to find the accurate solution to eight correct decimal places, when we start with a bracketing interval of [2.5,3.5].
 
+> $\frac{3.5-2.5}{2^{i+1}}<\frac{1}{2}\times10^{-8}$<br>
+$\frac{1}{10^{-8}}<2^{i}$<br>
+$\log 10^{8}<i\log2$<br>
+$i>\frac{\log 10^{8}}{log2}=26.57542$<br>
+$\therefore 27$ iterations of the bisection method are necessary to find the accurate solution to eight correct decimal places.
+
+```{r}
+log(10^8)/log(2)
+```
+
+
 b) Use your `bisect` function to see how many iterations it actually takes.
+
+```{r}
+f = function(x){
+  return((cos(x))^2+sin(x)-1)
+}
+bisect = function(f,interval,tol=0.5*10^-10,max.its=40){
+  history = rep(NA, max.its) 
+  # Insert some code here
+  a<-interval[1]
+  b<-interval[2]
+  if(f(a)*f(b)<0) {
+    while((a-b)/2>tol | max.its>0){
+      c=(b+a)/2
+      max.its <- max.its-1
+      if(f(c)==0){
+        break
+      } 
+      if(f(c)*f(b)<0) {a<-c} 
+      if(f(c)*f(a)<0) {b<-c}
+      root=c
+      history=c(history,c)
+    }
+  }
+  return(list(root=root,history=history[!is.na(history)]))
+}
+options(digits = 10) 
+interval <- c(2.5,3.5)
+out=bisect(f,interval)
+print(out$root)
+print(out$history)
+```
+
+> The accurate solution to eight correct decimal places is 3.14159265, and it is determined in bisection method after 27 iterations.
 
 c) By hand, compute a formula for Newton's iteration for this particular choice of $f(x)$; i.e., write a formula for $x_{i+1}$ in terms of $x_{i}$.
 
