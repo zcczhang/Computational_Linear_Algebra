@@ -62,15 +62,96 @@ print(out$history)
 
 c) By hand, compute a formula for Newton's iteration for this particular choice of $f(x)$; i.e., write a formula for $x_{i+1}$ in terms of $x_{i}$.
 
+> \(x_{n+1}=x_{n}-\frac{f\left(x_{n}\right)}{f^{\prime}\left(x_{n}\right)} \quad n=0,1,2, \ldots\)<br>
+\(\therefore x_{n+1}=x_{n}+\frac{\cos ^{2} x_{n}+\sin x_{n} -1}{-\sin (2 x_{n})+\cos x_{n}}\)
+
 d) Set $x_0$ to 4.25, run 50 iterations of your Newton's formula from c) to compute $\{x_i\}_{i=0,1,\ldots,50}$, and compute $e_i=|x_i-\pi|$ for all $i$. When does the iteration converge? Now plot $e_i / e_{i-1}$ over all $i$ until convergence. What is the convergence order and rate to $\pi$?
 
+```{r}
+
+```
+
+
 e) Repeat d) with $x_0$=1.5. What is the convergence order and rate to $\pi/2$? If your answer is different from d), explain why.
+
+```{r}
+
+```
 
 ### Problem 2
 Computer Problem 7 from Section 1.1 of the book (involving a determinant). 
 
+7. Use the Bisection Method to find the two real numbers \(x,\) within six correct decimal places, that make the determinant of the matrix
+$$
+A=\left[\begin{array}{llll}
+{1} & {2} & {3} & {x} \\
+{4} & {5} & {x} & {6} \\
+{7} & {x} & {8} & {9} \\
+{x} & {10} & {11} & {12}
+\end{array}\right]
+$$
+equal to \(1000 .\) For each solution you find, test it by computing the corresponding determinant and reporting how many correct decimal places (after the decimal point) the determinant has when your solution \(x\) is used. (In Section \(1.2,\) we will call this the "backward error" " associated with the approximate solution.) 
+
+> \(\left|\begin{array}{llll}{1} & {2} & {3} & {x} \\ {4} & {5} & {x} & {6} \\ {7} & {x} & {8} & {9} \\ {x} & {10} & {11} & {12}\end{array}\right|=1000\)<br>
+\(\therefore 1\left|\begin{array}{ccc}{5} & {x} & {6} \\ {x} & {8} & {9} \\ {10} & {11} & {12}\end{array}\right|-2\left|\begin{array}{ccc}{4} & {x} & {6} \\ {7} & {8} & {9} \\ {x} & {11} & {12}\end{array}\right|+3\left|\begin{array}{ccc}{4} & {5} & {6} \\ {7} & {x} & {9} \\ {x} & {10} & {12}\end{array}\right|-x\left|\begin{array}{ccc}{4} & {5} & {x} \\ {7} & {x} & {8} \\ {x} & {10} & {11}\end{array}\right|=1000\)
+\(\therefore x^{4}-202 x^{2}+1404 x-2475=1000\)<br>
+\(\therefore f(x)=x^{4}-202 x^{2}+1404 x-2475-1000\)
+
+```{r}
+f = function(x){
+  return(x^4-202*x^2+1404*x-2475-1000)
+}
+
+options(digits = 8) 
+interval <- c(9,10)
+out=bisect(f,interval)
+print(out$root)
+print(out$history)
+```
+
+> The first root is 9.7082991
+
+```{r}
+x<-9.708299
+f(x)
+```
+```{r}
+options(digits = 9) 
+interval <- c(-18,-17)
+out=bisect(f,interval)
+print(out$root)
+print(out$history)
+```
+
+> The second root is -17.188498.
+
+```{r}
+x<--17.188498
+f(x)
+```
+
+
+
 ### Problem 3
 Computer Problem 8 from Section 1.1 of the book (involving the Hilbert matrix)
+
+8. The Hilbert matrix is the \(n \times n\) matrix whose ijth entry is \(1 /(i+j-1)\). Let \(A\) denote the
+\(5 \times 5\) Hilbert matrix. Its largest eigenvalue is about \(1.567 .\) Use the Bisection Method to decide
+how to change the upper left entry \(A_{11}\) to make the largest eigenvalue of \(A\) equal to \(\pi\).
+Determine \(A_{11}\) within six correct decimal places. 
+
+```{r}
+require(Matrix)
+H=Hilbert(5)
+H[1,1]
+H
+```
+
+
+
+
+
+
 
 #### *Some hints for Problems 2 and 3:*
 
@@ -98,6 +179,7 @@ max(eigen(A)$values)
 ```{r}
 pi
 ```
+
 
 ### Problem 4
 Write your own function to find square roots, using the idea that $sqrt(t)$ is a root of the function $f(x) = x^2 - t$, where $t$ is a positive number. Come up with an initial interval carefully inside your function. Make sure your function is commented, and use it to compute $\sqrt{4}, \sqrt{9}, \sqrt{16}$.

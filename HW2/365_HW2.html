@@ -428,7 +428,12 @@ print(out$root)</code></pre>
 <p>The accurate solution to eight correct decimal places is 3.14159265, and it is determined in bisection method after 27 iterations.</p>
 </blockquote>
 <ol start="3" style="list-style-type: lower-alpha">
-<li><p>By hand, compute a formula for Newton’s iteration for this particular choice of <span class="math inline">\(f(x)\)</span>; i.e., write a formula for <span class="math inline">\(x_{i+1}\)</span> in terms of <span class="math inline">\(x_{i}\)</span>.</p></li>
+<li>By hand, compute a formula for Newton’s iteration for this particular choice of <span class="math inline">\(f(x)\)</span>; i.e., write a formula for <span class="math inline">\(x_{i+1}\)</span> in terms of <span class="math inline">\(x_{i}\)</span>.</li>
+</ol>
+<blockquote>
+<p><span class="math inline">\(x_{n+1}=x_{n}-\frac{f\left(x_{n}\right)}{f^{\prime}\left(x_{n}\right)} \quad n=0,1,2, \ldots\)</span><br> <span class="math inline">\(\therefore x_{n+1}=x_{n}+\frac{\cos ^{2} x_{n}+\sin x_{n} -1}{-\sin (2 x_{n})+\cos x_{n}}\)</span></p>
+</blockquote>
+<ol start="4" style="list-style-type: lower-alpha">
 <li><p>Set <span class="math inline">\(x_0\)</span> to 4.25, run 50 iterations of your Newton’s formula from c) to compute <span class="math inline">\(\{x_i\}_{i=0,1,\ldots,50}\)</span>, and compute <span class="math inline">\(e_i=|x_i-\pi|\)</span> for all <span class="math inline">\(i\)</span>. When does the iteration converge? Now plot <span class="math inline">\(e_i / e_{i-1}\)</span> over all <span class="math inline">\(i\)</span> until convergence. What is the convergence order and rate to <span class="math inline">\(\pi\)</span>?</p></li>
 <li><p>Repeat d) with <span class="math inline">\(x_0\)</span>=1.5. What is the convergence order and rate to <span class="math inline">\(\pi/2\)</span>? If your answer is different from d), explain why.</p></li>
 </ol>
@@ -436,10 +441,80 @@ print(out$root)</code></pre>
 <div id="problem-2" class="section level3">
 <h3>Problem 2</h3>
 <p>Computer Problem 7 from Section 1.1 of the book (involving a determinant).</p>
+<ol start="7" style="list-style-type: decimal">
+<li>Use the Bisection Method to find the two real numbers <span class="math inline">\(x,\)</span> within six correct decimal places, that make the determinant of the matrix <span class="math display">\[
+A=\left[\begin{array}{llll}
+{1} &amp; {2} &amp; {3} &amp; {x} \\
+{4} &amp; {5} &amp; {x} &amp; {6} \\
+{7} &amp; {x} &amp; {8} &amp; {9} \\
+{x} &amp; {10} &amp; {11} &amp; {12}
+\end{array}\right]
+\]</span> equal to <span class="math inline">\(1000 .\)</span> For each solution you find, test it by computing the corresponding determinant and reporting how many correct decimal places (after the decimal point) the determinant has when your solution <span class="math inline">\(x\)</span> is used. (In Section <span class="math inline">\(1.2,\)</span> we will call this the “backward error” &quot; associated with the approximate solution.)</li>
+</ol>
+<blockquote>
+<p><span class="math inline">\(\left|\begin{array}{llll}{1} &amp; {2} &amp; {3} &amp; {x} \\ {4} &amp; {5} &amp; {x} &amp; {6} \\ {7} &amp; {x} &amp; {8} &amp; {9} \\ {x} &amp; {10} &amp; {11} &amp; {12}\end{array}\right|=1000\)</span><br> <span class="math inline">\(\therefore 1\left|\begin{array}{ccc}{5} &amp; {x} &amp; {6} \\ {x} &amp; {8} &amp; {9} \\ {10} &amp; {11} &amp; {12}\end{array}\right|-2\left|\begin{array}{ccc}{4} &amp; {x} &amp; {6} \\ {7} &amp; {8} &amp; {9} \\ {x} &amp; {11} &amp; {12}\end{array}\right|+3\left|\begin{array}{ccc}{4} &amp; {5} &amp; {6} \\ {7} &amp; {x} &amp; {9} \\ {x} &amp; {10} &amp; {12}\end{array}\right|-x\left|\begin{array}{ccc}{4} &amp; {5} &amp; {x} \\ {7} &amp; {x} &amp; {8} \\ {x} &amp; {10} &amp; {11}\end{array}\right|=1000\)</span> <span class="math inline">\(\therefore x^{4}-202 x^{2}+1404 x-2475=1000\)</span><br> <span class="math inline">\(\therefore f(x)=x^{4}-202 x^{2}+1404 x-2475-1000\)</span></p>
+</blockquote>
+<pre class="r"><code>f = function(x){
+  return(x^4-202*x^2+1404*x-2475-1000)
+}
+
+options(digits = 8) 
+interval &lt;- c(9,10)
+out=bisect(f,interval)
+print(out$root)</code></pre>
+<pre><code>## [1] 9.7082991</code></pre>
+<pre class="r"><code>print(out$history)</code></pre>
+<pre><code>##  [1] 9.5000000 9.7500000 9.6250000 9.6875000 9.7187500 9.7031250 9.7109375
+##  [8] 9.7070312 9.7089844 9.7080078 9.7084961 9.7082520 9.7083740 9.7083130
+## [15] 9.7082825 9.7082977 9.7083054 9.7083015 9.7082996 9.7082987 9.7082992
+## [22] 9.7082989 9.7082990 9.7082991 9.7082991 9.7082991 9.7082991 9.7082991
+## [29] 9.7082991 9.7082991 9.7082991 9.7082991 9.7082991 9.7082991 9.7082991
+## [36] 9.7082991 9.7082991 9.7082991 9.7082991 9.7082991</code></pre>
+<blockquote>
+<p>The first root is 9.7082991</p>
+</blockquote>
+<pre class="r"><code>x&lt;-9.708299
+f(x)</code></pre>
+<pre><code>## [1] -0.00014074714</code></pre>
+<pre class="r"><code>options(digits = 9) 
+interval &lt;- c(-18,-17)
+out=bisect(f,interval)
+print(out$root)</code></pre>
+<pre><code>## [1] -17.1884982</code></pre>
+<pre class="r"><code>print(out$history)</code></pre>
+<pre><code>##  [1] -17.5000000 -17.2500000 -17.1250000 -17.1875000 -17.2187500 -17.2031250
+##  [7] -17.1953125 -17.1914062 -17.1894531 -17.1884766 -17.1889648 -17.1887207
+## [13] -17.1885986 -17.1885376 -17.1885071 -17.1884918 -17.1884995 -17.1884956
+## [19] -17.1884975 -17.1884985 -17.1884980 -17.1884983 -17.1884981 -17.1884982
+## [25] -17.1884982 -17.1884982 -17.1884981 -17.1884982 -17.1884982 -17.1884982
+## [31] -17.1884982 -17.1884982 -17.1884982 -17.1884982 -17.1884982 -17.1884982
+## [37] -17.1884982 -17.1884982 -17.1884982 -17.1884982</code></pre>
+<blockquote>
+<p>The second root is -17.188498.</p>
+</blockquote>
+<pre class="r"><code>x&lt;--17.188498
+f(x)</code></pre>
+<pre><code>## [1] -0.00180775117</code></pre>
 </div>
 <div id="problem-3" class="section level3">
 <h3>Problem 3</h3>
 <p>Computer Problem 8 from Section 1.1 of the book (involving the Hilbert matrix)</p>
+<ol start="8" style="list-style-type: decimal">
+<li>The Hilbert matrix is the <span class="math inline">\(n \times n\)</span> matrix whose ijth entry is <span class="math inline">\(1 /(i+j-1)\)</span>. Let <span class="math inline">\(A\)</span> denote the <span class="math inline">\(5 \times 5\)</span> Hilbert matrix. Its largest eigenvalue is about <span class="math inline">\(1.567 .\)</span> Use the Bisection Method to decide how to change the upper left entry <span class="math inline">\(A_{11}\)</span> to make the largest eigenvalue of <span class="math inline">\(A\)</span> equal to <span class="math inline">\(\pi\)</span>. Determine <span class="math inline">\(A_{11}\)</span> within six correct decimal places.</li>
+</ol>
+<pre class="r"><code>require(Matrix)</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre class="r"><code>H=Hilbert(5)
+H[1,1]</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>H</code></pre>
+<pre><code>## 5 x 5 Matrix of class &quot;dpoMatrix&quot;
+##             [,1]        [,2]        [,3]        [,4]        [,5]
+## [1,] 1.000000000 0.500000000 0.333333333 0.250000000 0.200000000
+## [2,] 0.500000000 0.333333333 0.250000000 0.200000000 0.166666667
+## [3,] 0.333333333 0.250000000 0.200000000 0.166666667 0.142857143
+## [4,] 0.250000000 0.200000000 0.166666667 0.142857143 0.125000000
+## [5,] 0.200000000 0.166666667 0.142857143 0.125000000 0.111111111</code></pre>
 <div id="some-hints-for-problems-2-and-3" class="section level4">
 <h4><em>Some hints for Problems 2 and 3:</em></h4>
 <ol style="list-style-type: decimal">
@@ -456,9 +531,8 @@ print(out$root)</code></pre>
 <li><p>For Problem 3, make a function of <code>x</code> that puts <code>x</code> on the backward diagonal, computes its determinant, and subtracts 1000. Then use your <code>bisect</code> on this function.</p></li>
 <li><p>For Problem 4, to get the Hilbert matrix, <code>H</code>, you can use the <code>Hilbert</code> function from the <code>Matrix</code> package. Here is an example of how to generate a Hilbert matrix and change the first entry:</p></li>
 </ol>
-<pre class="r"><code>require(Matrix)</code></pre>
-<pre><code>## Loading required package: Matrix</code></pre>
-<pre class="r"><code>H=Hilbert(5)
+<pre class="r"><code>require(Matrix)
+H=Hilbert(5)
 H[1,1]=132</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>To get the maximum eigenvalue of a matrix <code>A</code>, use</li>
@@ -468,7 +542,7 @@ H[1,1]=132</code></pre>
 <li>In R, your favorite irrational and transcendatal number is written as <code>pi</code>:</li>
 </ol>
 <pre class="r"><code>pi</code></pre>
-<pre><code>## [1] 3.141592654</code></pre>
+<pre><code>## [1] 3.14159265</code></pre>
 </div>
 </div>
 <div id="problem-4" class="section level3">
