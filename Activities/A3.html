@@ -425,6 +425,20 @@ print(out$root)</code></pre>
 <div id="question-2" class="section level3">
 <h3>Question 2</h3>
 <p>Test your function by running at most 40 iterations of the bisection method on the function <span class="math inline">\(f(x)=x^4-\frac{1}{81}\)</span>, with a starting bracket interval of <span class="math inline">\([0,1]\)</span> and a tolerance of 0.5*10^-10. Then compute the vector of error ratios <span class="math display">\[ \left[\frac{e_1}{e_0},\frac{e_2}{e_1},\ldots\right] \]</span> to confirm that the algorithm is converging linearly. Then, change the vector of error ratios to <span class="math display">\[ \left[\frac{e_1}{(e_0)^2},\frac{e_2}{(e_1)^2},\ldots\right] \]</span> to see that the Bisection Method does not converge quadratically.</p>
+<pre class="r"><code>f = function(x){
+  return(x^4-1/81)
+}
+interval &lt;- c(0,1)
+out=bisect(f,interval)
+print(out$root)</code></pre>
+<pre><code>## [1] 0.3333333</code></pre>
+<pre class="r"><code>print(out$history)</code></pre>
+<pre><code>##  [1] 0.5000000 0.2500000 0.3750000 0.3125000 0.3437500 0.3281250 0.3359375
+##  [8] 0.3320312 0.3339844 0.3330078 0.3334961 0.3332520 0.3333740 0.3333130
+## [15] 0.3333435 0.3333282 0.3333359 0.3333321 0.3333340 0.3333330 0.3333335
+## [22] 0.3333333 0.3333334 0.3333333 0.3333333 0.3333333 0.3333333 0.3333333
+## [29] 0.3333333 0.3333333 0.3333333 0.3333333 0.3333333 0.3333333 0.3333333
+## [36] 0.3333333 0.3333333 0.3333333 0.3333333 0.3333333</code></pre>
 </div>
 <div id="question-3" class="section level3">
 <h3>Question 3</h3>

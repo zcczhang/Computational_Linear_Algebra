@@ -61,6 +61,23 @@ $$ \left[\frac{e_1}{e_0},\frac{e_2}{e_1},\ldots\right] $$
 to confirm that the algorithm is converging linearly. Then, change the vector of error ratios to
 $$ \left[\frac{e_1}{(e_0)^2},\frac{e_2}{(e_1)^2},\ldots\right] $$ to see that the Bisection Method does not converge quadratically.
 
+```{r}
+f = function(x){
+  return(x^4-1/81)
+}
+interval <- c(0,1)
+out=bisect(f,interval)
+print(out$root)
+print(out$history)
+```
+
+```{r}
+
+
+
+```
+
+
 
 ### Question 3
 
