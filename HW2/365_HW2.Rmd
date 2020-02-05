@@ -192,3 +192,10 @@ b. Implement the secant method for rootfinding (it is OK to modify your `bisect`
 
 c. Determine the order of convergence by making a log-log plot of the errors, observing linearity, and then determining slope.
 
+
+
+
+
+
+
+
