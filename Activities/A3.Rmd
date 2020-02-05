@@ -1,0 +1,73 @@
+# Math 365 / Comp 365: 
+# Activity on Bisection Method
+
+### Objectives
+- Code the bisection method to find roots
+- Understand methods to determine convergence rate
+
+### Question 1
+
+Implement an R function for the bisection method to find a root in a closed interval of a continuous function of one variable. See also the pseudocode in the slides.
+
+Here is an outline for your function:
+```{r}
+f = function(x){
+  return(cos(x)-x)
+}
+bisect = function(f,interval,tol=0.5*10^-10,max.its=40){
+  history = rep(NA, max.its) 
+  # Insert some code here
+  a<-interval[1]
+  b<-interval[2]
+  if(f(a)*f(b)<0) {
+    while((a+b)/2>tol | max.its>0){
+      c=(b+a)/2
+      max.its <- max.its-1
+      if(f(c)==0){
+        break
+      } 
+      if(f(c)*f(b)<0) {a<-c} 
+      if(f(c)*f(a)<0) {b<-c}
+      root=c
+      history=c(history,c)
+    }
+  }
+  return(list(root=root,history=history[!is.na(history)]))
+}
+```
+
+In the first line of the function definition, we set default values for the variables `tol` and `max.its`. That is, the user has the option to enter values for these variables when calling the function, but if they do not enter any values, then the values after the equals signs will be used instead. We stop the procedure when either (i)  the length of the bracket window is below the tolerance or (ii) the maximum number of iterations has been reached.
+
+The variable `history` will track all of the iterative estimates of the root. We initialize it in order to preallocate memory, which speeds up the program.
+
+We want the function to return two variables: the final estimate of the root and the history of all of the intermediate estimates. One way to do this in R is to return a list of variables. Note also that we can shorten the history vector to however many iterations we actually computed (instead of including all of those NAs).
+
+Don't forget to carefully comment your function!
+
+To use our function, we would define a function $f$ and an interval, and then call
+```{r}
+interval <- c(0,1)
+out=bisect(f,interval)
+print(out$root)
+print(out$history)
+```
+Here, the dollar sign is a way to access each individual item in the list.
+
+
+### Question 2
+
+Test your function by running at most 40 iterations of the bisection method on the function $f(x)=x^4-\frac{1}{81}$, with a starting bracket interval of $[0,1]$ and a tolerance of 0.5*10^-10. Then compute the vector of error ratios
+$$ \left[\frac{e_1}{e_0},\frac{e_2}{e_1},\ldots\right] $$
+to confirm that the algorithm is converging linearly. Then, change the vector of error ratios to
+$$ \left[\frac{e_1}{(e_0)^2},\frac{e_2}{(e_1)^2},\ldots\right] $$ to see that the Bisection Method does not converge quadratically.
+
+
+### Question 3
+
+In the previous problem, we looked at successive ratios of the errors to see if they converge to a number. Another method to determine the convergence order is to plot the log-log plot of the error data, i.e. plot $(\log e_i, \log e_{i+1})$. To see why, consider: 
+
+a. Turn the equation $e_{i_1}=Ce_i^q$ into a straight line by taking the log of both sides and manipulating the equation to look like $y=mx+b$.
+
+b. What do you notice about the slope of the straight line?
+
+c. Now, test that the previous problem had linear convergence by plotting the log-log plot of the error data $(\log e_i, \log e_{i+1})$ and observing what the slope is.
