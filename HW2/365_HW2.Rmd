@@ -155,20 +155,11 @@ out=bisect(f,interval)
 print(out$root)
 print(out$history)
 
-```
-
-> Use \(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\) to calculate the eigenvalue, I got $A_{11} = 2.948011$
-
-
-
-5. To get the maximum eigenvalue of a matrix `A`, use 
-```
+A[1,1]<-2.948011
 max(eigen(A)$values)
 ```
-6. In R, your favorite irrational and transcendatal number is written as `pi`:
-```{r}
-pi
-```
+
+> Use \(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\) to calculate the eigenvalue, I got $A_{11} = 2.948011$ with the max eignevalue $\pi$
 
 
 ### Problem 4
@@ -179,8 +170,10 @@ my.sqrt=function(x){
   f=function(t){
     return(t^2-x)
   }
-  return(bisect(f,c(1,10))$root)
+  return(bisect(f,c(0,10))$root)
 }
+
+my.sqrt(1)
 my.sqrt(4)
 my.sqrt(9)
 my.sqrt(16)
