@@ -452,13 +452,10 @@ A=\left[\begin{array}{llll}
 \end{array}\right]
 \]</span> equal to <span class="math inline">\(1000 .\)</span> For each solution you find, test it by computing the corresponding determinant and reporting how many correct decimal places (after the decimal point) the determinant has when your solution <span class="math inline">\(x\)</span> is used. (In Section <span class="math inline">\(1.2,\)</span> we will call this the “backward error” &quot; associated with the approximate solution.)</li>
 </ol>
-<blockquote>
-<p><span class="math inline">\(\left|\begin{array}{llll}{1} &amp; {2} &amp; {3} &amp; {x} \\ {4} &amp; {5} &amp; {x} &amp; {6} \\ {7} &amp; {x} &amp; {8} &amp; {9} \\ {x} &amp; {10} &amp; {11} &amp; {12}\end{array}\right|=1000\)</span><br> <span class="math inline">\(\therefore 1\left|\begin{array}{ccc}{5} &amp; {x} &amp; {6} \\ {x} &amp; {8} &amp; {9} \\ {10} &amp; {11} &amp; {12}\end{array}\right|-2\left|\begin{array}{ccc}{4} &amp; {x} &amp; {6} \\ {7} &amp; {8} &amp; {9} \\ {x} &amp; {11} &amp; {12}\end{array}\right|+3\left|\begin{array}{ccc}{4} &amp; {5} &amp; {6} \\ {7} &amp; {x} &amp; {9} \\ {x} &amp; {10} &amp; {12}\end{array}\right|-x\left|\begin{array}{ccc}{4} &amp; {5} &amp; {x} \\ {7} &amp; {x} &amp; {8} \\ {x} &amp; {10} &amp; {11}\end{array}\right|=1000\)</span> <span class="math inline">\(\therefore x^{4}-202 x^{2}+1404 x-2475=1000\)</span><br> <span class="math inline">\(\therefore f(x)=x^{4}-202 x^{2}+1404 x-2475-1000\)</span></p>
-</blockquote>
-<pre class="r"><code>f = function(x){
-  return(x^4-202*x^2+1404*x-2475-1000)
+<pre class="r"><code>f=function(x){
+  A&lt;-cbind(c(1,4,7,x),c(2,5,x,10),c(3,x,8,11),c(x,6,9,12))
+  return(det(A)-1000)
 }
-
 options(digits = 8) 
 interval &lt;- c(9,10)
 out=bisect(f,interval)
@@ -503,7 +500,7 @@ print(out$root)</code></pre>
 f(x)+1000 # corresponding determinant </code></pre>
 <pre><code>## [1] 999.998192</code></pre>
 <pre class="r"><code>f(x)</code></pre>
-<pre><code>## [1] -0.00180775117</code></pre>
+<pre><code>## [1] -0.00180775118</code></pre>
 <blockquote>
 <p>Therefore, the determinant has to 2 correct decimal places.</p>
 </blockquote>
@@ -518,12 +515,24 @@ f(x)+1000 # corresponding determinant </code></pre>
 <pre><code>## Loading required package: Matrix</code></pre>
 <pre class="r"><code>A=Hilbert(5)
 
-my.det=function(x){
-  A(1,1)=x
-  return(det(x))
-}</code></pre>
+f=function(x){
+  A[1,1]&lt;-x
+  return(det(A-pi*diag(1,5,5)))
+}
+options(digits = 7) 
+interval &lt;- c(0,10)
+out=bisect(f,interval)
+print(out$root)</code></pre>
+<pre><code>## [1] 2.948011</code></pre>
+<pre class="r"><code>print(out$history)</code></pre>
+<pre><code>##  [1] 5.000000 2.500000 3.750000 3.125000 2.812500 2.968750 2.890625
+##  [8] 2.929688 2.949219 2.939453 2.944336 2.946777 2.947998 2.948608
+## [15] 2.948303 2.948151 2.948074 2.948036 2.948017 2.948008 2.948012
+## [22] 2.948010 2.948011 2.948011 2.948011 2.948011 2.948011 2.948011
+## [29] 2.948011 2.948011 2.948011 2.948011 2.948011 2.948011 2.948011
+## [36] 2.948011 2.948011 2.948011 2.948011 2.948011</code></pre>
 <blockquote>
-<p>Use <span class="math inline">\(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\)</span> to calculate the eigenvalue</p>
+<p>Use <span class="math inline">\(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\)</span> to calculate the eigenvalue, I got x = 2.948011</p>
 </blockquote>
 <div id="some-hints-for-problems-2-and-3" class="section level4">
 <h4><em>Some hints for Problems 2 and 3:</em></h4>
@@ -552,7 +561,7 @@ H[1,1]=132</code></pre>
 <li>In R, your favorite irrational and transcendatal number is written as <code>pi</code>:</li>
 </ol>
 <pre class="r"><code>pi</code></pre>
-<pre><code>## [1] 3.14159265</code></pre>
+<pre><code>## [1] 3.141593</code></pre>
 </div>
 </div>
 <div id="problem-4" class="section level3">

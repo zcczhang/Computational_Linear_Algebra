@@ -92,16 +92,12 @@ A=\left[\begin{array}{llll}
 $$
 equal to \(1000 .\) For each solution you find, test it by computing the corresponding determinant and reporting how many correct decimal places (after the decimal point) the determinant has when your solution \(x\) is used. (In Section \(1.2,\) we will call this the "backward error" " associated with the approximate solution.) 
 
-> \(\left|\begin{array}{llll}{1} & {2} & {3} & {x} \\ {4} & {5} & {x} & {6} \\ {7} & {x} & {8} & {9} \\ {x} & {10} & {11} & {12}\end{array}\right|=1000\)<br>
-\(\therefore 1\left|\begin{array}{ccc}{5} & {x} & {6} \\ {x} & {8} & {9} \\ {10} & {11} & {12}\end{array}\right|-2\left|\begin{array}{ccc}{4} & {x} & {6} \\ {7} & {8} & {9} \\ {x} & {11} & {12}\end{array}\right|+3\left|\begin{array}{ccc}{4} & {5} & {6} \\ {7} & {x} & {9} \\ {x} & {10} & {12}\end{array}\right|-x\left|\begin{array}{ccc}{4} & {5} & {x} \\ {7} & {x} & {8} \\ {x} & {10} & {11}\end{array}\right|=1000\)
-\(\therefore x^{4}-202 x^{2}+1404 x-2475=1000\)<br>
-\(\therefore f(x)=x^{4}-202 x^{2}+1404 x-2475-1000\)
 
 ```{r}
-f = function(x){
-  return(x^4-202*x^2+1404*x-2475-1000)
+f=function(x){
+  A<-cbind(c(1,4,7,x),c(2,5,x,10),c(3,x,8,11),c(x,6,9,12))
+  return(det(A)-1000)
 }
-
 options(digits = 8) 
 interval <- c(9,10)
 out=bisect(f,interval)
@@ -149,15 +145,19 @@ Determine \(A_{11}\) within six correct decimal places.
 require(Matrix)
 A=Hilbert(5)
 
-my.det=function(x){
-  A(1,1)=x
-  return(det(x))
+f=function(x){
+  A[1,1]<-x
+  return(det(A-pi*diag(1,5,5)))
 }
-
+options(digits = 7) 
+interval <- c(0,10)
+out=bisect(f,interval)
+print(out$root)
+print(out$history)
 
 ```
 
-> Use \(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\) to calculate the eigenvalue
+> Use \(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\) to calculate the eigenvalue, I got x = 2.948011
 
 
 
