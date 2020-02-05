@@ -471,11 +471,16 @@ print(out$root)</code></pre>
 ## [29] 9.7082991 9.7082991 9.7082991 9.7082991 9.7082991 9.7082991 9.7082991
 ## [36] 9.7082991 9.7082991 9.7082991 9.7082991 9.7082991</code></pre>
 <blockquote>
-<p>The first root is 9.7082991</p>
+<p>The first root is 9.708299</p>
 </blockquote>
 <pre class="r"><code>x&lt;-9.708299
-f(x)</code></pre>
+f(x)+1000 # corresponding determinant </code></pre>
+<pre><code>## [1] 999.99986</code></pre>
+<pre class="r"><code>f(x)</code></pre>
 <pre><code>## [1] -0.00014074714</code></pre>
+<blockquote>
+<p>Therefore, the determinant has to 3 correct decimal places.</p>
+</blockquote>
 <pre class="r"><code>options(digits = 9) 
 interval &lt;- c(-18,-17)
 out=bisect(f,interval)
@@ -493,8 +498,13 @@ print(out$root)</code></pre>
 <p>The second root is -17.188498.</p>
 </blockquote>
 <pre class="r"><code>x&lt;--17.188498
-f(x)</code></pre>
+f(x)+1000 # corresponding determinant </code></pre>
+<pre><code>## [1] 999.998192</code></pre>
+<pre class="r"><code>f(x)</code></pre>
 <pre><code>## [1] -0.00180775117</code></pre>
+<blockquote>
+<p>Therefore, the determinant has to 2 correct decimal places.</p>
+</blockquote>
 </div>
 <div id="problem-3" class="section level3">
 <h3>Problem 3</h3>
@@ -504,17 +514,13 @@ f(x)</code></pre>
 </ol>
 <pre class="r"><code>require(Matrix)</code></pre>
 <pre><code>## Loading required package: Matrix</code></pre>
-<pre class="r"><code>H=Hilbert(5)
-H[1,1]</code></pre>
-<pre><code>## [1] 1</code></pre>
-<pre class="r"><code>H</code></pre>
-<pre><code>## 5 x 5 Matrix of class &quot;dpoMatrix&quot;
-##             [,1]        [,2]        [,3]        [,4]        [,5]
-## [1,] 1.000000000 0.500000000 0.333333333 0.250000000 0.200000000
-## [2,] 0.500000000 0.333333333 0.250000000 0.200000000 0.166666667
-## [3,] 0.333333333 0.250000000 0.200000000 0.166666667 0.142857143
-## [4,] 0.250000000 0.200000000 0.166666667 0.142857143 0.125000000
-## [5,] 0.200000000 0.166666667 0.142857143 0.125000000 0.111111111</code></pre>
+<pre class="r"><code>A=Hilbert(5)
+
+max(eigen(A)$values)</code></pre>
+<pre><code>## [1] 1.56705069</code></pre>
+<blockquote>
+<p>Use <span class="math inline">\(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\)</span> to calculate the eigenvalue</p>
+</blockquote>
 <div id="some-hints-for-problems-2-and-3" class="section level4">
 <h4><em>Some hints for Problems 2 and 3:</em></h4>
 <ol style="list-style-type: decimal">

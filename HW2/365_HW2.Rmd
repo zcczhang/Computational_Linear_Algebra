@@ -109,12 +109,16 @@ print(out$root)
 print(out$history)
 ```
 
-> The first root is 9.7082991
+> The first root is 9.708299
 
 ```{r}
 x<-9.708299
+f(x)+1000 # corresponding determinant 
 f(x)
 ```
+
+> Therefore, the determinant has to 3 correct decimal places.
+
 ```{r}
 options(digits = 9) 
 interval <- c(-18,-17)
@@ -127,9 +131,10 @@ print(out$history)
 
 ```{r}
 x<--17.188498
+f(x)+1000 # corresponding determinant 
 f(x)
 ```
-
+> Therefore, the determinant has to 2 correct decimal places.
 
 
 ### Problem 3
@@ -142,11 +147,12 @@ Determine \(A_{11}\) within six correct decimal places.
 
 ```{r}
 require(Matrix)
-H=Hilbert(5)
-H[1,1]
-H
+A=Hilbert(5)
+
+max(eigen(A)$values)
 ```
 
+> Use \(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\) to calculate the eigenvalue
 
 
 
