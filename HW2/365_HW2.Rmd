@@ -157,30 +157,9 @@ print(out$history)
 
 ```
 
-> Use \(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\) to calculate the eigenvalue, I got x = 2.948011
+> Use \(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\) to calculate the eigenvalue, I got $A_{11} = 2.948011$
 
 
-
-
-
-
-#### *Some hints for Problems 2 and 3:*
-
-1. To bind rows together into a matrix:
-```{r}
-rbind(c(1,2,3,44),c(4,5,44,6),c(7,44,8,9),c(44,10,11,12)) 
-```
-
-2. If A is a matrix, then `det(A)` is its determinant
-
-3. For Problem 3, make a function of `x` that puts `x` on the backward diagonal, computes its determinant, and subtracts 1000. Then use your `bisect` on this function.
-
-4. For Problem 4, to get the Hilbert matrix, `H`, you can use the `Hilbert` function from the `Matrix` package. Here is an example of how to generate a Hilbert matrix and change the first entry:
-```{r}
-require(Matrix)
-H=Hilbert(5)
-H[1,1]=132
-```
 
 5. To get the maximum eigenvalue of a matrix `A`, use 
 ```
