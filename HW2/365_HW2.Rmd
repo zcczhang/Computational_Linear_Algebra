@@ -195,9 +195,11 @@ f=function(r){
   return((r^3*(2*r^2+5*0.1^2))/(2*(r^2+0.1^2)^(5/2))-0.9)
 }
 options(digits=10)
-(out=bisect(f,c(0,1)))
+out=bisect(f,c(0,1))
+out$root
 ```
 
+> The root is 0.1772891798
 
 b. (From In-class Activity) Another method to determine the convergence order is to plot the log-log plot of the error data, i.e. plot $(\log e_i, \log e_{i+1})$. To see why, consider: 
 
