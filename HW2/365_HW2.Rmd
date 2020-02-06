@@ -82,15 +82,34 @@ newton=function(x,its){
 x<-4.25
 e<-abs((newton(x,50)-pi))
 
+x=1
+y=e[2]/e[1]
+for (i in 2:49) {
+  x=c(x,i)
+  y=c(y,e[i+1]/e[i])
+}
+plot(x,y)
 ```
 
+
+> After around 8 iterations, it will become converge. The convergence order is $1$(linear), and rate is almost $0$.
 
 e) Repeat d) with $x_0$=1.5. What is the convergence order and rate to $\pi/2$? If your answer is different from d), explain why.
 
 ```{r}
 x<-1.5
 e<-abs((newton(x,50)-pi/2))
+x=1
+y=e[2]/e[1]
+
+for (i in 2:50) {
+  x=c(x,i)
+  y=c(y,e[i+1]/e[i])
+}
+plot(x,y)
 ```
+
+> The convergence order is $1$(linear), and rate is almost $1$. It is different from d) since...
 
 ### Problem 2
 Computer Problem 7 from Section 1.1 of the book (involving a determinant). 
