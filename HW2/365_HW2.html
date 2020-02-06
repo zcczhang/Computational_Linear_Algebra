@@ -433,12 +433,27 @@ print(out$root)</code></pre>
 <li>By hand, compute a formula for Newton’s iteration for this particular choice of <span class="math inline">\(f(x)\)</span>; i.e., write a formula for <span class="math inline">\(x_{i+1}\)</span> in terms of <span class="math inline">\(x_{i}\)</span>.</li>
 </ol>
 <blockquote>
-<p><span class="math inline">\(x_{n+1}=x_{n}-\frac{f\left(x_{n}\right)}{f^{\prime}\left(x_{n}\right)} \quad n=0,1,2, \ldots\)</span><br> <span class="math inline">\(\therefore x_{n+1}=x_{n}+\frac{\cos ^{2} x_{n}+\sin x_{n} -1}{-\sin (2 x_{n})+\cos x_{n}}\)</span></p>
+<p><span class="math inline">\(x_{n+1}=x_{n}-\frac{f\left(x_{n}\right)}{f^{\prime}\left(x_{n}\right)} \quad n=0,1,2, \ldots\)</span><br> <span class="math inline">\(\therefore x_{n+1}=x_{n}-\frac{\cos ^{2} x_{n}+\sin x_{n} -1}{-\sin (2 x_{n})+\cos x_{n}}\)</span></p>
 </blockquote>
 <ol start="4" style="list-style-type: lower-alpha">
-<li><p>Set <span class="math inline">\(x_0\)</span> to 4.25, run 50 iterations of your Newton’s formula from c) to compute <span class="math inline">\(\{x_i\}_{i=0,1,\ldots,50}\)</span>, and compute <span class="math inline">\(e_i=|x_i-\pi|\)</span> for all <span class="math inline">\(i\)</span>. When does the iteration converge? Now plot <span class="math inline">\(e_i / e_{i-1}\)</span> over all <span class="math inline">\(i\)</span> until convergence. What is the convergence order and rate to <span class="math inline">\(\pi\)</span>?</p></li>
-<li><p>Repeat d) with <span class="math inline">\(x_0\)</span>=1.5. What is the convergence order and rate to <span class="math inline">\(\pi/2\)</span>? If your answer is different from d), explain why.</p></li>
+<li>Set <span class="math inline">\(x_0\)</span> to 4.25, run 50 iterations of your Newton’s formula from c) to compute <span class="math inline">\(\{x_i\}_{i=0,1,\ldots,50}\)</span>, and compute <span class="math inline">\(e_i=|x_i-\pi|\)</span> for all <span class="math inline">\(i\)</span>. When does the iteration converge? Now plot <span class="math inline">\(e_i / e_{i-1}\)</span> over all <span class="math inline">\(i\)</span> until convergence. What is the convergence order and rate to <span class="math inline">\(\pi\)</span>?</li>
 </ol>
+<pre class="r"><code>newton=function(x,its){
+  res=x
+  while (its&gt;0) {
+    x&lt;-x-((cos(x))^2+sin(x)-1)/(-sin(2*x)+cos(x))
+    res=c(res,x)
+    its&lt;-its-1
+  }
+  return(res)
+}
+x&lt;-4.25
+e&lt;-abs((newton(x,50)-pi))</code></pre>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>Repeat d) with <span class="math inline">\(x_0\)</span>=1.5. What is the convergence order and rate to <span class="math inline">\(\pi/2\)</span>? If your answer is different from d), explain why.</li>
+</ol>
+<pre class="r"><code>x&lt;-1.5
+e&lt;-abs((newton(x,50)-pi/2))</code></pre>
 </div>
 <div id="problem-2" class="section level3">
 <h3>Problem 2</h3>
@@ -565,7 +580,8 @@ my.sqrt(1)</code></pre>
   return((r^3*(2*r^2+5*0.1^2))/(2*(r^2+0.1^2)^(5/2))-0.9)
 }
 options(digits=10)
-(out=bisect(f,c(0,1)))</code></pre>
+out=bisect(f,c(0,1))
+out</code></pre>
 <pre><code>## $root
 ## [1] 0.1772891798
 ## 
@@ -578,13 +594,28 @@ options(digits=10)
 ## [26] 0.1772891730 0.1772891805 0.1772891767 0.1772891786 0.1772891795
 ## [31] 0.1772891800 0.1772891798 0.1772891799 0.1772891798 0.1772891798
 ## [36] 0.1772891799 0.1772891799 0.1772891799 0.1772891798 0.1772891798</code></pre>
+<blockquote>
+<p>The root is 0.1772891798<br> <span class="math inline">\(\frac{1-0}{2^{i+1}}&lt;\frac{1}{2}\times10^{-10}\)</span><br> <span class="math inline">\(10\log 10&lt;i\log2\)</span><br> <span class="math inline">\(i&gt;\frac{10\log 10}{log2}=33.2\)</span><br> <span class="math inline">\(\therefore 34\)</span> iterations of the bisection method are necessary to find the accurate solution to ten correct decimal places.</p>
+</blockquote>
+<pre class="r"><code>10*log(10)/log(2)</code></pre>
+<pre><code>## [1] 33.21928095</code></pre>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>(From In-class Activity) Another method to determine the convergence order is to plot the log-log plot of the error data, i.e. plot <span class="math inline">\((\log e_i, \log e_{i+1})\)</span>. To see why, consider:</li>
 </ol>
 <ul>
-<li><p>Turn the equation <span class="math inline">\(e_{i+1}=Ce_i^q\)</span> into a straight line by taking the log of both sides and manipulating the equation to look like <span class="math inline">\(y=mx+b\)</span>.</p></li>
-<li><p>What do you notice about the slope of the straight line?</p></li>
-<li><p>Now, test that the bisection method for this data had linear convergence by plotting the log-log plot of the error data <span class="math inline">\((\log e_i, \log e_{i+1})\)</span> and observing what the slope is (hint, the function <code>lm</code> can give the slope). Run your bisection code again and find a root correct to 15 digits; you may use this root as the “true root” in the error formula. Note, your plot will not be perfectly linear as this “true root” is actually just an approximation.</p></li>
+<li>Turn the equation <span class="math inline">\(e_{i+1}=Ce_i^q\)</span> into a straight line by taking the log of both sides and manipulating the equation to look like <span class="math inline">\(y=mx+b\)</span>.</li>
+</ul>
+<blockquote>
+<p><span class="math inline">\(\log e_{i+1}=q\log Ce_{i}=q\log e_{i}+q\log C\)</span></p>
+</blockquote>
+<ul>
+<li>What do you notice about the slope of the straight line?</li>
+</ul>
+<blockquote>
+<p>When <span class="math inline">\((x,y)=(\log e_i, \log e_{i+1})\)</span>, the slope is <span class="math inline">\(q\)</span>, which is the convergence order.</p>
+</blockquote>
+<ul>
+<li>Now, test that the bisection method for this data had linear convergence by plotting the log-log plot of the error data <span class="math inline">\((\log e_i, \log e_{i+1})\)</span> and observing what the slope is (hint, the function <code>lm</code> can give the slope). Run your bisection code again and find a root correct to 15 digits; you may use this root as the “true root” in the error formula. Note, your plot will not be perfectly linear as this “true root” is actually just an approximation.</li>
 </ul>
 <pre class="r"><code>options(digits=15)
 (rout=bisect(f,c(0,1))$root)</code></pre>
@@ -620,6 +651,9 @@ plot(x,y,lm=TRUE)</code></pre>
 ## Coefficients:
 ##     (Intercept)                x  
 ## -0.929205729576   0.984247752914</code></pre>
+<blockquote>
+<p>The slop is 0.984247752914 approximately.</p>
+</blockquote>
 <ol start="3" style="list-style-type: lower-alpha">
 <li><p>Implement the secant method for rootfinding (it is OK to modify your <code>bisect</code> code). Then use your secant code to solve for <span class="math inline">\(r\)</span>. How many secant steps were used?</p></li>
 <li><p>Create a log-log plot of the errors for the secant method. What does it seem like the convergence order is for this?</p></li>

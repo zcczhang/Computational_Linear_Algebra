@@ -65,11 +65,22 @@ print(out$history)
 c) By hand, compute a formula for Newton's iteration for this particular choice of $f(x)$; i.e., write a formula for $x_{i+1}$ in terms of $x_{i}$.
 
 > \(x_{n+1}=x_{n}-\frac{f\left(x_{n}\right)}{f^{\prime}\left(x_{n}\right)} \quad n=0,1,2, \ldots\)<br>
-\(\therefore x_{n+1}=x_{n}+\frac{\cos ^{2} x_{n}+\sin x_{n} -1}{-\sin (2 x_{n})+\cos x_{n}}\)
+\(\therefore x_{n+1}=x_{n}-\frac{\cos ^{2} x_{n}+\sin x_{n} -1}{-\sin (2 x_{n})+\cos x_{n}}\)
 
 d) Set $x_0$ to 4.25, run 50 iterations of your Newton's formula from c) to compute $\{x_i\}_{i=0,1,\ldots,50}$, and compute $e_i=|x_i-\pi|$ for all $i$. When does the iteration converge? Now plot $e_i / e_{i-1}$ over all $i$ until convergence. What is the convergence order and rate to $\pi$?
 
 ```{r}
+newton=function(x,its){
+  res=x
+  while (its>0) {
+    x<-x-((cos(x))^2+sin(x)-1)/(-sin(2*x)+cos(x))
+    res=c(res,x)
+    its<-its-1
+  }
+  return(res)
+}
+x<-4.25
+e<-abs((newton(x,50)-pi))
 
 ```
 
@@ -77,7 +88,8 @@ d) Set $x_0$ to 4.25, run 50 iterations of your Newton's formula from c) to comp
 e) Repeat d) with $x_0$=1.5. What is the convergence order and rate to $\pi/2$? If your answer is different from d), explain why.
 
 ```{r}
-
+x<-1.5
+e<-abs((newton(x,50)-pi/2))
 ```
 
 ### Problem 2
@@ -196,16 +208,29 @@ f=function(r){
 }
 options(digits=10)
 out=bisect(f,c(0,1))
-out$root
+out
 ```
 
-> The root is 0.1772891798
+> The root is 0.1772891798<br>
+$\frac{1-0}{2^{i+1}}<\frac{1}{2}\times10^{-10}$<br>
+$10\log 10<i\log2$<br>
+$i>\frac{10\log 10}{log2}=33.2$<br>
+$\therefore 34$ iterations of the bisection method are necessary to find the accurate solution to ten correct decimal places.
+
+```{r}
+10*log(10)/log(2)
+```
+
 
 b. (From In-class Activity) Another method to determine the convergence order is to plot the log-log plot of the error data, i.e. plot $(\log e_i, \log e_{i+1})$. To see why, consider: 
 
 - Turn the equation $e_{i+1}=Ce_i^q$ into a straight line by taking the log of both sides and manipulating the equation to look like $y=mx+b$.
 
+> $\log e_{i+1}=q\log Ce_{i}=q\log e_{i}+q\log C$
+
 - What do you notice about the slope of the straight line?
+
+> When $(x,y)=(\log e_i, \log e_{i+1})$, the slope is $q$, which is the convergence order.
 
 - Now, test that the bisection method for this data had linear convergence by plotting the log-log plot of the error data $(\log e_i, \log e_{i+1})$ and observing what the slope is (hint, the function `lm` can give the slope). Run your bisection code again and find a root correct to 15 digits; you may use this root as the "true root" in the error formula. Note, your plot will not be perfectly linear as this "true root" is actually just an approximation.
 ```{r}
@@ -226,9 +251,9 @@ for (i in 2:(length(e)-2)) {
 }
 plot(x,y,lm=TRUE)
 lm(y~x)
-
 ```
 
+> The slop is 0.984247752914 approximately.
 
 c. Implement the secant method for rootfinding (it is OK to modify your `bisect` code). Then use your secant code to solve for $r$. How many secant steps were used?
 
