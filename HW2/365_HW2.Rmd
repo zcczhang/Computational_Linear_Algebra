@@ -211,20 +211,19 @@ options(digits=15)
 (rout=bisect(f,c(0,1))$root)
 ```
 ```{r warning=FALSE}
-(e<-(out$history-rout))
-(log(e))
+(e<-(abs(out$history-rout)))
 ```
 
 
 ```{r warning=FALSE}
 x=log(e[1])
 y=log(e[2])
-for (i in 2:(length(e)-1)) {
+for (i in 2:(length(e)-2)) {
   x=c(x,log(e[i]))
   y=c(y,log(e[i+1]))
 }
-x
-y
+plot(x,y,lm=TRUE)
+lm(y~x)
 
 ```
 
