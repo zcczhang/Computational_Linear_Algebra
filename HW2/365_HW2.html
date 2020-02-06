@@ -511,9 +511,8 @@ f(x)+1000 # corresponding determinant </code></pre>
 <ol start="8" style="list-style-type: decimal">
 <li>The Hilbert matrix is the <span class="math inline">\(n \times n\)</span> matrix whose ijth entry is <span class="math inline">\(1 /(i+j-1)\)</span>. Let <span class="math inline">\(A\)</span> denote the <span class="math inline">\(5 \times 5\)</span> Hilbert matrix. Its largest eigenvalue is about <span class="math inline">\(1.567 .\)</span> Use the Bisection Method to decide how to change the upper left entry <span class="math inline">\(A_{11}\)</span> to make the largest eigenvalue of <span class="math inline">\(A\)</span> equal to <span class="math inline">\(\pi\)</span>. Determine <span class="math inline">\(A_{11}\)</span> within six correct decimal places.</li>
 </ol>
-<pre class="r"><code>require(Matrix)</code></pre>
-<pre><code>## Loading required package: Matrix</code></pre>
-<pre class="r"><code>A=Hilbert(5)
+<pre class="r"><code>require(Matrix)
+A=Hilbert(5)
 
 f=function(x){
   A[1,1]&lt;-x
@@ -562,13 +561,23 @@ my.sqrt(1)</code></pre>
 <ol style="list-style-type: lower-alpha">
 <li>Use your bisection code to solve the equation for <span class="math inline">\(r\)</span>. Give ten digits of accuracy and report the number of bisection steps you used. <em>Hint:</em> the R command <code>options(digits = 12)</code> can be used to print lots of digits.</li>
 </ol>
-<pre class="r"><code>ep&lt;-0.1
-f=function(r){
-  return((r^3*(2*r^2+5*ep^2))/(2*(r^2+ep^2)^(5/2))-0.9)
+<pre class="r"><code>f=function(r){
+  return((r^3*(2*r^2+5*0.1^2))/(2*(r^2+0.1^2)^(5/2))-0.9)
 }
-options(digits=12)
-bisect(f,c(0,1))$root</code></pre>
-<pre><code>## [1] 0.177289179849</code></pre>
+options(digits=10)
+(out=bisect(f,c(0,1)))</code></pre>
+<pre><code>## $root
+## [1] 0.1772891798
+## 
+## $history
+##  [1] 0.5000000000 0.2500000000 0.1250000000 0.1875000000 0.1562500000
+##  [6] 0.1718750000 0.1796875000 0.1757812500 0.1777343750 0.1767578125
+## [11] 0.1772460938 0.1774902344 0.1773681641 0.1773071289 0.1772766113
+## [16] 0.1772918701 0.1772842407 0.1772880554 0.1772899628 0.1772890091
+## [21] 0.1772894859 0.1772892475 0.1772891283 0.1772891879 0.1772891581
+## [26] 0.1772891730 0.1772891805 0.1772891767 0.1772891786 0.1772891795
+## [31] 0.1772891800 0.1772891798 0.1772891799 0.1772891798 0.1772891798
+## [36] 0.1772891799 0.1772891799 0.1772891799 0.1772891798 0.1772891798</code></pre>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>(From In-class Activity) Another method to determine the convergence order is to plot the log-log plot of the error data, i.e. plot <span class="math inline">\((\log e_i, \log e_{i+1})\)</span>. To see why, consider:</li>
 </ol>
@@ -577,6 +586,63 @@ bisect(f,c(0,1))$root</code></pre>
 <li><p>What do you notice about the slope of the straight line?</p></li>
 <li><p>Now, test that the bisection method for this data had linear convergence by plotting the log-log plot of the error data <span class="math inline">\((\log e_i, \log e_{i+1})\)</span> and observing what the slope is (hint, the function <code>lm</code> can give the slope). Run your bisection code again and find a root correct to 15 digits; you may use this root as the “true root” in the error formula. Note, your plot will not be perfectly linear as this “true root” is actually just an approximation.</p></li>
 </ul>
+<pre class="r"><code>options(digits=15)
+(rout=bisect(f,c(0,1))$root)</code></pre>
+<pre><code>## [1] 0.17728917984914</code></pre>
+<pre class="r"><code>(e&lt;-(out$history-rout))</code></pre>
+<pre><code>##  [1]  3.22710820150860e-01  7.27108201508599e-02 -5.22891798491401e-02
+##  [4]  1.02108201508599e-02 -2.10391798491401e-02 -5.41417984914006e-03
+##  [7]  2.39832015085994e-03 -1.50792984914006e-03  4.45195150859945e-04
+## [10] -5.31367349140055e-04 -4.30860991400550e-05  2.01054525859945e-04
+## [13]  7.89842133599450e-05  1.79490571099450e-05 -1.25685210150550e-05
+## [16]  2.69026804744499e-06 -4.93912648380501e-06 -1.12442921818001e-06
+## [19]  7.82919414632488e-07 -1.70754901773762e-07  3.06082256429363e-07
+## [22]  6.76636773278005e-08 -5.15456122229807e-08  8.05903255240992e-09
+## [25] -2.17432898352854e-08 -6.84212864143774e-09  6.08451955486089e-10
+## [28] -3.11683834297583e-09 -1.25419319374487e-09 -3.22870619129390e-10
+## [31]  1.42790668178350e-10 -9.00399754755199e-11  2.63753463514149e-11
+## [34] -3.18323145620525e-11 -2.72848410531878e-12  1.18234311230481e-11
+## [37]  4.54747350886464e-12  9.09494701772928e-13 -9.09494701772928e-13
+## [40]  0.00000000000000e+00</code></pre>
+<pre class="r"><code>(log(e))</code></pre>
+<pre><code>##  [1]  -1.13099865042480  -2.62126507263052                NaN  -4.58430732183778
+##  [5]                NaN                NaN  -6.03298672384029                NaN
+##  [9]  -7.71699783067084                NaN                NaN  -8.51193441375800
+## [13]  -9.44626255635288 -10.92797297310354                NaN -12.82586972342452
+## [17]                NaN                NaN -14.06023606498456                NaN
+## [21] -14.99941195925680 -16.50871632497025                NaN -18.63647231835051
+## [25]                NaN                NaN -21.22010316226958                NaN
+## [29]                NaN                NaN -22.66964141704950                NaN
+## [33] -24.35859139241134                NaN                NaN -25.16093786493628
+## [37] -26.11644930996371 -27.72588722239781                NaN               -Inf</code></pre>
+<pre class="r"><code>x=log(e[1])
+y=log(e[2])
+for (i in 2:(length(e)-1)) {
+  x=c(x,log(e[i]))
+  y=c(y,log(e[i+1]))
+}
+x</code></pre>
+<pre><code>##  [1]  -1.13099865042480  -2.62126507263052                NaN  -4.58430732183778
+##  [5]                NaN                NaN  -6.03298672384029                NaN
+##  [9]  -7.71699783067084                NaN                NaN  -8.51193441375800
+## [13]  -9.44626255635288 -10.92797297310354                NaN -12.82586972342452
+## [17]                NaN                NaN -14.06023606498456                NaN
+## [21] -14.99941195925680 -16.50871632497025                NaN -18.63647231835051
+## [25]                NaN                NaN -21.22010316226958                NaN
+## [29]                NaN                NaN -22.66964141704950                NaN
+## [33] -24.35859139241134                NaN                NaN -25.16093786493628
+## [37] -26.11644930996371 -27.72588722239781                NaN</code></pre>
+<pre class="r"><code>y</code></pre>
+<pre><code>##  [1]  -2.62126507263052                NaN  -4.58430732183778                NaN
+##  [5]                NaN  -6.03298672384029                NaN  -7.71699783067084
+##  [9]                NaN                NaN  -8.51193441375800  -9.44626255635288
+## [13] -10.92797297310354                NaN -12.82586972342452                NaN
+## [17]                NaN -14.06023606498456                NaN -14.99941195925680
+## [21] -16.50871632497025                NaN -18.63647231835051                NaN
+## [25]                NaN -21.22010316226958                NaN                NaN
+## [29]                NaN -22.66964141704950                NaN -24.35859139241134
+## [33]                NaN                NaN -25.16093786493628 -26.11644930996371
+## [37] -27.72588722239781                NaN               -Inf</code></pre>
 <ol start="3" style="list-style-type: lower-alpha">
 <li><p>Implement the secant method for rootfinding (it is OK to modify your <code>bisect</code> code). Then use your secant code to solve for <span class="math inline">\(r\)</span>. How many secant steps were used?</p></li>
 <li><p>Create a log-log plot of the errors for the secant method. What does it seem like the convergence order is for this?</p></li>

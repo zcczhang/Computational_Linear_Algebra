@@ -143,7 +143,7 @@ Computer Problem 8 from Section 1.1 of the book (involving the Hilbert matrix)
 how to change the upper left entry \(A_{11}\) to make the largest eigenvalue of \(A\) equal to \(\pi\).
 Determine \(A_{11}\) within six correct decimal places. 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 require(Matrix)
 A=Hilbert(5)
 
@@ -191,12 +191,11 @@ Use the value $\epsilon=0.1$. From the context of the problem, it's clear that $
 a. Use your bisection code to solve the equation for $r$. Give ten digits of accuracy and report the number of bisection steps you used. _Hint:_ the R command `options(digits = 12)` can be used to print lots of digits.
 
 ```{r}
-ep<-0.1
 f=function(r){
-  return((r^3*(2*r^2+5*ep^2))/(2*(r^2+ep^2)^(5/2))-0.9)
+  return((r^3*(2*r^2+5*0.1^2))/(2*(r^2+0.1^2)^(5/2))-0.9)
 }
-options(digits=12)
-bisect(f,c(0,1))$root
+options(digits=10)
+(out=bisect(f,c(0,1)))
 ```
 
 
@@ -207,6 +206,28 @@ b. (From In-class Activity) Another method to determine the convergence order is
 - What do you notice about the slope of the straight line?
 
 - Now, test that the bisection method for this data had linear convergence by plotting the log-log plot of the error data $(\log e_i, \log e_{i+1})$ and observing what the slope is (hint, the function `lm` can give the slope). Run your bisection code again and find a root correct to 15 digits; you may use this root as the "true root" in the error formula. Note, your plot will not be perfectly linear as this "true root" is actually just an approximation.
+```{r}
+options(digits=15)
+(rout=bisect(f,c(0,1))$root)
+```
+```{r warning=FALSE}
+(e<-(out$history-rout))
+(log(e))
+```
+
+
+```{r warning=FALSE}
+x=log(e[1])
+y=log(e[2])
+for (i in 2:(length(e)-1)) {
+  x=c(x,log(e[i]))
+  y=c(y,log(e[i+1]))
+}
+x
+y
+
+```
+
 
 c. Implement the secant method for rootfinding (it is OK to modify your `bisect` code). Then use your secant code to solve for $r$. How many secant steps were used?
 
