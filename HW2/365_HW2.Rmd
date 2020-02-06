@@ -190,6 +190,15 @@ Use the value $\epsilon=0.1$. From the context of the problem, it's clear that $
 
 a. Use your bisection code to solve the equation for $r$. Give ten digits of accuracy and report the number of bisection steps you used. _Hint:_ the R command `options(digits = 12)` can be used to print lots of digits.
 
+```{r}
+ep<-0.1
+f=function(r){
+  return((r^3*(2*r^2+5*ep^2))/(2*(r^2+ep^2)^(5/2))-0.9)
+}
+options(digits=12)
+bisect(f,c(0,1))$root
+```
+
 
 b. (From In-class Activity) Another method to determine the convergence order is to plot the log-log plot of the error data, i.e. plot $(\log e_i, \log e_{i+1})$. To see why, consider: 
 

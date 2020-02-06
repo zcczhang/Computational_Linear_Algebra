@@ -560,8 +560,17 @@ my.sqrt(1)</code></pre>
 <h3>Problem 5</h3>
 <p>This problem involves solving the equation <span class="math display">\[ \frac{r^3(2r^2+5\epsilon^2)}{2(r^2+\epsilon^2)^{5/2}}=0.9\]</span> Use the value <span class="math inline">\(\epsilon=0.1\)</span>. From the context of the problem, it’s clear that <span class="math inline">\(r\)</span> must be positive and <span class="math inline">\(r\)</span> might be close to <span class="math inline">\(\epsilon\)</span>.</p>
 <ol style="list-style-type: lower-alpha">
-<li><p>Use your bisection code to solve the equation for <span class="math inline">\(r\)</span>. Give ten digits of accuracy and report the number of bisection steps you used. <em>Hint:</em> the R command <code>options(digits = 12)</code> can be used to print lots of digits.</p></li>
-<li><p>(From In-class Activity) Another method to determine the convergence order is to plot the log-log plot of the error data, i.e. plot <span class="math inline">\((\log e_i, \log e_{i+1})\)</span>. To see why, consider:</p></li>
+<li>Use your bisection code to solve the equation for <span class="math inline">\(r\)</span>. Give ten digits of accuracy and report the number of bisection steps you used. <em>Hint:</em> the R command <code>options(digits = 12)</code> can be used to print lots of digits.</li>
+</ol>
+<pre class="r"><code>ep&lt;-0.1
+f=function(r){
+  return((r^3*(2*r^2+5*ep^2))/(2*(r^2+ep^2)^(5/2))-0.9)
+}
+options(digits=12)
+bisect(f,c(0,1))$root</code></pre>
+<pre><code>## [1] 0.177289179849</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>(From In-class Activity) Another method to determine the convergence order is to plot the log-log plot of the error data, i.e. plot <span class="math inline">\((\log e_i, \log e_{i+1})\)</span>. To see why, consider:</li>
 </ol>
 <ul>
 <li><p>Turn the equation <span class="math inline">\(e_{i+1}=Ce_i^q\)</span> into a straight line by taking the log of both sides and manipulating the equation to look like <span class="math inline">\(y=mx+b\)</span>.</p></li>
