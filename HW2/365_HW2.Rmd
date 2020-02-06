@@ -186,11 +186,20 @@ This problem involves solving the equation
 $$ \frac{r^3(2r^2+5\epsilon^2)}{2(r^2+\epsilon^2)^{5/2}}=0.9$$
 Use the value $\epsilon=0.1$. From the context of the problem, it's clear that $r$ must be positive and $r$ might be close to $\epsilon$. 
 
-a. Use your bisection code to solve the equation for $r$. Give ten digits of accuracy and report the number of bisection steps you used. _Hint:_ the R command **options(digits = 12)** can be used to print lots of digits.
+a. Use your bisection code to solve the equation for $r$. Give ten digits of accuracy and report the number of bisection steps you used. _Hint:_ the R command `options(digits = 12)` can be used to print lots of digits.
 
-b. Implement the secant method for rootfinding (it is OK to modify your `bisect` code). Then use your secant code to solve for $r$. How many secant steps were used?
 
-c. Determine the order of convergence by making a log-log plot of the errors, observing linearity, and then determining slope.
+b. (From In-class Activity) Another method to determine the convergence order is to plot the log-log plot of the error data, i.e. plot $(\log e_i, \log e_{i+1})$. To see why, consider: 
+
+- Turn the equation $e_{i+1}=Ce_i^q$ into a straight line by taking the log of both sides and manipulating the equation to look like $y=mx+b$.
+
+- What do you notice about the slope of the straight line?
+
+- Now, test that the bisection method for this data had linear convergence by plotting the log-log plot of the error data $(\log e_i, \log e_{i+1})$ and observing what the slope is (hint, the function `lm` can give the slope). Run your bisection code again and find a root correct to 15 digits; you may use this root as the "true root" in the error formula. Note, your plot will not be perfectly linear as this "true root" is actually just an approximation.
+
+c. Implement the secant method for rootfinding (it is OK to modify your `bisect` code). Then use your secant code to solve for $r$. How many secant steps were used?
+
+d. Create a log-log plot of the errors for the secant method. What does it seem like the convergence order is for this?
 
 
 
