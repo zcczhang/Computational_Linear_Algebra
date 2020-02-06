@@ -381,27 +381,33 @@ summary {
 <h3>Question 1</h3>
 <p>Implement an R function for the bisection method to find a root in a closed interval of a continuous function of one variable. See also the pseudocode in the slides.</p>
 <p>Here is an outline for your function:</p>
-<pre class="r"><code>f = function(x){
-  return(cos(x)-x)
-}
-bisect = function(f,interval,tol=0.5*10^-10,max.its=40){
-  history = rep(NA, max.its) 
-  # Insert some code here
-  a&lt;-interval[1]
-  b&lt;-interval[2]
-  if(f(a)*f(b)&lt;0) {
-    while((a-b)/2&gt;tol | max.its&gt;0){
-      c=(b+a)/2
-      max.its &lt;- max.its-1
-      if(f(c)==0){
-        break
-      } 
-      if(f(c)*f(b)&lt;0) {a&lt;-c} 
-      if(f(c)*f(a)&lt;0) {b&lt;-c}
-      root=c
-      history=c(history,c)
+<pre class="r"><code>bisect = function(f,interval,tol=0.5*10^-10,max.its=40,verbose=FALSE){
+  history = rep(NA, max.its)
+  a = interval[1]
+  b = interval[2]
+  fa = f(a)
+  fb = f(b)
+  if (sign(fa)*sign(fb) &gt;= 0 ) 
+    stop(&quot;f(a)f(b)&lt;0 not satisfied&quot;)
+  for (j in 1:max.its){
+    history[j] = (a+b)/2
+    if ((b-a)/2 &lt; tol) break
+    fc = f(history[j])
+    if (verbose==TRUE) {               # show values at each step for debugging
+      print(j) 
+      print(c(a,history[j],b,b-a))
+    }
+    if (fc == 0)  break
+    if (sign(fc)*sign(fa) &lt; 0) {
+      b = history[j]
+      fb = fc
+    }
+    else {
+      a = history[j]
+      fa = fc
     }
   }
+  root=(a+b)/2
   return(list(root=root,history=history[!is.na(history)]))
 }</code></pre>
 <p>In the first line of the function definition, we set default values for the variables <code>tol</code> and <code>max.its</code>. That is, the user has the option to enter values for these variables when calling the function, but if they do not enter any values, then the values after the equals signs will be used instead. We stop the procedure when either (i) the length of the bracket window is below the tolerance or (ii) the maximum number of iterations has been reached.</p>
@@ -409,17 +415,18 @@ bisect = function(f,interval,tol=0.5*10^-10,max.its=40){
 <p>We want the function to return two variables: the final estimate of the root and the history of all of the intermediate estimates. One way to do this in R is to return a list of variables. Note also that we can shorten the history vector to however many iterations we actually computed (instead of including all of those NAs).</p>
 <p>Don’t forget to carefully comment your function!</p>
 <p>To use our function, we would define a function <span class="math inline">\(f\)</span> and an interval, and then call</p>
-<pre class="r"><code>interval &lt;- c(0,1)
-out=bisect(f,interval)
-print(out$root)</code></pre>
-<pre><code>## [1] 0.7390851</code></pre>
-<pre class="r"><code>print(out$history)</code></pre>
-<pre><code>##  [1] 0.5000000 0.7500000 0.6250000 0.6875000 0.7187500 0.7343750 0.7421875
-##  [8] 0.7382812 0.7402344 0.7392578 0.7387695 0.7390137 0.7391357 0.7390747
-## [15] 0.7391052 0.7390900 0.7390823 0.7390862 0.7390842 0.7390852 0.7390847
-## [22] 0.7390850 0.7390851 0.7390851 0.7390851 0.7390851 0.7390851 0.7390851
-## [29] 0.7390851 0.7390851 0.7390851 0.7390851 0.7390851 0.7390851 0.7390851
-## [36] 0.7390851 0.7390851 0.7390851 0.7390851 0.7390851</code></pre>
+<pre class="r"><code>f = function(x){x^2-16}
+interval = c(0,10)
+tol = 0.5e-5
+out=bisect(f,interval,tol)
+out</code></pre>
+<pre><code>## $root
+## [1] 4.000001
+## 
+## $history
+##  [1] 5.000000 2.500000 3.750000 4.375000 4.062500 3.906250 3.984375 4.023438
+##  [9] 4.003906 3.994141 3.999023 4.001465 4.000244 3.999634 3.999939 4.000092
+## [17] 4.000015 3.999977 3.999996 4.000006 4.000001</code></pre>
 <p>Here, the dollar sign is a way to access each individual item in the list.</p>
 </div>
 <div id="question-2" class="section level3">
@@ -437,8 +444,30 @@ print(out$root)</code></pre>
 ##  [8] 0.3320312 0.3339844 0.3330078 0.3334961 0.3332520 0.3333740 0.3333130
 ## [15] 0.3333435 0.3333282 0.3333359 0.3333321 0.3333340 0.3333330 0.3333335
 ## [22] 0.3333333 0.3333334 0.3333333 0.3333333 0.3333333 0.3333333 0.3333333
-## [29] 0.3333333 0.3333333 0.3333333 0.3333333 0.3333333 0.3333333 0.3333333
-## [36] 0.3333333 0.3333333 0.3333333 0.3333333 0.3333333</code></pre>
+## [29] 0.3333333 0.3333333 0.3333333 0.3333333 0.3333333 0.3333333 0.3333333</code></pre>
+<pre class="r"><code>(errors=abs(out$history-1/3))</code></pre>
+<pre><code>##  [1] 1.666667e-01 8.333333e-02 4.166667e-02 2.083333e-02 1.041667e-02
+##  [6] 5.208333e-03 2.604167e-03 1.302083e-03 6.510417e-04 3.255208e-04
+## [11] 1.627604e-04 8.138021e-05 4.069010e-05 2.034505e-05 1.017253e-05
+## [16] 5.086263e-06 2.543132e-06 1.271566e-06 6.357829e-07 3.178914e-07
+## [21] 1.589457e-07 7.947286e-08 3.973643e-08 1.986821e-08 9.934107e-09
+## [26] 4.967054e-09 2.483527e-09 1.241763e-09 6.208817e-10 3.104408e-10
+## [31] 1.552204e-10 7.761020e-11 3.880513e-11 1.940254e-11 9.701295e-12</code></pre>
+<pre class="r"><code>n=length(errors)
+(ratios=errors[2:n]/(errors[1:(n-1)]^1))</code></pre>
+<pre><code>##  [1] 0.5000000 0.5000000 0.5000000 0.5000000 0.5000000 0.5000000 0.5000000
+##  [8] 0.5000000 0.5000000 0.5000000 0.5000000 0.5000000 0.5000000 0.5000000
+## [15] 0.5000000 0.5000000 0.5000000 0.5000000 0.5000000 0.5000000 0.5000000
+## [22] 0.5000000 0.5000000 0.5000000 0.5000000 0.5000000 0.5000000 0.5000000
+## [29] 0.5000000 0.5000001 0.4999998 0.5000004 0.4999993 0.5000014</code></pre>
+<p>We can see that if we test for quadratic convergence with q=2, the ratios diverge because the error is not decaying fast enough. So it does not converge quadratically, which is what we expect from theoretical analysis of the bisection method.</p>
+<pre class="r"><code>(quad.ratios=errors[2:n]/(errors[1:(n-1)]^2))</code></pre>
+<pre><code>##  [1]           3           6          12          24          48          96
+##  [7]         192         384         768        1536        3072        6144
+## [13]       12288       24576       49152       98304      196608      393216
+## [19]      786432     1572864     3145728     6291456    12582912    25165824
+## [25]    50331648   100663298   201326586   402653208   805306272  1610613120
+## [31]  3221223936  6442457088 12884877312 25769902080</code></pre>
 </div>
 <div id="question-3" class="section level3">
 <h3>Question 3</h3>

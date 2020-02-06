@@ -11,27 +11,33 @@ Implement an R function for the bisection method to find a root in a closed inte
 
 Here is an outline for your function:
 ```{r}
-f = function(x){
-  return(cos(x)-x)
-}
-bisect = function(f,interval,tol=0.5*10^-10,max.its=40){
-  history = rep(NA, max.its) 
-  # Insert some code here
-  a<-interval[1]
-  b<-interval[2]
-  if(f(a)*f(b)<0) {
-    while((a-b)/2>tol | max.its>0){
-      c=(b+a)/2
-      max.its <- max.its-1
-      if(f(c)==0){
-        break
-      } 
-      if(f(c)*f(b)<0) {a<-c} 
-      if(f(c)*f(a)<0) {b<-c}
-      root=c
-      history=c(history,c)
+bisect = function(f,interval,tol=0.5*10^-10,max.its=40,verbose=FALSE){
+  history = rep(NA, max.its)
+  a = interval[1]
+  b = interval[2]
+  fa = f(a)
+  fb = f(b)
+  if (sign(fa)*sign(fb) >= 0 ) 
+    stop("f(a)f(b)<0 not satisfied")
+  for (j in 1:max.its){
+    history[j] = (a+b)/2
+    if ((b-a)/2 < tol) break
+    fc = f(history[j])
+    if (verbose==TRUE) {               # show values at each step for debugging
+      print(j) 
+      print(c(a,history[j],b,b-a))
+    }
+    if (fc == 0)  break
+    if (sign(fc)*sign(fa) < 0) {
+      b = history[j]
+      fb = fc
+    }
+    else {
+      a = history[j]
+      fa = fc
     }
   }
+  root=(a+b)/2
   return(list(root=root,history=history[!is.na(history)]))
 }
 ```
@@ -46,10 +52,11 @@ Don't forget to carefully comment your function!
 
 To use our function, we would define a function $f$ and an interval, and then call
 ```{r}
-interval <- c(0,1)
-out=bisect(f,interval)
-print(out$root)
-print(out$history)
+f = function(x){x^2-16}
+interval = c(0,10)
+tol = 0.5e-5
+out=bisect(f,interval,tol)
+out
 ```
 Here, the dollar sign is a way to access each individual item in the list.
 
@@ -72,9 +79,13 @@ print(out$history)
 ```
 
 ```{r}
-
-
-
+(errors=abs(out$history-1/3))
+n=length(errors)
+(ratios=errors[2:n]/(errors[1:(n-1)]^1))
+```
+We can see that if we test for quadratic convergence with q=2, the ratios diverge because the error is not decaying fast enough. So it does not converge quadratically, which is what we expect from theoretical analysis of the bisection method.
+```{r}
+(quad.ratios=errors[2:n]/(errors[1:(n-1)]^2))
 ```
 
 

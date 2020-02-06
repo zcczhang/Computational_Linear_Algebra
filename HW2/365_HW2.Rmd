@@ -48,12 +48,14 @@ bisect = function(f,interval,tol=0.5*10^-10,max.its=40){
       root=c
       history=c(history,c)
     }
+  } else{
+    stop("f(a)f(b)<0 not satisfied")
   }
   return(list(root=root,history=history[!is.na(history)]))
 }
 options(digits = 10) 
 interval <- c(2.5,3.5)
-out=bisect(f,interval)
+out=bisect(f,interval,0.5e-8)
 print(out$root)
 print(out$history)
 ```
