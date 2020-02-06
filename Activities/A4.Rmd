@@ -27,11 +27,45 @@ a. Discuss with a neighbor to understand what each line in the plotting code is 
 b. Use your bisection method code to find the root. Use a starting interval of $[0,1]$ and a tolerance of $0.5*10^{-10}$. Also run this command, which will change the number of digits that R displays on output.
 ```{r}
 options(digits=10)
+bisect = function(f,interval,tol=0.5*10^-10,max.its=40){
+  history = rep(NA, max.its) 
+  # Insert some code here
+  a<-interval[1]
+  b<-interval[2]
+  if(f(a)*f(b)<0) {
+    while((b-a)/2>tol | max.its>0){
+      c=(b+a)/2
+      max.its <- max.its-1
+      if(f(c)==0){
+        break
+      } 
+      if(f(c)*f(b)<0) {a<-c} 
+      if(f(c)*f(a)<0) {b<-c}
+      root=c
+      history=c(history,c)
+    }
+  } else{
+    stop("f(a)f(b)<0 not satisfied")
+  }
+  return(list(root=root,history=history[!is.na(history)]))
+}
+options(digits = 10) 
+interval <- c(0,1)
+out=bisect(f,interval)
+out
 ```
 How close is the answer to the actual root of $\frac{2}{3}$?
+```{r}
+out$root
+out$root-2/3
+```
 
 c. Try to find the root with the R function `uniroot`. Is that any closer?
-
+```{r}
+out2=uniroot(f,c(0,1))
+out2$root
+abs(out2$root-2/3)
+```
 d. Now let's zoom in very close to the root:
 ```{r}
 x = seq(0.666656,0.666674,len=1000)
@@ -85,9 +119,22 @@ Note that I used the `ylim` parameter to set the range that is plotted on the $y
 
 a. Use `bisect` and `uniroot`  to find the root at 16. Use the bracketing interval $[15.8,16.3]$ and use the unfactored form `W` of the polynomial. How many decimal places does it get correct? Note: with the factored version, it finds it exactly but that isn't so useful, because if we have a function nicely factored, we don't need to do numerical root-finding!
 
-b. This led Wilkinson to say in 1984: "Speaking for myself, I regard it as the most traumatic experience of my career as a numerical analyst." To feel his trauma, evaluate the function `W` at the root you computed in part a. What do you get? What should it be? 
+```{r}
+interval <- c(15.8,16.3)
+out=bisect(W,interval)
+out
+uniroot(W,interval)
 
+```
+
+b. This led Wilkinson to say in 1984: "Speaking for myself, I regard it as the most traumatic experience of my career as a numerical analyst." To feel his trauma, evaluate the function `W` at the root you computed in part a. What do you get? What should it be? 
+```{r}
+W(16.00587262)
+W(16.0065135)
+W(16)
+```
 c. Here is a new polynomial
+
 ```{r}
 W2 = function(x){
   2432902008176640000 - 8752948036761600000*x + 13803759753640704000*x^2 - 
@@ -99,3 +146,15 @@ W2 = function(x){
 }
 ```
 It is the same as the Wilkinson polynomial, except I have changed the coefficient of $x^{19}$ by reducing it from $-210$ to $-(210 + 2^{-23})$. This is a relatively small change in the problem. See what the root that was at $x = 20$ increases to after this change has been made.  Look for it in the interval $[19.5,20.95]$. Huge error magnification is caused by small relative errors in storing the coefficients. This is an impressive example of ill-conditioning, which we'll discuss later.
+
+```{r}
+interval <- c(19.5,20.95)
+out=bisect(W2,interval)
+out
+uniroot(W2,interval)
+
+```
+
+
+
+
