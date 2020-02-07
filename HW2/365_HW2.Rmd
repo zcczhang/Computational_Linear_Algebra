@@ -82,34 +82,34 @@ newton=function(x,its){
 x<-4.25
 e<-abs((newton(x,50)-pi))
 
-x=1
-y=e[2]/e[1]
-for (i in 2:6) {
-  x=c(x,i)
-  y=c(y,e[i+1]/e[i])
-}
+x=c(1:6)
+y=e[2:7]/e[1:6]
 plot(x,y)
 ```
 
 
-> After around 8 iterations, it will become converge. The convergence order is $1$(linear), and rate is around $0$.
+> After around 6 iterations, it will become converge. The convergence order is $1$(linear), and rate is around $0$.
 
 e) Repeat d) with $x_0$=1.5. What is the convergence order and rate to $\pi/2$? If your answer is different from d), explain why.
 
 ```{r}
 x<-1.5
 e<-abs((newton(x,50)-pi/2))
-x=1
-y=e[2]/e[1]
-
-for (i in 2:14) {
-  x=c(x,i)
-  y=c(y,e[i+1]/(e[i]))
-}
+x=c(1:14)
+y=e[2:15]/e[1:14]
 plot(x,y)
 ```
 
-> The convergence order is $1$(linear), and rate is aroun $0.5$. It is different from d) since
+> The convergence order is $1$(linear), and rate is around $0.5$. It is different from d) since:<br>
+$\because f^{\prime}(r)\neq 0$ for both root $\pi$ and $\pi/2$<br>
+$\therefore f(r)=0=f(x_{i})+f^{\prime}(x_{i})(r-x_{i})$<br>
+$\therefore f(r)=f(x_{i})+f^{\prime}(x_{i})(r-x_{i})$<br>
+$\therefore 0=\frac{f(x_{i})}{f^{\prime}(x_{i})}+\frac{f^{\prime}(x_{i})(r-x_{i})}{f^{\prime}(x_{i})}$<br>
+$\therefore x_{i}-\frac{f(x_{i})}{f^{\prime}(x_{i})}-r =\frac{(r-x_{i})^{2}}{2} \frac{f^{\prime \prime}(c_{i})}{f^{\prime}(x_{i})}$<br>
+$\therefore x_{i+1}-r =e_{i}^{2} \frac{f^{\prime \prime}(c_{i})}{2 f^{\prime}(x_{i})}$<br>
+$\therefore e_{i+1} =e_{i}^{2}|\frac{f^{\prime \prime}(c_{i})}{2 f^{\prime}(x_{i})}|$<br>
+
+
 
 ### Problem 2
 Computer Problem 7 from Section 1.1 of the book (involving a determinant). 
