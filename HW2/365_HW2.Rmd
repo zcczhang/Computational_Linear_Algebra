@@ -91,7 +91,6 @@ newton=function(x,its){
 x<-4.25
 newton(x,50)
 e<-abs((newton(x,50)-pi))
-
 x=c(1:6)
 y=e[2:7]/e[1:6]
 plot(x,y)
@@ -108,6 +107,7 @@ e<-abs((newton(x,50)-pi/2))
 x=c(1:14)
 y=e[2:15]/e[1:14]
 plot(x,y)
+e
 ```
 
 > The convergence order is $1$(linear), and rate is around $0.5$. It is different from d) since:<br>
