@@ -31,36 +31,45 @@ b) Use your `bisect` function to see how many iterations it actually takes.
 f = function(x){
   return((cos(x))^2+sin(x)-1)
 }
-bisect = function(f,interval,tol=0.5*10^-10,max.its=40){
-  history = rep(NA, max.its) 
-  # Insert some code here
-  a<-interval[1]
-  b<-interval[2]
-  if(f(a)*f(b)<0) {
-    while((b-a)/2>tol | max.its>0){
-      c=(b+a)/2
-      max.its <- max.its-1
-      if(f(c)==0){
-        break
-      } 
-      if(f(c)*f(b)<0) {a<-c} 
-      if(f(c)*f(a)<0) {b<-c}
-      root=c
-      history=c(history,c)
-    }
-  } else{
+bisect = function(f,interval,tol=0.5*10^-10,max.its=40,verbose=FALSE){
+  history = rep(NA, max.its)
+  a = interval[1]
+  b = interval[2]
+  fa = f(a)
+  fb = f(b)
+  if (sign(fa)*sign(fb) >= 0 ) 
     stop("f(a)f(b)<0 not satisfied")
+  for (j in 1:max.its){
+    history[j] = (a+b)/2
+    if ((b-a)/2 < tol) break
+    fc = f(history[j])
+    if (verbose==TRUE) {               # show values at each step for debugging
+      print(j) 
+      print(c(a,history[j],b,b-a))
+    }
+    if (fc == 0)  break
+    if (sign(fc)*sign(fa) < 0) {
+      b = history[j]
+      fb = fc
+    }
+    else {
+      a = history[j]
+      fa = fc
+    }
   }
+  root=(a+b)/2
   return(list(root=root,history=history[!is.na(history)]))
 }
-options(digits = 10) 
+
+options(digits = 9) 
 interval <- c(2.5,3.5)
-out=bisect(f,interval,0.5e-8)
+tol=0.5*10e-8
+out=bisect(f,interval,tol=tol)
 print(out$root)
 print(out$history)
 ```
 
-> The accurate solution to eight correct decimal places is 3.14159265, and it is determined in bisection method after 27 iterations.
+> The accurate solution to eight correct decimal places is 3.14159265, and it is determined in bisection method after 25 iterations.
 
 c) By hand, compute a formula for Newton's iteration for this particular choice of $f(x)$; i.e., write a formula for $x_{i+1}$ in terms of $x_{i}$.
 
@@ -80,6 +89,7 @@ newton=function(x,its){
   return(res)
 }
 x<-4.25
+newton(x,50)
 e<-abs((newton(x,50)-pi))
 
 x=c(1:6)
@@ -131,9 +141,10 @@ f=function(x){
   A<-cbind(c(1,4,7,x),c(2,5,x,10),c(3,x,8,11),c(x,6,9,12))
   return(det(A)-1000)
 }
-options(digits = 8) 
+6*log(10)/log(2)
+options(digits = 7) 
 interval <- c(9,10)
-out=bisect(f,interval)
+out=bisect(f,interval,max.its = 20)
 print(out$root)
 print(out$history)
 ```
@@ -182,28 +193,29 @@ f=function(x){
   A[1,1]<-x
   return(det(A-pi*diag(1,5,5)))
 }
-options(digits = 7) 
+options(digits = 9) 
 interval <- c(0,10)
 out=bisect(f,interval)
 print(out$root)
 print(out$history)
 
-A[1,1]<-2.948011
+A[1,1]<-2.948010
+options(digits = 7)
 max(eigen(A)$values)
 ```
 
-> Use \(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\) to calculate the eigenvalue, I got $A_{11} = 2.948011$ with the max eignevalue $\pi$.
+> Use \(|\mathbf{A}-\lambda \cdot \mathbf{I}| = 0\) to calculate the eigenvalue, I got $A_{11} = 2.948010$ within six correct decimal places with the max eignevalue $\pi$.
 
 
 ### Problem 4
 Write your own function to find square roots, using the idea that $sqrt(t)$ is a root of the function $f(x) = x^2 - t$, where $t$ is a positive number. Come up with an initial interval carefully inside your function. Make sure your function is commented, and use it to compute $\sqrt{4}, \sqrt{9}, \sqrt{16}$.
 
 ```{r}
-my.sqrt=function(x){
-  f=function(t){
+my.sqrt=function(x){   # the number for square root finding
+  f=function(t){      # t is the square root of x
     return(t^2-x)
   }
-  return(bisect(f,c(0,10))$root)
+  return(bisect(f,c(0,10))$root)  # using bisection method get the t
 }
 
 my.sqrt(1)
@@ -277,10 +289,22 @@ lm(y~x)
 c. Implement the secant method for rootfinding (it is OK to modify your `bisect` code). Then use your secant code to solve for $r$. How many secant steps were used?
 
 ```{r}
-secant=function(x){
-  
+secant.method <- function(f, x0, x1, tol = 0.5e-10, n = 40) {
+  history = rep(NA, n) 
+  for (i in 1:n) {
+    x2 <- x1 - f(x1) / ((f(x1) - f(x0)) / (x1 - x0)) 
+    if (abs(x2 - x1) < tol) {
+      root=x2
+      break
+    }
+    x0 <- x1
+    x1 <- x2
+    root=x2
+    history=c(history,x2)
+  }
+  return(list(root=root,history=history[!is.na(history)]))
 }
-
+secant.method(f, 0, 0.1)
 ```
 
 d. Create a log-log plot of the errors for the secant method. What does it seem like the convergence order is for this?
