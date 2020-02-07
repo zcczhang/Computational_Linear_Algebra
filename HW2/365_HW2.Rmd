@@ -193,7 +193,7 @@ f=function(x){
   A[1,1]<-x
   return(det(A-pi*diag(1,5,5)))
 }
-options(digits = 9) 
+options(digits = 8) 
 interval <- c(0,10)
 out=bisect(f,interval)
 print(out$root)
@@ -246,7 +246,7 @@ out
 $\frac{1-0}{2^{i+1}}<\frac{1}{2}\times10^{-10}$<br>
 $10\log 10<i\log2$<br>
 $i>\frac{10\log 10}{log2}=33.2$<br>
-$\therefore 34$ iterations of the bisection method are necessary to find the accurate solution to ten correct decimal places.
+$\therefore 34$ iterations of the bisection method are necessary to find the accurate solution to ten correct decimal places, but the algorithm used 35 steps.
 
 ```{r}
 10*log(10)/log(2)
@@ -265,31 +265,32 @@ b. (From In-class Activity) Another method to determine the convergence order is
 
 - Now, test that the bisection method for this data had linear convergence by plotting the log-log plot of the error data $(\log e_i, \log e_{i+1})$ and observing what the slope is (hint, the function `lm` can give the slope). Run your bisection code again and find a root correct to 15 digits; you may use this root as the "true root" in the error formula. Note, your plot will not be perfectly linear as this "true root" is actually just an approximation.
 ```{r}
-options(digits=15)
-(rout=bisect(f,c(0,1))$root)
-```
-```{r warning=FALSE}
-(e<-(abs(out$history-rout)))
+15*log(10)/log(2)
+options(digits=18)
+(actual=bisect(f,c(0,1),tol = 0.5*10e-19,max.its = 100))
 ```
 
 
 ```{r warning=FALSE}
+aroot=0.177289179849030  # the root that has 15 correct decimals
+(e<-(abs(out$history-aroot)))
+
 x=log(e[1])
 y=log(e[2])
 for (i in 2:(length(e)-2)) {
   x=c(x,log(e[i]))
   y=c(y,log(e[i+1]))
 }
-plot(x,y,lm=TRUE)
+plot(x,y)
 lm(y~x)
 ```
 
-> The slop is 0.984247752914 approximately.
+> The slop is 0.979648488907936 approximately.
 
 c. Implement the secant method for rootfinding (it is OK to modify your `bisect` code). Then use your secant code to solve for $r$. How many secant steps were used?
 
 ```{r}
-secant.method <- function(f, x0, x1, tol = 0.5e-10, n = 40) {
+secant.method <- function(f, x0, x1, tol = 0.5e-10, n = 100) {
   history = rep(NA, n) 
   for (i in 1:n) {
     x2 <- x1 - f(x1) / ((f(x1) - f(x0)) / (x1 - x0)) 
@@ -304,10 +305,24 @@ secant.method <- function(f, x0, x1, tol = 0.5e-10, n = 40) {
   }
   return(list(root=root,history=history[!is.na(history)]))
 }
-secant.method(f, 0, 0.1)
+options(digits = 10)
+(out=secant.method(f, 0, 0.1))
 ```
 
+> Secant method only used 7 steps to find a result with 10 correct decimals
+
 d. Create a log-log plot of the errors for the secant method. What does it seem like the convergence order is for this?
+
+```{r}
+aroot=0.177289179849030  # the root that has 15 correct decimals
+(e<-(abs(out$history-aroot)))
+x=log(e[1:6])
+y=log(e[2:7])
+plot(x,y)
+lm(y~x)
+```
+
+> The convergence order is around the golden ratio, $\frac{1+\sqrt 5}{2}$
 
 
 
