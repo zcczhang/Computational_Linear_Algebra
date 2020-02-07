@@ -90,14 +90,23 @@ newton=function(x,its){
 }
 x<-4.25
 newton(x,50)
+```
+```{r}
 e<-abs((newton(x,50)-pi))
+e
 x=c(1:6)
 y=e[2:7]/e[1:6]
+plot(x,y)
+
+```
+```{r}
+x=c(1:6)
+y=e[2:7]/e[1:6]^2
 plot(x,y)
 ```
 
 
-> After around 6 iterations, it will become converge. The convergence order is $1$(linear), and rate is around $0$.
+> After around 6 iterations, it will become converge. The convergence order is $2$, and rate is around $1$.
 
 e) Repeat d) with $x_0$=1.5. What is the convergence order and rate to $\pi/2$? If your answer is different from d), explain why.
 
@@ -110,16 +119,21 @@ plot(x,y)
 e
 ```
 
-> The convergence order is $1$(linear), and rate is around $0.5$. It is different from d) since:<br>
-$\because f^{\prime}(r)\neq 0$ for both root $\pi$ and $\pi/2$<br>
-$\therefore f(r)=0=f(x_{i})+f^{\prime}(x_{i})(r-x_{i})$<br>
-$\therefore f(r)=f(x_{i})+f^{\prime}(x_{i})(r-x_{i})$<br>
-$\therefore 0=\frac{f(x_{i})}{f^{\prime}(x_{i})}+\frac{f^{\prime}(x_{i})(r-x_{i})}{f^{\prime}(x_{i})}$<br>
-$\therefore x_{i}-\frac{f(x_{i})}{f^{\prime}(x_{i})}-r =\frac{(r-x_{i})^{2}}{2} \frac{f^{\prime \prime}(c_{i})}{f^{\prime}(x_{i})}$<br>
-$\therefore x_{i+1}-r =e_{i}^{2} \frac{f^{\prime \prime}(c_{i})}{2 f^{\prime}(x_{i})}$<br>
-$\therefore e_{i+1} =e_{i}^{2}|\frac{f^{\prime \prime}(c_{i})}{2 f^{\prime}(x_{i})}|$<br>
-
-
+> The convergence order is $1$(linear), and rate is around $0.5$. It is different from d) since for the first root $\pi$:<br>
+\(f\) is twice continuously differentiable and \(f(r)=0 \), \(f^{\prime}(r) \neq 0,\) then Newton's
+Method is locally and quadratically convergent to \(r .\) The error \(e_{i}\) at step \(i\) satisfies
+$$
+\lim _{i \rightarrow \infty} \frac{e_{i+1}}{e_{i}^{2}}=\frac{f^{\prime \prime}(r)}{2 f^{\prime}(r)}=\frac{f^{\prime \prime}(\pi)}{2 f^{\prime}(\pi)}=\frac{-2}{2\times(-1)}=1
+$$
+$\therefore$ The convergence order is 2(quadratic), and the rate to $\pi$ is 1.<br>
+On the other hand,<br>
+$\because$ \(f^{\prime}(\pi/2)=0, f^{\prime \prime}(\pi/2)=1,f^{\prime\prime\prime}(\pi/2)=0\),<br> $\therefore$ the multiplicity of root \(\pi/2\) is 2. <br>
+$\because$ \((m+1=3)\) -times continuously differentiable function \(f\) has a multiplicity \(2\) root at \(r=\pi/2.\) Then Newton's Method is locally convergent to \(r,\) and the error \(e_{i}\) at
+step \(i\) satisfies
+$$
+\lim _{i \rightarrow \infty} \frac{e_{i+1}}{e_{i}}=S=\frac{(m-1)}{m}=\frac{2-1}{2}=\frac{1}{2}
+$$
+$\therefore$ The convergence order is 1(linear), and rate to $\pi/2$ is $1/2$.
 
 ### Problem 2
 Computer Problem 7 from Section 1.1 of the book (involving a determinant). 
