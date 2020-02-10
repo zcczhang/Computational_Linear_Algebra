@@ -1,8 +1,3 @@
----
-output: 
-  html_document:
-    keep_md: yes
----
 # Math 365 / Comp 365: Homework 2
 
 ### *Please bring a stapled hard copy of your answers to class, citing any collaborators.*
@@ -111,7 +106,7 @@ plot(x,y)
 ```
 
 
-> After around 6 iterations, it will become converge. The convergence order is $2$, and rate is around $1$.
+> After around 8 iterations, it will become converge. The convergence order is $2$, and rate is around $1$.
 
 e) Repeat d) with $x_0$=1.5. What is the convergence order and rate to $\pi/2$? If your answer is different from d), explain why.
 
@@ -173,7 +168,7 @@ f=function(x){
 6*log(10)/log(2)
 options(digits = 7) 
 interval <- c(9,10)
-out=bisect(f,interval,max.its = 20)
+out=bisect(f,interval,tol=0.5*10^-6)
 print(out$root)
 print(out$history)
 ```
@@ -224,7 +219,7 @@ f=function(x){
 }
 options(digits = 8) 
 interval <- c(0,10)
-out=bisect(f,interval)
+out=bisect(f,interval,tol=0.5*10^-6)
 print(out$root)
 print(out$history)
 
@@ -267,7 +262,7 @@ f=function(r){
   return((r^3*(2*r^2+5*0.1^2))/(2*(r^2+0.1^2)^(5/2))-0.9)
 }
 options(digits=10)
-out=bisect(f,c(0,1))
+out=bisect(f,c(0,1),tol=0.5*10^-10)
 out
 ```
 
@@ -275,7 +270,7 @@ out
 $\frac{1-0}{2^{i+1}}<\frac{1}{2}\times10^{-10}$<br>
 $10\log 10<i\log2$<br>
 $i>\frac{10\log 10}{log2}=33.2$<br>
-$\therefore 34$ iterations of the bisection method are necessary to find the accurate solution to ten correct decimal places, but the algorithm used 35 steps.
+$\therefore 34$ iterations of the bisection method are necessary to find the accurate solution to ten correct decimal places and the algorithm atually takes 34 steps as well.
 
 ```{r}
 10*log(10)/log(2)
@@ -296,12 +291,12 @@ b. (From In-class Activity) Another method to determine the convergence order is
 ```{r}
 15*log(10)/log(2)
 options(digits=18)
-(actual=bisect(f,c(0,1),tol = 0.5*10e-19,max.its = 100))
+(actual=bisect(f,c(0,1),tol = 0.5*10e-15,max.its = 100))
 ```
 
 
 ```{r warning=FALSE}
-aroot=0.177289179849030  # the root that has 15 correct decimals
+aroot=0.177289179849029  # the root that has 15 correct decimals
 (e<-(abs(out$history-aroot)))
 
 x=log(e[1])
