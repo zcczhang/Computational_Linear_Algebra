@@ -1,3 +1,9 @@
+---
+output: 
+  html_document:
+    keep_md: yes
+---
+
 # Math 365 / Comp 365: Homework 2
 
 ### *Please bring a stapled hard copy of your answers to class, citing any collaborators.*
@@ -309,7 +315,7 @@ plot(x,y)
 lm(y~x)
 ```
 
-> The slop is 0.979648488907936 approximately.
+> The slop is 0.979648790916348 approximately.
 
 c. Implement the secant method for rootfinding (it is OK to modify your `bisect` code). Then use your secant code to solve for $r$. How many secant steps were used?
 
