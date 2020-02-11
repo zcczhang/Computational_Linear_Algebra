@@ -1,6 +1,20 @@
 
 ```{r}
 library(Deriv)
-f <- function(x) x^2
-Deriv(f)
+f = function(x) {x*exp(-x^2)}
+df = Deriv(f)
+df
+```
+```{r}
+x = seq(-1,3,length=1000)
+
+plot(x,f(x),type='l',main="y = f(x)")
+grid()
+abline(0,0,col='blue')
+abline(v=0,col='blue')
+plot(x,df(x),type='l',main="dy/dx = f'(x)")
+grid()
+abline(0,0,col='blue')
+abline(v=0,col='blue')
+
 ```
