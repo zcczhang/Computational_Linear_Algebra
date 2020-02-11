@@ -1,0 +1,6 @@
+
+```{r}
+library(Deriv)
+f <- function(x) x^2
+Deriv(f)
+```
