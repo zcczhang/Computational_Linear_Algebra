@@ -315,7 +315,7 @@ plot(x,y)
 lm(y~x)
 ```
 
-> The slop is 0.979648790916348 approximately.
+> The slop is 1 approximately, so its convergene rate is linear.
 
 c. Implement the secant method for rootfinding (it is OK to modify your `bisect` code). Then use your secant code to solve for $r$. How many secant steps were used?
 
