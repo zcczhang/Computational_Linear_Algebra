@@ -59,7 +59,7 @@ f=function(x) (cos(x))^2+sin(x)-1
 Newton(f,4.25)
 ```
 
-> Q3
+> visualiztion
 
 ```{r}
 f = function(x) {exp(x)}
@@ -80,6 +80,47 @@ p<-ggplot(subset(d_point,y<=15),aes(x,y))+
   theme_classic()+
   theme(legend.position="none")
 p+geom_line()+geom_abline(intercept=b, slope=k,linetype=2)+geom_point(data=data.frame(x=0,y=1),aes(colour="red"))
+```
 
+> Q3
+
+```{r}
+f = function(x) {exp(x)}
+
+slopes=function(f,x){
+  df=D(f,delta = 10^-(1:20))
+  return(df(x))
+}
+
+options(digits = 20)
+(slopes=slopes(f,0))  # slope should be 1
+x=c(1:15)
+plot(x,slopes[1:15])
+(e=(slopes[1:15]-1))
+plot(x,e)
+min(e)
 
 ```
+
+> $\delta=10^{-13 or 14}$ is most accurate
+
+> Test for another function
+
+```{r}
+f = function(x) {x^2}
+
+slopes=function(f,x){
+  df=D(f,delta = 10^-(1:20))
+  return(df(x))
+}
+
+options(digits = 20)
+(slopes=slopes(f,1))  # slope should be 2
+x=c(1:15)
+plot(x,slopes[1:15])
+(e=(slopes[1:15]-1))
+plot(x,e)
+min(e)
+```
+
+> Consistent
