@@ -11,8 +11,8 @@ Points, lines,
 
 **Step 1**: First create a template gesture's path for matching the gesture point path such that the path defined by their original M points is defined by N equidistantly spaced points. After that, the candidate gesture and any loaded templates will all have exactly N points. This will allow us to measure the distance from candidate points and template points.
 **Step 2**: Rotate Once Based on the “Indicative Angle” defined as the angle formed between the centroid of the gesture and the gesture’s first point. By doing so, I can find the optimal angle much faster and minimize the distance between the gesture and the template points.
-**Step 3**: Scale and Translate
-**Step 4**: Find the Optimal Angle for the Best Score
+**Step 3**: Scale to a reference squre and Translate to a reference point, which allows us to rotate the candidate about its centroid and safely assume that changes in pairwise point-distances between candidate points and template points, and its centroid is at the origin.
+**Step 4**: Find the Optimal Angle for the Best Score, which acutually does the recognition.
 
 
 
