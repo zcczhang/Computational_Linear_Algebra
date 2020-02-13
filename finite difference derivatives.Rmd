@@ -59,3 +59,27 @@ f=function(x) (cos(x))^2+sin(x)-1
 Newton(f,4.25)
 ```
 
+> Q3
+
+```{r}
+f = function(x) {exp(x)}
+df = D(f)
+
+x = seq(-1,3,length=1000)
+
+y<-f(x)  
+d_point<-data.frame(x,y)
+
+x0<-0
+y0<-f(0) #（0, 1）
+k<-df(x0) # slope
+b<-y0-k*x0  # intersecpt
+
+library(ggplot2) 
+p<-ggplot(subset(d_point,y<=15),aes(x,y))+
+  theme_classic()+
+  theme(legend.position="none")
+p+geom_line()+geom_abline(intercept=b, slope=k,linetype=2)+geom_point(data=data.frame(x=0,y=1),aes(colour="red"))
+
+
+```
