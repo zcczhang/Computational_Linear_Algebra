@@ -23,6 +23,10 @@ abline(0,0,col='blue')
 abline(v=0,col='blue')
 ```
 
+```{r}
+
+
+```
 
 > Test with `Deriv` package
 
@@ -92,7 +96,7 @@ options(digits = 20)
 x=c(1:15)
 plot(x,slopes[1:15])
 (e=abs((slopes[1:15]-1)))
-plot(x,e)
+plot(x,log(e))
 min(e)
 
 ```
@@ -105,18 +109,24 @@ min(e)
 f = function(x) {x^2}
 
 slopes=function(f,x){
-  df=D(f,delta = 10^-(1:20))
+  df=D(f,delta = ((1:100)*10^-9))
   return(df(x))
 }
 
 options(digits = 20)
 (slopes=slopes(f,1))  # slope should be 2
-x=c(1:15)
-plot(x,slopes[1:15])
-(e=abs(slopes[1:15]-2))
-plot(x,e)
+x=c(1:100)
+plot(x,slopes[1:100])
+(e=abs(slopes[1:100]-2))
+plot(x,log(e))
+min(e)
+x=c(1:20)
+(e=abs(slopes[1:20]-2))
+plot(x,log(e))
 min(e)
 ```
+
+> $8\times10^{-9}$
 
 > Consistent
 
@@ -142,7 +152,7 @@ options(digits = 20)
 x=c(1:16)
 plot(x,slopes[1:16])
 (e=abs(slopes[1:16]-2))
-plot(x,e)
+plot(x,log(e))
 min(e)
 ```
 
@@ -161,7 +171,7 @@ options(digits = 20)
 x=c(1:15)
 plot(x,slopes[1:15])
 (e=abs((slopes[1:15]-1)))
-plot(x,e)
+plot(x,log(e))
 min(e)
 ```
 
