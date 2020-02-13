@@ -24,17 +24,12 @@ abline(v=0,col='blue')
 ```
 
 
-> Test
+> Test with `Deriv` package
 
 ```{r}
 library(Deriv)
 df = Deriv(f)
-x = seq(-1,3,length=1000)
 
-plot(x,f(x),type='l',main="y = f(x)")
-grid()
-abline(0,0,col='blue')
-abline(v=0,col='blue')
 plot(x,df(x),type='l',main="dy/dx = f'(x)")
 grid()
 abline(0,0,col='blue')
@@ -96,13 +91,13 @@ options(digits = 20)
 (slopes=slopes(f,0))  # slope should be 1
 x=c(1:15)
 plot(x,slopes[1:15])
-(e=(slopes[1:15]-1))
+(e=abs((slopes[1:15]-1)))
 plot(x,e)
 min(e)
 
 ```
 
-> $\delta=10^{-13 or 14}$ is most accurate
+> around $\delta=10^{-8}$ is most accurate
 
 > Test for another function
 
@@ -118,9 +113,57 @@ options(digits = 20)
 (slopes=slopes(f,1))  # slope should be 2
 x=c(1:15)
 plot(x,slopes[1:15])
-(e=(slopes[1:15]-1))
+(e=abs(slopes[1:15]-2))
 plot(x,e)
 min(e)
 ```
 
 > Consistent
+
+> Q4
+
+```{r}
+D2<-function(f,delta=.001) {
+  fun=function(x){
+  (f(x+delta)-f(x-delta))/(2*delta)
+  }
+  return(fun)
+}
+
+f = function(x) {x^2}
+
+slopes=function(f,x){
+  df=D2(f,delta = 10^-(1:20))
+  return(df(x))
+}
+
+options(digits = 20)
+(slopes=slopes(f,1))  # slope should be 2
+x=c(1:16)
+plot(x,slopes[1:16])
+(e=abs(slopes[1:16]-2))
+plot(x,e)
+min(e)
+```
+
+> It will be most accurate around $\delta=0.1$
+
+```{r}
+f = function(x) {exp(x)}
+
+slopes=function(f,x){
+  df=D2(f,delta = 10^-(1:20))
+  return(df(x))
+}
+
+options(digits = 20)
+(slopes=slopes(f,0))  # slope should be 1
+x=c(1:15)
+plot(x,slopes[1:15])
+(e=abs((slopes[1:15]-1)))
+plot(x,e)
+min(e)
+```
+
+> not consistent since it will be most consistent aroung $\delta=10^{-5}$
+
