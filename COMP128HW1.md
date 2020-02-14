@@ -4,7 +4,7 @@ As the gesture should be recorded from the beginning to the end, which means dra
 
 2. In order to draw the gesture on the CanvasWindow, you will need to implement several mouse event handlers. List each of the methods you will use, and briefly describe what actions you will need to take in order to draw the gesture on the CanvasWindow.
 
-Points, lines,          
+onDrag(), onClick(), so we can click mouse and drag the mouse to draw the gesture that I want.
 
 
 3. In your own words, describe each step of the recognition algorithm. For each step, explain why the actions performed on the data are needed.
