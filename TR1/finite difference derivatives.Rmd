@@ -70,15 +70,15 @@ Newton(f,4.25)
 > visualiztion
 
 ```{r}
-f = function(x) {exp(x)}
+f=function(x) (cos(x))^2+sin(x)-1
 df = D(f)
 
-x = seq(-1,3,length=1000)
+x = seq(1,5,length=1000)
 
 y<-f(x)  
 d_point<-data.frame(x,y)
 
-x0<-0
+x0<-Newton(f,1.5)$root
 y0<-f(0) #（0, 1）
 k<-df(x0) # slope
 b<-y0-k*x0  # intersecpt
@@ -87,9 +87,18 @@ library(ggplot2)
 p<-ggplot(subset(d_point,y<=15),aes(x,y))+
   theme_classic()+
   theme(legend.position="none")
-p+geom_line()+geom_abline(intercept=b, slope=k,linetype=2)+geom_point(data=data.frame(x=0,y=1),aes(colour="red"))
+p+geom_line()+geom_abline(intercept=b, slope=k,linetype=2)+geom_point(data=data.frame(x=x0,y=y0),aes(colour="red"))+
+  ggtitle("")+
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
+
+```{r}
+x=seq(-0.5,pi+0.5,0.01)
+y=(cos(x))^2+sin(x)-1
+plot(x,y,type="l",lwd=2.5,col="blue",main="f(x)=0",ylab="f(x)",)
+abline(0,0)
+```
 > Q3
 
 ```{r}
@@ -101,12 +110,31 @@ slopes=function(f,x){
 }
 
 options(digits = 20)
-(slopes=slopes(f,0))  # slope should be 1
+slopes=slopes(f,0)  # slope should be 1
 x=c(1:15)
 plot(x,slopes[1:15])
-(e=abs((slopes[1:15]-1)))
+e=abs((slopes[1:15]-1))
 plot(x,log(e))
 min(e)
+
+
+slopes=function(f,x){
+  df=D(f,delta = ((1:100)*10^-9))
+  return(df(x))
+}
+
+options(digits = 20)
+(slopes=slopes(f,0))  # slope should be 1
+x=c(1:100)
+plot(x,slopes[1:100])
+e=abs(slopes[1:100]-1)
+plot(x,log(e))
+min(e)
+x=c(1:20)
+e=abs(slopes[1:20]-1)
+plot(x,log(e))
+min(e)
+
 
 ```
 
