@@ -1,6 +1,6 @@
 1. In the starter code, we have declared a double-ended queue (Deque) data structure to hold the list of drawn points. Describe why this is an appropriate choice.
 
-As the gesture should be recorded from the beginning to the end, which means drawn points which constitue the gesture have the order, we should use the double-ended queue data structure to hold the list of drawn points
+As the gesture should be recorded from the beginning to the end, which means drawn points which constitue the gesture have the order, so that we can access the top of the queue to do the roation or other steps for our algorithm. Therefore, we should use the double-ended queue data structure to hold the list of drawn points
 
 2. In order to draw the gesture on the CanvasWindow, you will need to implement several mouse event handlers. List each of the methods you will use, and briefly describe what actions you will need to take in order to draw the gesture on the CanvasWindow.
 
