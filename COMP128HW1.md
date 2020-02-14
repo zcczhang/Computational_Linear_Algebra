@@ -16,7 +16,10 @@ Points, lines,
 
 4. Please review each of the provided classes that we have given you. For each one, describe their purpose. When might you want to use the functions provided?
 
->  
+GestureApp:
+IOManager:
+Recognizer:
+
 
 
 
