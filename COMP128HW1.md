@@ -16,13 +16,11 @@ onClick(), onDrag(), mouseReleased(), so we can click mouse and drag the mouse t
 
 4. Please review each of the provided classes that we have given you. For each one, describe their purpose. When might you want to use the functions provided?
 
-GestureApp: The window and user interface for drawing gestures and automatically recognizing them. We use this class when we draw the gestures that need to be recognized.
-IOManager: Handles input for saving and loading gestures from an xml file. The gestures that I draw will load and save by this class for later recognization with the template gesture.
-Recognizer: recognize 2D gestures. Uses the $1 gesture recognition 4 steps algorithm that discussed in problem 3.
+**GestureApp**: The window and user interface for drawing gestures and automatically recognizing them. We use this class when we draw the gestures that need to be recognized.
+**IOManager**: Handles input for saving and loading gestures from an xml file. The gestures that I draw will load and save by this class for later recognization with the template gesture.
+**Recognizer**: recognize 2D gestures. Uses the $1 gesture recognition 4 steps algorithm that discussed in problem 3.
 
 5. We have given you a partial class decomposition. Can you think of any more classes you might need to store the data involved in this program? In particular think about what the return type of an attempted gesture recognition should be.
-
->
 
 
 
