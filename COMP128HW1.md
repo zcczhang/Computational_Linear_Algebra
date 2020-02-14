@@ -1,6 +1,6 @@
 1. In the starter code, we have declared a double-ended queue (Deque) data structure to hold the list of drawn points. Describe why this is an appropriate choice.
 
-As the gesture should be recorded from the beginning to the end, which means drawn points which constitue the gesture have the order, so that we can access the top of the queue to do the roation at step2 for our algorithm and don't modify any elements middle points except the top element. Besides, using deque is more space efficient. Therefore, we should use the double-ended queue data structure to hold the list of drawn points.
+As the gesture should be recorded from the beginning to the end, which means drawn points which constitue the gesture have the order, so that we can access the top of the queue to do the roation at step2 for our algorithm and don't modify any elements middle points except the top element. Besides, using deque is more space efficient than LinkedList. Therefore, we should use the double-ended queue data structure to hold the list of drawn points.
 
 2. In order to draw the gesture on the CanvasWindow, you will need to implement several mouse event handlers. List each of the methods you will use, and briefly describe what actions you will need to take in order to draw the gesture on the CanvasWindow.
 
@@ -17,10 +17,8 @@ onClick(), onDrag(), mouseReleased(), so we can click mouse and drag the mouse t
 4. Please review each of the provided classes that we have given you. For each one, describe their purpose. When might you want to use the functions provided?
 
 GestureApp: The window and user interface for drawing gestures and automatically recognizing them. We use this class when we draw the gestures that need to be recognized.
-IOManager: Handles input for saving and loading gestures.
+IOManager: Handles input for saving and loading gestures from an xml file. The gestures that I draw will load and save by this class for later recognization with the template gesture.
 Recognizer: recognize 2D gestures. Uses the $1 gesture recognition 4 steps algorithm that discussed in problem 3.
-
-
 
 5. We have given you a partial class decomposition. Can you think of any more classes you might need to store the data involved in this program? In particular think about what the return type of an attempted gesture recognition should be.
 
