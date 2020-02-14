@@ -43,16 +43,25 @@ abline(v=0,col='blue')
 > Newton
 
 ```{r}
-Newton=function(f,x,max.its=50){
-  res=x
-  df=D(f)
-  while (max.its>0) {
-    x<-x-f(x)/df(x)
-    res=c(res,x)
-    max.its<-max.its-1
+
+Newton = function(f, x_0, num.its = 40,tol=0.5*10^-10) {
+  history = rep(NA, num.its + 1)
+  history[1] = x_0
+  i = 0
+  fprime = D(f)
+  while (i < num.its ) {
+    i = i + 1
+    x_0 = x_0 - f(x_0)/fprime(x_0)
+    history[i+1] = x_0
+    
+    if (abs(history[i + 1] - history[i]) < tol){
+      break
+    }
   }
-  return(res)
+  root = x_0
+  return(list(root=root,history=history[!is.na(history)]))
 }
+
 options(digits = 12)
 f=function(x) (cos(x))^2+sin(x)-1
 Newton(f,4.25)
