@@ -1,10 +1,10 @@
 1. In the starter code, we have declared a double-ended queue (Deque) data structure to hold the list of drawn points. Describe why this is an appropriate choice.
 
-As the gesture should be recorded from the beginning to the end, which means drawn points which constitue the gesture have the order, so that we can access the top of the queue to do the roation at step2 for our algorithm and don't change any elements middle points except the top element. Besides, using deque is more space efficient. Therefore, we should use the double-ended queue data structure to hold the list of drawn points.
+As the gesture should be recorded from the beginning to the end, which means drawn points which constitue the gesture have the order, so that we can access the top of the queue to do the roation at step2 for our algorithm and don't modify any elements middle points except the top element. Besides, using deque is more space efficient. Therefore, we should use the double-ended queue data structure to hold the list of drawn points.
 
 2. In order to draw the gesture on the CanvasWindow, you will need to implement several mouse event handlers. List each of the methods you will use, and briefly describe what actions you will need to take in order to draw the gesture on the CanvasWindow.
 
-onDrag(), onClick(), so we can click mouse and drag the mouse to draw the gesture that I want.
+onClick(), onDrag(), mouseReleased(), so we can click mouse and drag the mouse to draw the gesture that I want and release the mouse when done.
 
 
 3. In your own words, describe each step of the recognition algorithm. For each step, explain why the actions performed on the data are needed.
