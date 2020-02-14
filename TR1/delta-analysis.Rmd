@@ -1,0 +1,192 @@
+---
+title: "delta analysis"
+output: html_document
+---
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+```{r}
+D<-function(f,delta=.001) {
+  fun=function(x){
+  (f(x+delta)-f(x))/delta
+  }
+  return(fun)
+}
+```
+
+## Hypothesis: $\delta$ is around e-8
+
+### 1. $f(x)=e^{x}$
+
+```{r}
+f = function(x) {exp(x)}
+
+df=D(f,delta = 10^-(1:20))
+e=abs(df(0)-1)
+x=c(1:20)
+plot(x,log(e), xlab = "delta=10^-x")
+
+df=D(f,delta = ((1:100)*10^-9))
+e=abs(df(0)-1)
+x=c(1:100)
+plot(x,log(e), xlab = "delta=x*10^-9")
+
+e=abs(df(0)[1:20]-1)
+x=c(1:20)
+plot(x,log(e), xlab = "delta=x*10^-9")
+```
+
+> 0.8e-8
+
+```{r}
+f = function(x) {exp(x)}
+
+df=D(f,delta = (.5+((1:100000)/100000))*10^-8)
+e=abs(df(0)-1)
+x=c(1:100000)
+plot(x,log(e))
+df1 = data.frame("delta"=c((.5+((1:100000)/100000))*10^-8), "e"=e)
+```
+```{r}
+df1 %>% 
+  arrange(e) %>% 
+  head()
+```
+
+> consistent with 0.8e-8
+
+### 2. $f(x)=x^{3}+2x$
+
+```{r}
+f = function(x) {x^3+2*x}
+
+df=D(f,delta = 10^-(1:20))
+e=abs(df(1)-5)
+x=c(1:20)
+plot(x,log(e), xlab = "delta=10^-x")
+
+df=D(f,delta = ((1:100)*10^-9))
+e=abs(df(1)-5)
+x=c(1:100)
+plot(x,log(e), xlab = "delta=x*10^-9")
+
+e=abs(df(1)[1:20]-5)
+x=c(1:20)
+plot(x,log(e), xlab = "delta=x*10^-9")
+```
+
+> 1.5e-8
+
+```{r}
+f = function(x) {x^3+2*x}
+df=D(f,delta = (1+((1:100000)/100000))*10^-8)
+e=abs(df(1)-5)
+x=c(1:100000)
+plot(x,log(e))
+df2 = data.frame("delta"=c((1+((1:100000)/100000))*10^-8), "e"=e)
+```
+
+```{r}
+df2 %>% 
+  arrange(e) %>% 
+  head()
+```
+
+> not consistent with 1.5e-8, but consistent with e-8
+
+### 3. $x^{2}$
+
+```{r}
+f = function(x) {x^2}
+
+df=D(f,delta = 10^-(1:20))
+e=abs(df(1)-2)
+x=c(1:20)
+plot(x,log(e), xlab = "delta=10^-x")
+
+df=D(f,delta = ((1:100)*10^-9))
+e=abs(df(1)-2)
+x=c(1:100)
+plot(x,log(e), xlab = "delta=x*10^-9")
+
+e=abs(df(1)[1:20]-2)
+x=c(1:20)
+plot(x,log(e), xlab = "delta=x*10^-9")
+```
+
+> 0.8e-8
+
+```{r}
+f = function(x) {x^2}
+
+df=D(f,delta = (.5+((1:100000)/100000))*10^-8)
+e=abs(df(1)-2)
+x=c(1:100000)
+plot(x,log(e))
+df3 = data.frame("delta"=c((.5+((1:100000)/100000))*10^-8), "e"=e)
+```
+```{r}
+df3 %>% 
+  arrange(e) %>% 
+  head()
+```
+
+> not consistent with 0.8e-8 but consistent with e-8
+
+
+### 3. $\sin(x)$
+
+```{r}
+f = function(x) {sin(x)}
+
+df=D(f,delta = 10^-(1:20))
+e=abs(df(pi)+1)
+x=c(1:20)
+plot(x,log(e), xlab = "delta=10^-x")
+
+df=D(f,delta = ((1:100)*10^-6))
+e=abs(df(pi)+1)
+x=c(1:100)
+plot(x,log(e), xlab = "delta=x*10^-6")
+
+e=abs(df(pi)+1)[1:20]
+x=c(1:20)
+plot(x,log(e), xlab = "delta=x*10^-6")
+```
+
+> 1.1e-5
+
+```{r}
+f = function(x) {sin(x)}
+
+df=D(f,delta = (.5+((1:100000)/100000))*10^-5)
+e=abs(df(1)-2)
+x=c(1:100000)
+plot(x,log(e))
+df4 = data.frame("delta"=c((.5+((1:100000)/100000))*10^-5), "e"=e)
+```
+```{r}
+df4 %>% 
+  arrange(e) %>% 
+  head()
+```
+
+> not consistent with anythings...
+
+
+
+
+### Another analysis
+
+```{r}
+
+
+```
+
+
+
+
+
+```
