@@ -22,7 +22,7 @@ onClick(), onDrag(), mouseReleased(), so we can click mouse and drag the mouse t
 
 5. We have given you a partial class decomposition. Can you think of any more classes you might need to store the data involved in this program? In particular think about what the return type of an attempted gesture recognition should be.
 
-I think it will return a string including what kinds of gesture it is, and the score, or similarity, or result of the recognizitoin algorithm derives. 
+I think we can create a class for the return type, which includes what kinds of gesture it is, and the score, or similarity, or result of the recognizitoin algorithm derives. 
 
 6. What is still confusing about the algorithm?
 
