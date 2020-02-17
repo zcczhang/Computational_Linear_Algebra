@@ -72,9 +72,10 @@ e=abs(df(1)-5)
 x=c(1:100)
 plot(x,log(e), xlab = "delta=x*10^-9")
 
-e=abs(df(1)[1:20]-5)
+e=abs(df(1)[1:40]-5)
 x=c(1:20)
-plot(x,log(e), xlab = "delta=x*10^-9")
+plot(1:40,log(e),xlab = "x * 10^-9", ylab = "Log(Error)", main = "Zoomed-in plot of log(error) ~ power of delta")
+
 ```
 
 > 1.5e-8
@@ -162,7 +163,7 @@ plot(x,log(e), xlab = "delta=x*10^-6")
 f = function(x) {sin(x)}
 
 df=D(f,delta = (.5+((1:100000)/100000))*10^-5)
-e=abs(df(1)-2)
+e=abs(df(pi)+1)
 x=c(1:100000)
 plot(x,log(e))
 df4 = data.frame("delta"=c((.5+((1:100000)/100000))*10^-5), "e"=e)
@@ -173,16 +174,44 @@ df4 %>%
   head()
 ```
 
-> not consistent with anythings...
+> 1.04631e-05
 
 
-
-
-### Another analysis
+### 4. $x^{8}+2x-1$
 
 ```{r}
+f = function(x) {x^8+2*x-1}
 
+df=D(f,delta = 10^-(1:20))
+e=abs(df(1)-10)
+x=c(1:20)
+plot(x,log(e), xlab = "delta=10^-x")
 
+df=D(f,delta = ((1:100)*10^-9))
+e=abs(df(1)-10)
+x=c(1:100)
+plot(x,log(e), xlab = "delta=x*10^-9")
+
+e=abs(df(1)-10)[1:20]
+x=c(1:20)
+plot(x,log(e), xlab = "delta=x*10^-9")
 ```
+
+
+
+```{r}
+df=D(f,delta = ((1.5+(1:100000)/100000))*10^-9)
+e=abs(df(1)-10)
+x=c(1:100000)
+plot(x,log(e))
+df4 = data.frame("delta"=c(((1.5+(1:100000)/100000))*10^-9), "e"=e)
+```
+```{r}
+df4 %>% 
+  arrange(e) %>% 
+  head()
+```
+
+
 
 

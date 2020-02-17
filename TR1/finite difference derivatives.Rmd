@@ -69,36 +69,7 @@ Newton(f,4.25)
 
 > visualiztion
 
-```{r}
-f=function(x) (cos(x))^2+sin(x)-1
-df = D(f)
 
-x = seq(1,5,length=1000)
-
-y<-f(x)  
-d_point<-data.frame(x,y)
-
-x0<-Newton(f,1.5)$root
-y0<-f(0) #（0, 1）
-k<-df(x0) # slope
-b<-y0-k*x0  # intersecpt
-
-library(ggplot2) 
-p<-ggplot(subset(d_point,y<=15),aes(x,y))+
-  theme_classic()+
-  theme(legend.position="none")
-p+geom_line()+geom_abline(intercept=b, slope=k,linetype=2)+geom_point(data=data.frame(x=x0,y=y0),aes(colour="red"))+
-  ggtitle("")+
-  theme(plot.title = element_text(hjust = 0.5))
-```
-
-
-```{r}
-x=seq(-0.5,pi+0.5,0.01)
-y=(cos(x))^2+sin(x)-1
-plot(x,y,type="l",lwd=2.5,col="blue",main="f(x)=0",ylab="f(x)",)
-abline(0,0)
-```
 > Q3
 
 ```{r}
@@ -204,13 +175,77 @@ slopes=function(f,x){
 }
 
 options(digits = 20)
-(slopes=slopes(f,0))  # slope should be 1
+slopes=slopes(f,0)  # slope should be 1
 x=c(1:15)
 plot(x,slopes[1:15])
-(e=abs((slopes[1:15]-1)))
+e=abs((slopes[1:15]-1))
 plot(x,log(e))
 min(e)
 ```
 
 > not consistent since it will be most consistent aroung $\delta=10^{-5}$
+
+
+
+```{r}
+D<-function(f,delta=.001) {
+  fun=function(x){
+  (f(x+delta)-f(x))/delta
+  }
+  return(fun)
+}
+
+D2<-function(f,delta=.001) {
+  fun=function(x){
+  (f(x+delta)-f(x-delta))/(2*delta)
+  }
+  return(fun)
+}
+
+
+f = function(x) {exp(x)}
+
+df1=D(f,delta = 10^-(1:20))
+e1=abs(df1(0)-1)
+
+df2=D2(f,delta = 10^-(1:20))
+e2=abs(df2(0)-1)
+diff=log(e1)-log(e2)
+
+plot(1:20,diff, xlab = "10^-x", ylab = "Difference in Log(Error)", main = "Plot of differences in log(error) between two methods for e^x")
+
+
+f = function(x) {x^3+2*x}
+df1=D(f,delta = 10^-(1:20))
+e1=abs(df1(1)-5)
+
+df2=D2(f,delta = 10^-(1:20))
+e2=abs(df2(1)-5)
+diff=log(e1)-log(e2)
+
+plot(1:20,diff, xlab = "10^-x", ylab = "Difference in Log(Error)", main = "Plot of differences in log(error) between two methods for x^3+2x")
+
+
+f = function(x) {sin(x)}
+df1=D(f,delta = 10^-(1:20))
+e1=abs(df1(pi)+1)
+
+df2=D2(f,delta = 10^-(1:20))
+e2=abs(df2(pi)+1)
+diff=log(e1)-log(e2)
+
+plot(1:20,diff, xlab = "10^-x", ylab = "Difference in Log(Error)", main = "Plot of differences in log(error) between two methods for sin(x)")
+
+```
+
+
+
+
+
+
+
+
+
+
+
 
