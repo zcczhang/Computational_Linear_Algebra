@@ -1,0 +1,20 @@
+---
+title: "graphs"
+output: html_document
+---
+```{r}
+D<-function(f,delta=.001) {
+  fun=function(x){
+  (f(x+delta)-f(x))/delta
+  }
+  return(fun)
+}
+```
+
+```{r}
+f1 = function(x) {exp(x)}
+f2 = function(x) {x^3+2*x}
+f3 = function(x) {sin(x)}
+f4 = function(x) {x^8+2*x-1}
+```
+
