@@ -23,23 +23,19 @@ f4 = function(x) {x^8+2*x-1}
 df1=D(f1,delta = 10^(-20:-1))
 e1=abs(df1(0)-1)
 x=c(-20:-1)
-plot(x,log(e1), ylim = c(-26,3),pch=15, col = 'yellow1', xlab = 'Power of delta', ylab = 'Log(error)')
+plot(x,log(e1), ylim = c(-26,3),pch=15, col = 'blue', xlab = 'Power of delta', ylab = 'Log(error)', main = 'Plot of log(error) ~ power of delta')
 
 df2=D(f2,delta = 10^(-20:-1))
 e2=abs(df2(1)-5)
 points(x,log(e2), pch=17, col = 'orange')
-
-df3=D(f3,delta = 10^(-20:-1))
-e3=abs(df3(pi)+1)
-points(x,log(e3), pch=18, col='steelblue2')
 
 df4=D(f4,delta = 10^(-20:-1))
 e4=abs(df4(1)-10)
 points(x,log(e4), pch=19, col='red')
 
 legend(x="bottomleft", 
-      legend=c("x^8+2x-1","x^3+2x","e^x", "sin(x)"), 
-      col=c("red","orange","yellow1", "steelblue2"),  
+      legend=c("x^8+2x-1","x^3+2x","e^x"), 
+      col=c("red","orange","blue"),  
       pch=c(19,17,15,18), merge=FALSE)
 ```
 
@@ -47,7 +43,7 @@ legend(x="bottomleft",
 df1=D(f1,delta = ((1:100)*10^-9))
 e1=abs(df1(0)[1:40]-1)
 x=c(1:40)
-plot(x,log(e1), pch=15, col = 'blue', xlab = "delta=x*10^-9", ylab = 'Log(error)',ylim = c(-23,-12))
+plot(x,log(e1), pch=15, col = 'blue', xlab = "delta=x*10^-9", ylab = 'Log(error)',ylim = c(-23,-12), main='Zoomed-in plot of log(error) ~ power of delta')
 
 df2=D(f2,delta = ((1:100)*10^-9))
 e2=abs(df2(1)[1:40]-5)
