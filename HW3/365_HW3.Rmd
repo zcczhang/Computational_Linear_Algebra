@@ -1,13 +1,12 @@
 ---
-title: "Math 365 / Comp 365: Homework 3"
+title: "Math 365/Comp 365: Homework 3"
 author: "Charles Zhang"
 output: html_document
 ---
 
-# Math 365 / Comp 365: Homework 3
-
-### *Please bring a stapled hard copy of your answers to class*
-
+### Problem 0 
+Complete the [Technical Report Reflection Form.](https://drive.google.com/file/d/1xn2JykJPtHj_Xy1cg3NvNZ2FpB5MZtk3/view?usp=sharing)
+Please print out this form, and staple it to the rest of your assignment. 
 
 ### Problem 1
 In class, we showed how to construct a sequence of unit lower-triangular matrices $\{L_{k}\}_{k=1,2,\ldots,n-1}$ of the form  
@@ -61,7 +60,8 @@ This was Exercise 2 on the $LU$ Activity
 
 *This problem is from Section 2.5, page 131 of Linear Algebra and Its Applications, by David Lay, the textbook many of you used for MATH 236.*
 
-![](Images/heatflow.jpg)
+![](https://raw.githubusercontent.com/zcczhang/Computational_Linear_Algebra/master/HW3/HWpic.jpeg)
+
 
 An important concern in the study of heat transfer is to determine the steady-state temperature distribution of a thin plate when the temperature around the boundary is known. Assume the plate shown in the figure above represents a cross section of a metal beam, with negligible heat flow in the direction perpendicular to the plate. Let the variables $x_1, x_2, \ldots, x_8$ denote the temperatures at nodes 1 through 8 in the picture. In steady state, the temperature at a node is approximately equal to the average of the four nearest nodes (to the left, above, right, below).
 
