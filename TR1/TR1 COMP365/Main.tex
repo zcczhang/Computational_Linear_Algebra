@@ -133,7 +133,7 @@ Theoretically, the finite difference equation is most accurate when $\delta$ app
 
 \subsection{Implementation}
 
-The procedure we take to examine which $\delta$ is the most appropriate consists of: 1. picking a function 2. applying our derivative method to this function with varying $\delta$ values. We then computed the error of each $\delta$ and find out which one yields the least error. We perform this procedure on three functions: $f(x) = e^x$, $g(x) = x^3 + 2x$ and $h(x) = x^8 + 2x - 1$.
+The procedure we take to examine which $\delta$ is the most appropriate consists of: 1. picking a function 2. applying our derivative method to this function with varying $\delta$ values. We then computed the error of each $\delta$ and find out which one yields the least error. We perform this procedure on three functions: $f(x) = e^x$, $g(x) = x^3 + 2x$ and $h(x) = x^8 + 2x - 1$. Our results can be seen in figure 4.
 
 \vspace{1mm}
 
@@ -165,11 +165,11 @@ $$
 \end{minipage}
 $$
 \vspace{1mm}
-\caption{}
+\caption{log error of $\delta$ values for three functions. (a) Behavior of error as the power of $\delta$ decreases. (b) Zoomed-in plot of (a) }
 \end{figure} \label{Fig:failure1}
 
 \vspace{3mm}
-
+    
 \noindent Interesting to notice, $\delta$ is in the neighborhood of $10^{-8}$ for all 12 polynomial functions we tried. However, $\delta$ behaves differently for trigonometric functions such as $\sin(x)$. See Figure 5.
 
 \begin{figure}[H]
@@ -257,10 +257,11 @@ $$
 \begin{minipage}{2.75in}
 \begin{center}
 \includegraphics[width=\textwidth]{FiniteDifferenceMethods.png} \\
-~~~~~(d) Visual Representation of three finite difference methods
+~~~~~(d) Visualization representation of three finite difference methods
 \end{center}
 \end{minipage}
-\caption{} 
+\vspace{3mm}
+\caption{Pairwise difference in log(error)} 
 $$
 \end{figure} \label{Fig:failure1}
 
@@ -269,6 +270,6 @@ $$
 \section*{Conclusion}
 Theoretically, we should have more precise results from the different methods of differentiation by decreasing $\delta$. However, the opposite is true due to rounding errors. As rounding errors are inevitable in numerical differentiation, there is a threshold for how small $\delta$ can get depending on the input functions we choose. In this report, we have shown that the smallest $\delta$ value for the least errors for $e^x$, $x^3 + 2x$ and sin(x) are, respectively, $8.80230 \times 10^{-8}$, $1.18080 \times 10^{-8}$ and $1.04631 \times 10^{-5}$.  \\
 
-\noindent Furthermore, the graphs of log(errors) for these 3 functions affirm our prediction that as $\delta$ exceeds the threshold respectively, error starts to increase. By plotting the difference errors resulted from these two methods to $\delta$ value, we also found that the three-point centered-difference method provides more precise result compared to the two-point forward-difference method. This can be explained by that $\delta$ can be approximately as small as the cubic root of $\epsilon_{\text{machine}}$ for the first method, while it can only be as small as the square root for $\epsilon_{\text{machine}}$ for the latter. Due to this reason, for future work we can explore how threshold for $\delta$ of three-point centered-difference method to find the characteristics of a function that determine its optimal $\delta$ value.
+\noindent Furthermore, the graphs of log(errors) for these 3 functions affirm our prediction that as $\delta$ exceeds the threshold respectively, error starts to increase. By plotting the difference errors resulted from these two methods to $\delta$ value, we also found that the three-point centered-difference method provides more precise result compared with the two-point forward-difference method. This can be explained by that $\delta$ can be approximately as small as the cubic root of $\epsilon_{\text{machine}}$ for the first method, while it can only be as small as the square root for $\epsilon_{\text{machine}}$ for the latter. Due to this reason, for future work we can explore how threshold for $\delta$ of three-point centered-difference method to find the characteristics of a function that determine its optimal $\delta$ value.
 
 \end{document}
