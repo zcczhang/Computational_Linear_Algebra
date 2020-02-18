@@ -63,3 +63,68 @@ legend( x="bottomright",
         pch=c(19,17,15), merge=FALSE )
 ```
 
+
+```{r}
+Dforward<-function(f,delta=.001) {
+  result = function(x){
+  (f(x+delta)-f(x))/delta
+  }
+  return(result)
+}
+
+Dbackward<-function(f,delta=.001) {
+  result = function(x){
+  (f(x)-f(x-delta))/delta
+  }
+  return(result)
+}
+
+D3points <- function(f,delta=.001) {
+  result = function(x){
+  (f(x+delta)-f(x-delta))/(2*delta)
+  }
+  return(result)
+}
+```
+
+```{r}
+df1=Dforward(f1,delta = 10^(-20:-1))
+e1=abs(df1(0)-1)
+
+df2=Dbackward(f1,delta = 10^(-20:-1))
+e2=abs(df2(0)-1)
+
+df3=D3points(f1,delta = 10^(-20:-1))
+e3=abs(df3(0)-1)
+
+
+df11=Dforward(f2,delta = 10^(-20:-1))
+e11=abs(df11(1)-5)
+
+df22=Dbackward(f2,delta = 10^(-20:-1))
+e22=abs(df22(1)-5)
+
+df33=D3points(f2,delta = 10^(-20:-1))
+e33=abs(df33(1)-5)
+
+diff1=log(e1)-log(e2)
+diff2=log(e2)-log(e3)
+diff3=log(e3)-log(e1)
+
+diff11=log(e11)-log(e22)
+diff22=log(e22)-log(e33)
+diff33=log(e33)-log(e11)
+
+plot(-20:-1,diff1, xlab = "10^-x", ylab = "Difference in Log(Error)", main = "Differences in log(error) between forward and backward difference", pch=19, col='steelblue2', ylim = c(-5,5))
+points(-20:-1,diff11, pch=19, col='red')
+
+plot(-20:-1,diff2, xlab = "10^-x", ylab = "Difference in Log(Error)", main = "Differences in log(error) between backward and centered difference", pch=19, col='steelblue2', ylim = c(-15,15))
+points(-20:-1,diff22, pch=19, col='red')
+
+plot(-20:-1,diff3, xlab = "10^-x", ylab = "Difference in Log(Error)", main = "Differences in log(error) between centered and forward difference",pch=19, col='steelblue2', ylim = c(-15,15) )
+points(-20:-1,diff33, pch=19, col='red')
+```
+
+> forward is worse than backward and centered difference.
+
+
