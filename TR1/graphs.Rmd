@@ -115,14 +115,26 @@ diff11=log(e11)-log(e22)
 diff22=log(e22)-log(e33)
 diff33=log(e33)-log(e11)
 
-plot(-20:-1,diff1, xlab = "10^-x", ylab = "Difference in Log(Error)", main = "Differences in log(error) between forward and backward difference", pch=19, col='steelblue2', ylim = c(-5,5))
+plot(-20:-1,diff1, xlab = "power of delta", ylab = "Difference in Log(Error)", main = "Differences in log(error) between forward and backward difference", pch=19, col='steelblue2', ylim = c(-5,5))
 points(-20:-1,diff11, pch=19, col='red')
+legend( x="bottomright", 
+        legend=c("x^3+2x","e^x"), 
+        col=c("red","steelblue2"),  
+        pch=c(19,19), merge=FALSE )
 
-plot(-20:-1,diff2, xlab = "10^-x", ylab = "Difference in Log(Error)", main = "Differences in log(error) between backward and centered difference", pch=19, col='steelblue2', ylim = c(-15,15))
+plot(-20:-1,diff2, xlab = "power of delta", ylab = "Difference in Log(Error)", main = "Differences in log(error) between backward and centered difference", pch=19, col='steelblue2', ylim = c(-15,15))
 points(-20:-1,diff22, pch=19, col='red')
+legend( x="bottomright", 
+        legend=c("x^3+2x","e^x"), 
+        col=c("red","steelblue2"),  
+        pch=c(19,19), merge=FALSE )
 
-plot(-20:-1,diff3, xlab = "10^-x", ylab = "Difference in Log(Error)", main = "Differences in log(error) between centered and forward difference",pch=19, col='steelblue2', ylim = c(-15,15) )
+plot(-20:-1,diff3, xlab = "power of delta", ylab = "Difference in Log(Error)", main = "Differences in log(error) between centered and forward difference",pch=19, col='steelblue2', ylim = c(-15,15) )
 points(-20:-1,diff33, pch=19, col='red')
+legend( x="topleft", 
+        legend=c("x^3+2x","e^x"), 
+        col=c("red","steelblue2"),  
+        pch=c(19,19), merge=FALSE )
 ```
 
 > forward is worse than backward and centered difference.
