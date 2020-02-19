@@ -129,6 +129,33 @@ but unfortunately $A$ is a black box and you cannot see the contents. Oh my! Luc
 Is this information enough to determine the solution $x$ to $Ax=b$? If yes, find $x$. If no, say as much as you can about $x$.
 
 
+> \(Cond(A)=||A||_{\infty}||A^{-1}||_{\infty}=32\)
+
+```{r}
+Cond = function(A,p=2) {
+  if (p == 2) {  # by default use the 
+    s = svd(A)$d
+    s = s[s>0]
+    return(max(s)/min(s))
+  }
+  if (p == 1) {  # use the 1 norm
+    Ainv = solve(A)
+    return(max(colSums(abs(A)))*max(colSums(abs(Ainv))))
+  }
+  if (p == 'I') {   # use the infinity norm
+    Ainv = solve(A)
+    return(max(rowSums(abs(A)))*max(rowSums(abs(Ainv))))
+  }
+}
+```
+```{r}
+x2 <- c(2.0750, 0.1625, 0.4500, -0.1875)
+b2 <-c(3, -2, 4, 2.1875)
+
+```
+
+
+
 ### Problem 4
 
 A real $n \times n$ matrix $Q$ is *orthonormal* if 
@@ -197,15 +224,17 @@ UnitCircleMap(A,p=2)
 \frac{1}{\sqrt{2}} & \frac{-1}{\sqrt{2}} \\
 \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \end{pmatrix}$, which is a rotation matrix that rotates vectors counter-clockwise by $\frac{\pi}{4}$.
 
-###Problem 6
+### Problem 6
 
-**This was Question 5 on the Activity on norms.
+This was Question 5 on the Activity on norms.
 
 Prove that
 $$ ||A||_{\infty}=\max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}.$$
 
 
-
+> \( \because ||x||_{\infty} = \max_{1 \leq i\leq n}\{|\bar{x_i}|\}\\
+\therefore ||A||_{\infty}=\max_{||x||_{\infty}=1}\{||Ax||_{\infty}\}=\max_{||x||_{\infty}=1}\max_{1 \leq i \leq n}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\}=\max_{1 \leq i \leq n}\max_{||x||_{\infty}=1}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\} \\= 
+\max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}. \)
 
 
 ### Problem 7
