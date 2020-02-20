@@ -5,16 +5,6 @@ output:
   html_document: default
 ---
 
-```{note include=FALSE}
-### Problem 0 
-Complete the [Technical Report Reflection Form.](https://drive.google.com/file/d/1xn2JykJPtHj_Xy1cg3NvNZ2FpB5MZtk3/view?usp=sharing)
-Please print out this form, and staple it to the rest of your assignment. 
-```
-
-```{r include=FALSE}
-library(bookdown)
-```
-
 ### Problem 1
 **In class, we showed how to construct a sequence of unit lower-triangular matrices $\{L_{k}\}_{k=1,2,\ldots,n-1}$ of the form** 
 
@@ -103,16 +93,20 @@ $$
 
 ### Problem 2
 
-This was Exercise 2 on the $LU$ Activity
+**This was Exercise 2 on the $LU$ Activity**
 
 *This problem is from Section 2.5, page 131 of Linear Algebra and Its Applications, by David Lay, the textbook many of you used for MATH 236.*
 
 ![](https://raw.githubusercontent.com/zcczhang/Computational_Linear_Algebra/master/HW3/HWpic.jpeg)
 
 
-An important concern in the study of heat transfer is to determine the steady-state temperature distribution of a thin plate when the temperature around the boundary is known. Assume the plate shown in the figure above represents a cross section of a metal beam, with negligible heat flow in the direction perpendicular to the plate. Let the variables $x_1, x_2, \ldots, x_8$ denote the temperatures at nodes 1 through 8 in the picture. In steady state, the temperature at a node is approximately equal to the average of the four nearest nodes (to the left, above, right, below).
+**An important concern in the study of heat transfer is to determine the steady-state temperature distribution of a thin plate when the temperature around the boundary is known. Assume the plate shown in the figure above represents a cross section of a metal beam, with negligible heat flow in the direction perpendicular to the plate. Let the variables $x_1, x_2, \ldots, x_8$ denote the temperatures at nodes 1 through 8 in the picture. In steady state, the temperature at a node is approximately equal to the average of the four nearest nodes (to the left, above, right, below).**
 
-a) The solution to the approximate steady-state heat flow problem for this plate can be written as a system of linear equations $Ax=b$, where $x=[x_1, x_2, \ldots, x_8]$ is the vector of temperatures at nodes 1 through 8. Find the $8 \times 8$ matrix $A$ and the vector $b$. Hint: $A$ should be a banded matrix with many zeros in the top right and bottom left parts of $A$.
+**a) The solution to the approximate steady-state heat flow problem for this plate can be written as a system of linear equations $Ax=b$, where $x=[x_1, x_2, \ldots, x_8]$ is the vector of temperatures at nodes 1 through 8. Find the $8 \times 8$ matrix $A$ and the vector $b$. Hint: $A$ should be a banded matrix with many zeros in the top right and bottom left parts of $A$.**
+
+*Solution* 
+
+>
 $$
 x_{1} = 1/4(0+5+x_{3}+x_{2})\\
 x_{2} = 1/4(10+5+x_{1}+x_{4})\\
@@ -143,12 +137,36 @@ x_{8}\left[\begin{array}{r} {0} \\ {0} \\ {0} \\ {0} \\ {0} \\ {-1} \\ {-1} \\ {
 \quad b = \left[\begin{array}{r} {5} \\ {15} \\ {0} \\ {10} \\ {0} \\ {10} \\ {20} \\ {30}\end{array}\right] 
 $$
 
-b) Use your function from Exercise 1 (on the activity) to perform an LU factorization of $A$. Do you notice anything special about the structures of $L$ and $U$?
+**b) Use your function from Exercise 1 (on the activity) to perform an LU factorization of $A$. Do you notice anything special about the structures of $L$ and $U$?**
+
+*Solution*
+
+```{r}
+myLU = function(A,tol=10^-8) {
+  n = nrow(A)
+  L = diag(x=1,nrow=n)  
+  U=A
+  for ( k in 1:(n-1) ) {
+    pivot = U[k,k]
+    if (abs(pivot) < tol) stop('zero pivot encountered')
+    for ( j in (k+1):n ) {
+      mult =  U[j,k]/pivot
+      U[j,] = U[j,] - mult * U[k,]
+      L[j,k] = mult   
+    }
+  }
+  return(list(L=L,U=U))
+}
+```
+```{r}
+A=cbind(c(4,-1,-1,0,0,0,0,0),c(-1,4,0,-1,0,0,0,0),c(-1,0,4,-1,-1,0,0,0),c(0,-1,-1,4,0,-1,0,0),c(0,0,-1,0,4,-1,-1,0),c(0,0,0,-1,-1,4,0,-1),c(0,0,0,0,-1,0,4,-1),c(0,0,0,0,0,-1,-1,4))
+(out=myLU(A))
+```
 
 
+> L and U are banded matrices with many zeros in the top right and bottom left parts of L and U.
 
-
-c) Once you have an LU factorization for a matrix $A$, you need to do the two-step procedure to complete the back substitution to solve $Ax=b$. Here is code for that:
+**c) Once you have an LU factorization for a matrix $A$, you need to do the two-step procedure to complete the back substitution to solve $Ax=b$. Here is code for that:**
 
 ```{r}
 mySolve=function(L,U,b,tol=1e-10){
@@ -176,14 +194,35 @@ mySolve=function(L,U,b,tol=1e-10){
 }
 ```
 
-Make sure you understand what the code is doing, and then use it to find the steady-state temperatures at nodes 1 through 8.
+**Make sure you understand what the code is doing, and then use it to find the steady-state temperatures at nodes 1 through 8.**
 
-d) The temperature on the right-hand side of the plate was measured incorrectly. It is actually 30 degrees. Find the new steady-state temperatures. Hint: you should not do another LU factorization! 
+*Solution*
 
-e) Use the R function `solve(A)` to compute $A^{-1}$. Note that $A^{-1}$ is a **dense** matrix (without many zeros). When $A$ is large, $L$ and $U$ can be stored in much less space than $A^{-1}$. This fact is another reason for preferring the LU factorization of $A$ to $A^{-1}$ itself.
+```{r}
+b=c(5,15,0,10,0,10,20,30)
+(x=mySolve(out$L,out$U,b))
+```
+
+**d) The temperature on the right-hand side of the plate was measured incorrectly. It is actually 30 degrees. Find the new steady-state temperatures. Hint: you should not do another LU factorization!** 
+
+*Solution*
+
+```{r}
+b[7]=30
+b[8]=40
+(x=mySolve(out$L,out$U,b))
+```
 
 
+**e) Use the R function `solve(A)` to compute $A^{-1}$. Note that $A^{-1}$ is a dense matrix (without many zeros). When $A$ is large, $L$ and $U$ can be stored in much less space than $A^{-1}$. This fact is another reason for preferring the LU factorization of $A$ to $A^{-1}$ itself.**
 
+*Solution* 
+
+```{r}
+solve(A)
+```
+
+<br><br><br>
 
 
 
@@ -244,7 +283,7 @@ $$ Q^{\top}Q=QQ^T=I;~i.e., Q^{-1}=Q^T.$$
 <br>
 <br>
 
-*proof*
+*Proof*
 
 
 $$
@@ -324,8 +363,6 @@ UnitCircleMap(A,p='I')
 
 **(b) Compute the condition number of the matrix $A$ above using `Cond` (using the $p=1,2, \infty$-norms). Visually explain why the condition number for each $p$ is the value you found.**
 
-<br><br>
-
 *Solution*
 
 ```{r}
@@ -362,8 +399,6 @@ Cond(A,"I")
 \frac{1}{\sqrt{2}} & \frac{-1}{\sqrt{2}} \\
 \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \end{pmatrix}$, which is a rotation matrix that rotates vectors counter-clockwise by $\frac{\pi}{4}$.**
 
-<br><br>
-
 *Solution*
 
 ```{r}
@@ -383,13 +418,14 @@ UnitCircleMap(A,p="I")
 $$ ||A||_{\infty}=\max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}.$$
 
 
-```{proof}
+*Proof*
+
 $$
 \because ||x||_{\infty} = \max_{1 \leq i\leq n}\{|\bar{x_i}|\}\\
 \therefore ||A||_{\infty}=\max_{||x||_{\infty}=1}\{||Ax||_{\infty}\}=\max_{||x||_{\infty}=1}\max_{1 \leq i \leq n}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\}=\max_{1 \leq i \leq n}\max_{||x||_{\infty}=1}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\} \\= 
 \max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}.
 $$
-```
+
 
 ### Problem 7
 **Solve the following system by finding the $PA=LU$ factorization and then carrying out the two-step back substitution (all by hand, that is, not using any R functions. Of course, you can type your solution, and check your work in R, though.):**
@@ -399,8 +435,7 @@ $$ Ax=\begin{pmatrix}-1 & 0 & 1 \\
 2 & 0 & 1 
 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2\\ x_3\end{pmatrix}=\begin{pmatrix} 2 \\ 5 \\ 5 \end{pmatrix}=b. $$
 
-
-```{solution}
+*solution*
 $$
 U = A = \begin{pmatrix}-1 & 0 & 1 \\
 3 & 1 & 1 \\
@@ -420,7 +455,6 @@ $$
 s
 $$
 
-```
 
 ```{r}
 P = cbind(c(0,1,0),c(1,0,0),c(0,0,1))
@@ -434,3 +468,4 @@ L %*% U
 $$
 \begin{array}{l}{\left(\begin{array}{ccc}{1} & {0} & {0} \\ {\frac{2}{3}} & {1} & {0} \\ {-\frac{1}{3}} & {-\frac{1}{2}} & {1}\end{array}\right)(y)=\left(\begin{array}{l}{5} \\ {5} \\ {2}\end{array}\right) \Rightarrow y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)} \\ {\left(\begin{array}{ccc}{3} & {1} & {1} \\ {0} & {-\frac{2}{3}} & {\frac{1}{3}} \\ {0} & {0} & {1.5}\end{array}\right)(x)=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \Rightarrow x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)}\end{array}
 $$
+
