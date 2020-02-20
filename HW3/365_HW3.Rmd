@@ -2,56 +2,82 @@
 title: 'Math 365/Comp 365: Homework 3'
 author: "Charles Zhang"
 output:
+  pdf_document: default
   html_document: default
 ---
 
+```{note include=FALSE}
 ### Problem 0 
 Complete the [Technical Report Reflection Form.](https://drive.google.com/file/d/1xn2JykJPtHj_Xy1cg3NvNZ2FpB5MZtk3/view?usp=sharing)
 Please print out this form, and staple it to the rest of your assignment. 
+```
 
-```{r}
+```{r include=FALSE}
 library(bookdown)
 ```
-$$
-\begin{array}{l}{\left(\begin{array}{ccc}{1} & {0} & {0} \\ {\frac{2}{3}} & {1} & {0} \\ {-\frac{1}{3}} & {-\frac{1}{2}} & {1}\end{array}\right)(y)=\left(\begin{array}{l}{5} \\ {5} \\ {2}\end{array}\right) \Rightarrow y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)} \\ {\left(\begin{array}{ccc}{3} & {1} & {1} \\ {0} & {-\frac{2}{3}} & {\frac{1}{3}} \\ {0} & {0} & {1.5}\end{array}\right)(x)=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \Rightarrow x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)}\end{array}
-$$
 
 ### Problem 1
-In class, we showed how to construct a sequence of unit lower-triangular matrices $\{L_{k}\}_{k=1,2,\ldots,n-1}$ of the form  
+**In class, we showed how to construct a sequence of unit lower-triangular matrices $\{L_{k}\}_{k=1,2,\ldots,n-1}$ of the form** 
 
-$$ L_{k}=\begin{pmatrix} 1 & & & & & \\
+$$ 
+L_{k}=\begin{pmatrix} 1 & & & & & \\
 & \ddots & & & & \\
 & & 1 & & & \\
 & & -\ell_{k+1,k} & 1 & & \\
 & & \ddots & & \ddots & \\
 & & -\ell_{n,k} & &  & 1 
-\end{pmatrix}~, \hbox{ where } \ell_{j,k}=\frac{A_{j,k}}{A_{k,k}},~\hbox{ for } k\leq j \leq n, $$
+\end{pmatrix}~, \hbox{ where } \ell_{j,k}=\frac{A_{j,k}}{A_{k,k}},~\hbox{ for } k\leq j \leq n, 
+$$
 
-such that 
+**such that**
 
 $$ L_{n-1} L_{n-2} \ldots L_{2} L_{1} A = U, $$ 
 
-with $U$ being an upper-triangular matrix. We now want to show in two steps that 
+**with $U$ being an upper-triangular matrix. We now want to show in two steps that**
 
 $$L:= L_{1}^{-1} L_{2}^{-1} \ldots L_{n-2}^{-1} L_{n-1}^{-1} $$
 
-is a unit lower-triangular matrix.
+**is a unit lower-triangular matrix.**
 
-(a) Show that 
+**(a) Show that**
 
-$$  L_{k}^{-1} = \begin{pmatrix} 1 & & & & & \\
+$$  
+L_{k}^{-1} = \begin{pmatrix} 1 & & & & & \\
 & \ddots & & & & \\
 & & 1 & & & \\
 & & \ell_{k+1,k} & 1 & & \\
 & & \ddots & & \ddots & \\
 & & \ell_{n,k} & &  & 1 
-\end{pmatrix}. $$
+\end{pmatrix}. 
+$$
 
-**Hint**: Start by showing that $L_k=I-\ell_k e_k^{T}$, where $e_k$ is an $n \times 1$ vector with a 1 in the $k^{th}$ entry, and zeros elsewhere, and 
+**Hint**: **Start by showing that $L_k=I-\ell_k e_k^{\top}$, where $e_k$ is an $n \times 1$ vector with a 1 in the $k^{th}$ entry, and zeros elsewhere, and**
 
 $$ \ell_k = \begin{pmatrix} 0 \\ \vdots \\ 0 \\ \ell_{k+1,k} \\ \vdots \\ \ell_{n,k} \end{pmatrix}. $$
+<br><br>
 
-(b) Now show that 
+*solution:*
+
+>$$
+\begin{array}{l}{L_{k}=I-\ell_{k} e_{k}^{\top}} \\ 
+{L_{k} (I-\ell_{k}e_{k}^{\top})=(I-\ell_{k}e_{k}^{\top})(I+\ell_{k}e_{k}^{\top})} \\ 
+{=I+\ell_{k} e_{k}^{\top}-\ell_{k} e_{k}^{\top}-\ell_{k} e_{k}^{\top} \ell_{k} e_{k}^{\top}} \\ 
+{\because e_{k}^{\top} \ell_{k}=0} \\ 
+{\therefore L_{k}\left(I+\ell_{k} e_{k}^{\top}\right)=I} \\ 
+{L_{k}^{-1}=I+\ell_{k} e_{k}^{\top}}\end{array} \\
+= \begin{pmatrix} 1 & & & & & \\
+& \ddots & & & & \\
+& & 1 & & & \\
+& & \ell_{k+1,k} & 1 & & \\
+& & \ddots & & \ddots & \\
+& & \ell_{n,k} & &  & 1 
+\end{pmatrix}
+$$
+
+<br>
+<br>
+<br>
+**(b) Now show that**
 
 $$L:= L_{1}^{-1} L_{2}^{-1} \ldots L_{n-2}^{-1} L_{n-1}^{-1} = \begin{pmatrix} 1 & & & & \\
 \ell_{21} & 1 & & & \\
@@ -59,6 +85,19 @@ $$L:= L_{1}^{-1} L_{2}^{-1} \ldots L_{n-2}^{-1} L_{n-1}^{-1} = \begin{pmatrix} 1
 \vdots & \vdots & \ddots & \ddots & \\
 \ell_{n1} & \ell_{n2} & \cdots & \ell_{n,n-1} & 1    \\
 \end{pmatrix}
+$$
+
+<br><br><br>
+
+*solution:*
+
+>$$
+\because \forall k\leq j\leq n \text{, }\text{ }\text{ }e_{k}^{\top} \ell_{j}=0  \\
+\begin{array}{c}\therefore {L_{k}^{-1} L_{k+1}^{-1}=\left(I+\ell_{k} e_{k}^{\top}\right)\left(I+\ell_{k+1} e_{k+1}^{\top}\right)=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}+\ell_{k} e_{k}^{\top} \ell_{k+1} e_{k+1}^{\top}=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}} \\ 
+\begin{aligned} L_{k}^{-1} L_{k+1}^{-1} L_{k+2}^{-1} &=\left(I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}\right)\left(I+\ell_{k+2}e_{k+2}^{\top}\right) \\ &=I+l_{k} e_{k}^{\top}+l_{k+1} e_{k+1}^{\top}+l_{k+2}^{\top} k_{k+2}^{\top}+0 \end{aligned} \\
+......\\
+{\therefore L:=L_{1}^{-1} L_{2}^{-1} \ldots L_{n-2}^{-1} L_{n-1}^{-1}=I+\ell_{1} e_{1}^{\top}+\ell_{2} e_{2}^{\top}+\ldots+\ell_{n-1} e_{n-1}^{\top}=\left(\begin{array}{cccc}{1} & {} & {} & {} \\
+{\ell_{31}} & {\ell_{32}} & {1} & {} \\ {\vdots} & {\vdots} & {\ddots} & {\ddots} \\ {\ell_{n 1}} & {\ell_{n 2}} & {\cdots} & {\ell_{n, n-1}}\end{array}\right)}\end{array}
 $$
 
 
@@ -173,7 +212,7 @@ $$
 
 A real $n \times n$ matrix $Q$ is *orthonormal* if 
 
-$$ Q^{T}Q=QQ^T=I;~i.e., Q^{-1}=Q^T.$$
+$$ Q^{\top}Q=QQ^T=I;~i.e., Q^{-1}=Q^T.$$
 
 Note: sometimes you will see these matrices just called *orthogonal matrices*. The analagous matrices that contain complex entries ($Q^*Q=QQ^*=I$, where the $~^*$ is a conjugate transpose) are called *unitary*. 
 
@@ -334,3 +373,6 @@ P %*% A
 L %*% U
 ```
 
+$$
+\begin{array}{l}{\left(\begin{array}{ccc}{1} & {0} & {0} \\ {\frac{2}{3}} & {1} & {0} \\ {-\frac{1}{3}} & {-\frac{1}{2}} & {1}\end{array}\right)(y)=\left(\begin{array}{l}{5} \\ {5} \\ {2}\end{array}\right) \Rightarrow y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)} \\ {\left(\begin{array}{ccc}{3} & {1} & {1} \\ {0} & {-\frac{2}{3}} & {\frac{1}{3}} \\ {0} & {0} & {1.5}\end{array}\right)(x)=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \Rightarrow x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)}\end{array}
+$$

@@ -1,3 +1,6 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
 \documentclass[]{article}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
@@ -6,29 +9,32 @@
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
 \else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
+  \usepackage{unicode-math}
   \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 \fi
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 % use microtype if available
 \IfFileExists{microtype.sty}{%
-\usepackage{microtype}
+\usepackage[]{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\usepackage[margin=1in]{geometry}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
 \usepackage{hyperref}
-\hypersetup{unicode=true,
+\hypersetup{
             pdftitle={Math 365/Comp 365: Homework 3},
             pdfauthor={Charles Zhang},
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -78,12 +84,6 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -98,102 +98,85 @@
 \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
 
-%%% Use protect on footnotes to avoid problems with footnotes in titles
-\let\rmarkdownfootnote\footnote%
-\def\footnote{\protect\rmarkdownfootnote}
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
 
-%%% Change title format to be more compact
-\usepackage{titling}
 
-% Create subtitle command for use in maketitle
-\providecommand{\subtitle}[1]{
-  \posttitle{
-    \begin{center}\large#1\end{center}
-    }
-}
-
-\setlength{\droptitle}{-2em}
-
-  \title{Math 365/Comp 365: Homework 3}
-    \pretitle{\vspace{\droptitle}\centering\huge}
-  \posttitle{\par}
-    \author{Charles Zhang}
-    \preauthor{\centering\large\emph}
-  \postauthor{\par}
-    \date{}
-    \predate{}\postdate{}
-  
+\title{Math 365/Comp 365: Homework 3}
+\author{Charles Zhang}
+\date{}
 
 \begin{document}
 \maketitle
 
-\hypertarget{problem-0}{%
-\subsubsection{Problem 0}\label{problem-0}}
+\hypertarget{problem-1}{%
+\subsubsection{Problem 1}\label{problem-1}}
 
-Complete the
-\href{https://drive.google.com/file/d/1xn2JykJPtHj_Xy1cg3NvNZ2FpB5MZtk3/view?usp=sharing}{Technical
-Report Reflection Form.} Please print out this form, and staple it to
-the rest of your assignment.
+\textbf{In class, we showed how to construct a sequence of unit
+lower-triangular matrices \(\{L_{k}\}_{k=1,2,\ldots,n-1}\) of the form}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(bookdown)}
-\end{Highlighting}
-\end{Shaded}
-
-\[
-\begin{array}{l}{\left(\begin{array}{ccc}{1} & {0} & {0} \\ {\frac{2}{3}} & {1} & {0} \\ {-\frac{1}{3}} & {-\frac{1}{2}} & {1}\end{array}\right)(y)=\left(\begin{array}{l}{5} \\ {5} \\ {2}\end{array}\right) \Rightarrow y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)} \\ {\left(\begin{array}{ccc}{3} & {1} & {1} \\ {0} & {-\frac{2}{3}} & {\frac{1}{3}} \\ {0} & {0} & {1.5}\end{array}\right)(x)=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \Rightarrow x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)}\end{array}
-\] \#\#\# Problem 1 In class, we showed how to construct a sequence of
-unit lower-triangular matrices \(\{L_{k}\}_{k=1,2,\ldots,n-1}\) of the
-form
-
-\[ L_{k}=\begin{pmatrix} 1 & & & & & \\
+\[ 
+L_{k}=\begin{pmatrix} 1 & & & & & \\
 & \ddots & & & & \\
 & & 1 & & & \\
 & & -\ell_{k+1,k} & 1 & & \\
 & & \ddots & & \ddots & \\
 & & -\ell_{n,k} & &  & 1 
-\end{pmatrix}~, \hbox{ where } \ell_{j,k}=\frac{A_{j,k}}{A_{k,k}},~\hbox{ for } k\leq j \leq n, \]
+\end{pmatrix}~, \hbox{ where } \ell_{j,k}=\frac{A_{j,k}}{A_{k,k}},~\hbox{ for } k\leq j \leq n, 
+\]
 
-such that
+\textbf{such that}
 
 \[ L_{n-1} L_{n-2} \ldots L_{2} L_{1} A = U, \]
 
-with \(U\) being an upper-triangular matrix. We now want to show in two
-steps that
+\textbf{with \(U\) being an upper-triangular matrix. We now want to show
+in two steps that}
 
 \[L:= L_{1}^{-1} L_{2}^{-1} \ldots L_{n-2}^{-1} L_{n-1}^{-1} \]
 
-is a unit lower-triangular matrix.
+\textbf{is a unit lower-triangular matrix.}
 
-\begin{enumerate}
-\def\labelenumi{(\alph{enumi})}
-\tightlist
-\item
-  Show that
-\end{enumerate}
+\textbf{(a) Show that}
 
-\[  L_{k}^{-1} = \begin{pmatrix} 1 & & & & & \\
+\[  
+L_{k}^{-1} = \begin{pmatrix} 1 & & & & & \\
 & \ddots & & & & \\
 & & 1 & & & \\
 & & \ell_{k+1,k} & 1 & & \\
 & & \ddots & & \ddots & \\
 & & \ell_{n,k} & &  & 1 
-\end{pmatrix}. \]
+\end{pmatrix}. 
+\]
 
-\textbf{Hint}: Start by showing that \(L_k=I-\ell_k e_k^{T}\), where
-\(e_k\) is an \(n \times 1\) vector with a 1 in the \(k^{th}\) entry,
-and zeros elsewhere, and
+\textbf{Hint}: \textbf{Start by showing that
+\(L_k=I-\ell_k e_k^{\top}\), where \(e_k\) is an \(n \times 1\) vector
+with a 1 in the \(k^{th}\) entry, and zeros elsewhere, and}
 
 \[ \ell_k = \begin{pmatrix} 0 \\ \vdots \\ 0 \\ \ell_{k+1,k} \\ \vdots \\ \ell_{n,k} \end{pmatrix}. \]
 
-\begin{enumerate}
-\def\labelenumi{(\alph{enumi})}
-\setcounter{enumi}{1}
-\tightlist
-\item
-  Now show that
-\end{enumerate}
+\emph{solution:}
+
+\begin{quote}
+\[
+\begin{array}{l}{L_{k}=I-\ell_{k} e_{k}^{\top}} \\ 
+{L_{k} (I-\ell_{k}e_{k}^{\top})=(I-\ell_{k}e_{k}^{\top})(I+\ell_{k}e_{k}^{\top})} \\ 
+{=I+\ell_{k} e_{k}^{\top}-\ell_{k} e_{k}^{\top}-\ell_{k} e_{k}^{\top} \ell_{k} e_{k}^{\top}} \\ 
+{\because e_{k}^{\top} \ell_{k}=0} \\ 
+{\therefore L_{k}\left(I+\ell_{k} e_{k}^{\top}\right)=I} \\ 
+{L_{k}^{-1}=I+\ell_{k} e_{k}^{\top}}\end{array} \\
+= \begin{pmatrix} 1 & & & & & \\
+& \ddots & & & & \\
+& & 1 & & & \\
+& & \ell_{k+1,k} & 1 & & \\
+& & \ddots & & \ddots & \\
+& & \ell_{n,k} & &  & 1 
+\end{pmatrix}
+\]
+\end{quote}
+
+ \textbf{(b) Now show that}
 
 \[L:= L_{1}^{-1} L_{2}^{-1} \ldots L_{n-2}^{-1} L_{n-1}^{-1} = \begin{pmatrix} 1 & & & & \\
 \ell_{21} & 1 & & & \\
@@ -202,6 +185,19 @@ and zeros elsewhere, and
 \ell_{n1} & \ell_{n2} & \cdots & \ell_{n,n-1} & 1    \\
 \end{pmatrix}
 \]
+
+\emph{solution:}
+
+\begin{quote}
+\[
+\because \forall k\leq j\leq n \text{, }\text{ }\text{ }e_{k}^{\top} \ell_{j}=0  \\
+\begin{array}{c}\therefore {L_{k}^{-1} L_{k+1}^{-1}=\left(I+\ell_{k} e_{k}^{\top}\right)\left(I+\ell_{k+1} e_{k+1}^{\top}\right)=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}+\ell_{k} e_{k}^{\top} \ell_{k+1} e_{k+1}^{\top}=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}} \\ 
+\begin{aligned} L_{k}^{-1} L_{k+1}^{-1} L_{k+2}^{-1} &=\left(I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}\right)\left(I+\ell_{k+2}e_{k+2}^{\top}\right) \\ &=I+l_{k} e_{k}^{\top}+l_{k+1} e_{k+1}^{\top}+l_{k+2}^{\top} k_{k+2}^{\top}+0 \end{aligned} \\
+......\\
+{\therefore L:=L_{1}^{-1} L_{2}^{-1} \ldots L_{n-2}^{-1} L_{n-1}^{-1}=I+\ell_{1} e_{1}^{\top}+\ell_{2} e_{2}^{\top}+\ldots+\ell_{n-1} e_{n-1}^{\top}=\left(\begin{array}{cccc}{1} & {} & {} & {} \\
+{\ell_{31}} & {\ell_{32}} & {1} & {} \\ {\vdots} & {\vdots} & {\ddots} & {\ddots} \\ {\ell_{n 1}} & {\ell_{n 2}} & {\cdots} & {\ell_{n, n-1}}\end{array}\right)}\end{array}
+\]
+\end{quote}
 
 \hypertarget{problem-2}{%
 \subsubsection{Problem 2}\label{problem-2}}
@@ -353,7 +349,7 @@ I believe this is what we can find for \(x\)
 
 A real \(n \times n\) matrix \(Q\) is \emph{orthonormal} if
 
-\[ Q^{T}Q=QQ^T=I;~i.e., Q^{-1}=Q^T.\]
+\[ Q^{\top}Q=QQ^T=I;~i.e., Q^{-1}=Q^T.\]
 
 Note: sometimes you will see these matrices just called \emph{orthogonal
 matrices}. The analagous matrices that contain complex entries
@@ -436,7 +432,7 @@ the missing lines of the function, you can also test your code on this
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-6-1.pdf}
+\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-7-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -445,7 +441,7 @@ the missing lines of the function, you can also test your code on this
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-6-2.pdf}
+\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-7-2.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -454,7 +450,7 @@ the missing lines of the function, you can also test your code on this
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-6-3.pdf}
+\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-7-3.pdf}
 
 \begin{enumerate}
 \def\labelenumi{(\alph{enumi})}
@@ -539,7 +535,7 @@ which is a rotation matrix that rotates vectors counter-clockwise by
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-9-1.pdf}
+\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-10-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -547,7 +543,7 @@ which is a rotation matrix that rotates vectors counter-clockwise by
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-9-2.pdf}
+\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-10-2.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -555,7 +551,7 @@ which is a rotation matrix that rotates vectors counter-clockwise by
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-9-3.pdf}
+\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-10-3.pdf}
 
 \begin{quote}
 Therefore, they are not necessarily equal to 1.
@@ -642,5 +638,8 @@ s
 ## [3,]    0 0.6666667 5.666667
 \end{verbatim}
 
+\[
+\begin{array}{l}{\left(\begin{array}{ccc}{1} & {0} & {0} \\ {\frac{2}{3}} & {1} & {0} \\ {-\frac{1}{3}} & {-\frac{1}{2}} & {1}\end{array}\right)(y)=\left(\begin{array}{l}{5} \\ {5} \\ {2}\end{array}\right) \Rightarrow y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)} \\ {\left(\begin{array}{ccc}{3} & {1} & {1} \\ {0} & {-\frac{2}{3}} & {\frac{1}{3}} \\ {0} & {0} & {1.5}\end{array}\right)(x)=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \Rightarrow x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)}\end{array}
+\]
 
 \end{document}
