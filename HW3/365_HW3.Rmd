@@ -2,7 +2,6 @@
 title: 'Math 365/Comp 365: Homework 3'
 author: "Charles Zhang"
 output:
-  pdf_document: default
   html_document: default
 ---
 
@@ -56,7 +55,7 @@ $$
 $$ \ell_k = \begin{pmatrix} 0 \\ \vdots \\ 0 \\ \ell_{k+1,k} \\ \vdots \\ \ell_{n,k} \end{pmatrix}. $$
 <br><br>
 
-*solution:*
+*Solution:*
 
 >$$
 \begin{array}{l}{L_{k}=I-\ell_{k} e_{k}^{\top}} \\ 
@@ -89,7 +88,7 @@ $$
 
 <br><br><br>
 
-*solution:*
+*Solution:*
 
 >$$
 \because \forall k\leq j\leq n \text{, }\text{ }\text{ }e_{k}^{\top} \ell_{j}=0  \\
@@ -100,6 +99,7 @@ $$
 {\ell_{31}} & {\ell_{32}} & {1} & {} \\ {\vdots} & {\vdots} & {\ddots} & {\ddots} \\ {\ell_{n 1}} & {\ell_{n 2}} & {\cdots} & {\ell_{n, n-1}}\end{array}\right)}\end{array}
 $$
 
+<br><br><br>
 
 ### Problem 2
 
@@ -162,8 +162,8 @@ e) Use the R function `solve(A)` to compute $A^{-1}$. Note that $A^{-1}$ is a **
 
 **You are trying to solve a linear system of four equations:**
 
-**$$\left[\begin{array}{ccc} && \\ & A &   \\ && \\ && \end{array}\right]
-\left[\begin{array}{c}x_1 \\ x_2 \\ x_3 \\ x_4 \end{array}\right]=\left[\begin{array}{c}3 \\ -2 \\ 4 \\ 2.25 \end{array}\right]~,$$**
+$$\left[\begin{array}{ccc} && \\ & A &   \\ && \\ && \end{array}\right]
+\left[\begin{array}{c}x_1 \\ x_2 \\ x_3 \\ x_4 \end{array}\right]=\left[\begin{array}{c}3 \\ -2 \\ 4 \\ 2.25 \end{array}\right]~,$$
 **but unfortunately $A$ is a black box and you cannot see the contents. Oh my! Luckily, from the physics of the problem, you do have three pieces of information about the system and the solution:**
 
 - $||x||_{\infty}=2$
@@ -175,22 +175,19 @@ e) Use the R function `solve(A)` to compute $A^{-1}$. Note that $A^{-1}$ is a **
 
 **Is this information enough to determine the solution $x$ to $Ax=b$? If yes, find $x$. If no, say as much as you can about $x$.**
 
-
-<br>
-<br>
 <br>
 
+*Solution*
 
-```{solution}
 $$
-Cond(A)=||A||_{\infty}||A^{-1}||_{\infty}=32=\max\frac{\text { relative forward error }}{\text { relative backward error }}=\max\frac{\frac{\left\|x-x_{a}\right\|_{\infty}}{\|x\|_{\infty}}}{\frac{\left\|A x_{a}-b\right\|_{\infty}}{\|b\|_{\infty}}}=\max\frac{\frac{\left\|x-x_{a}\right\|_{\infty}}{2}}{\frac{|2.25-2.1875|}{4}}
+Cond(A)=||A||_{\infty}||A^{-1}||_{\infty}=32=\max\frac{\text { relative forward error }}{\text { relative backward error }} \geq \frac{\frac{\left\|x-x_{a}\right\|_{\infty}}{\|x\|_{\infty}}}{\frac{\left\|A x_{a}-b\right\|_{\infty}}{\|b\|_{\infty}}} \geq   \frac{\frac{\left\|x-x_{a}\right\|_{\infty}}{2}}{\frac{|2.25-2.1875|}{4}}
 $$
-```
+
 ```{r}
 32*(2.25-2.1875)/2
 ```
 
-$$
+>$$
 \therefore ||x-x_{a}||_{\infty} \leq 1\\
 \because ||x||_{\infty} = 2 = \max\{|\bar{x}|\} \text{ and } x_{a}=\left[\begin{array}{c}2.0750 \\ 0.1625 \\ 0.4500 \\ -0.1875 \end{array}\right]\\
 \therefore |x_{i}-x_{ai}|\leq 1 \; i=1,2,3,4 \\
@@ -201,28 +198,45 @@ $$
 
 > I believe this is what we can find for $x$
 
-
 <br>
-<br>
-<br>
-<br>
-
 
 ### Problem 4
 
-A real $n \times n$ matrix $Q$ is *orthonormal* if 
+**A real $n \times n$ matrix $Q$ is *orthonormal* if** 
 
 $$ Q^{\top}Q=QQ^T=I;~i.e., Q^{-1}=Q^T.$$
 
-Note: sometimes you will see these matrices just called *orthogonal matrices*. The analagous matrices that contain complex entries ($Q^*Q=QQ^*=I$, where the $~^*$ is a conjugate transpose) are called *unitary*. 
+**Note: sometimes you will see these matrices just called *orthogonal matrices*. The analagous matrices that contain complex entries ($Q^*Q=QQ^*=I$, where the $~^*$ is a conjugate transpose) are called *unitary*.**
 
-Show that $||Q||_2=||Q^{-1}||_2=1$, and therefore the 2-norm condition number of any orthonormal matrix $Q$ is $\kappa_2(Q)=||Q||_2 ||Q^{-1}||_2=1$.
+**Show that $||Q||_2=||Q^{-1}||_2=1$, and therefore the 2-norm condition number of any orthonormal matrix $Q$ is $\kappa_2(Q)=||Q||_2 ||Q^{-1}||_2=1$.**
+<br>
+<br>
+
+*proof*
+
+
+$$
+\|Q\|_2=\max_{\|x\|\neq 0}\frac{\|Qx\|_{2}}{\|x\|_2}=\max_{\|x\|\neq 0}(\frac{\|Qx\|_{2}^2}{\|x\|_2^2})^{1/2} 
+= \max_{\|x\|\neq0} (\frac{\left(Qx\right)^{\top} Qx}{x^{\top}x})^{1/2} =\max_{\|x\|\neq0} (\frac{x^{\top} Q^{\top} Qx}{x^{\top}x})^{1/2} 
+= \max_{\|x\|\neq0} (\frac{x^{\top} x}{x^{\top}x})^{1/2} \\
+= \max_{\|x\|\neq0} (\frac{x^{\top} Q Q^{\top}x}{x^{\top}x})^{1/2} 
+= \max_{\|x\|\neq0} (\frac{x^{\top} (Q^{-1})^{\top} Q^{-1}x}{x^{\top}x})^{1/2}
+=\max_{\|x\|\neq 0}(\frac{\left(Q^{-1}x\right)^{\top} Q^{-1}x}{x^{\top}x})^{1/2}
+=\max_{\|x\|\neq 0}\frac{\|Q^{-1}x\|_{2}}{\|x\|_2}
+=\|Q^{-1}\|_{2}
+= 1
+\\
+\therefore ||Q||_2=||Q^{-1}||_2=1  \\
+\therefore \kappa_2(Q)=||Q||_2 ||Q^{-1}||_2=1
+$$
+
+<br><br>
 
 ### Problem 5
 
-This problem has 3 parts.
+**This problem has 3 parts.**
 
-(a) Modify my `UnitCircleMap` function, which shows the image of the unit ball under a linear mapping $A$ and computes the matrix norm of $A$. We want to let the user choose the norm to be 1, 2, or $\infty$ ("I"). The code is below, and there are a few places where you need to insert a few lines. 
+**(a) Modify my `UnitCircleMap` function, which shows the image of the unit ball under a linear mapping $A$ and computes the matrix norm of $A$. We want to let the user choose the norm to be 1, 2, or $\infty$ ("I"). The code is below, and there are a few places where you need to insert a few lines.** 
 
 ```{r}
 UnitCircleMap = function(A,p=2) {
@@ -265,7 +279,7 @@ UnitCircleMap = function(A,p=2) {
 }
 ```
 
-Here is an example of how the function should be called, and the output it should display. In this case, $A=\begin{bmatrix}1 & 2 \\ 0 & 2\end{bmatrix}$. Once you've filled in the missing lines of the function, you can also test your code on this $A$ with the 1 norm and $\infty$-norm.
+**Here is an example of how the function should be called, and the output it should display. In this case, $A=\begin{bmatrix}1 & 2 \\ 0 & 2\end{bmatrix}$. Once you've filled in the missing lines of the function, you can also test your code on this $A$ with the 1 norm and $\infty$-norm.**
 
 ```{r}
 A=cbind(c(1,0),c(2,2))
@@ -276,7 +290,11 @@ A=cbind(c(1,0),c(2,2))
 UnitCircleMap(A,p='I')
 ```
 
-(b) Compute the condition number of the matrix $A$ above using `Cond` (using the $p=1,2, \infty$-norms). Visually explain why the condition number for each $p$ is the value you found.
+**(b) Compute the condition number of the matrix $A$ above using `Cond` (using the $p=1,2, \infty$-norms). Visually explain why the condition number for each $p$ is the value you found.**
+
+<br><br>
+
+*Solution*
 
 ```{r}
 Cond = function(A,p=2) {
@@ -302,11 +320,19 @@ Cond(A,1)
 Cond(A,2)
 Cond(A,"I")
 ```
-(c) Use your code to determine whether $||Q||_1=||Q||_{\infty}=||Q||_2=1$ for all orthonormal matrices $Q$. 
 
-**Hint**: Try $Q=\begin{pmatrix} 
+> !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!!
+
+
+**(c) Use your code to determine whether $||Q||_1=||Q||_{\infty}=||Q||_2=1$ for all orthonormal matrices $Q$. **
+
+**Hint: Try $Q=\begin{pmatrix}
 \frac{1}{\sqrt{2}} & \frac{-1}{\sqrt{2}} \\
-\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \end{pmatrix}$, which is a rotation matrix that rotates vectors counter-clockwise by $\frac{\pi}{4}$.
+\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \end{pmatrix}$, which is a rotation matrix that rotates vectors counter-clockwise by $\frac{\pi}{4}$.**
+
+<br><br>
+
+*Solution*
 
 ```{r}
 A=cbind(c(1/sqrt(2),1/sqrt(2)),c(-1/sqrt(2),1/sqrt(2)))
@@ -319,9 +345,9 @@ UnitCircleMap(A,p="I")
  
 ### Problem 6
 
-This was Question 5 on the Activity on norms.
+**This was Question 5 on the Activity on norms.**
 
-Prove that
+**Prove that**
 $$ ||A||_{\infty}=\max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}.$$
 
 
@@ -334,7 +360,7 @@ $$
 ```
 
 ### Problem 7
-Solve the following system by finding the $PA=LU$ factorization and then carrying out the two-step back substitution (all by hand, that is, not using any R functions. Of course, you can type your solution, and check your work in R, though.):
+**Solve the following system by finding the $PA=LU$ factorization and then carrying out the two-step back substitution (all by hand, that is, not using any R functions. Of course, you can type your solution, and check your work in R, though.):**
 
 $$ Ax=\begin{pmatrix}-1 & 0 & 1 \\
 3 & 1 & 1 \\

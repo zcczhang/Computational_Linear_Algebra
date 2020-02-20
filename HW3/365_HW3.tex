@@ -293,8 +293,8 @@ midterm.}}
 
 \textbf{You are trying to solve a linear system of four equations:}
 
-\textbf{\[\left[\begin{array}{ccc} && \\ & A &   \\ && \\ && \end{array}\right]
-\left[\begin{array}{c}x_1 \\ x_2 \\ x_3 \\ x_4 \end{array}\right]=\left[\begin{array}{c}3 \\ -2 \\ 4 \\ 2.25 \end{array}\right]~,\]}
+\[\left[\begin{array}{ccc} && \\ & A &   \\ && \\ && \end{array}\right]
+\left[\begin{array}{c}x_1 \\ x_2 \\ x_3 \\ x_4 \end{array}\right]=\left[\begin{array}{c}3 \\ -2 \\ 4 \\ 2.25 \end{array}\right]~,\]
 \textbf{but unfortunately \(A\) is a black box and you cannot see the
 contents. Oh my! Luckily, from the physics of the problem, you do have
 three pieces of information about the system and the solution:}
@@ -313,13 +313,13 @@ three pieces of information about the system and the solution:}
 \(Ax=b\)? If yes, find \(x\). If no, say as much as you can about
 \(x\).}
 
-\BeginKnitrBlock{solution}
+\emph{solution}
 
-\iffalse{} {Solution. } \fi{}\[
+\begin{quote}
+\[
 Cond(A)=||A||_{\infty}||A^{-1}||_{\infty}=32=\max\frac{\text { relative forward error }}{\text { relative backward error }}=\max\frac{\frac{\left\|x-x_{a}\right\|_{\infty}}{\|x\|_{\infty}}}{\frac{\left\|A x_{a}-b\right\|_{\infty}}{\|b\|_{\infty}}}=\max\frac{\frac{\left\|x-x_{a}\right\|_{\infty}}{2}}{\frac{|2.25-2.1875|}{4}}
 \]
-
-\EndKnitrBlock{solution}
+\end{quote}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -331,6 +331,7 @@ Cond(A)=||A||_{\infty}||A^{-1}||_{\infty}=32=\max\frac{\text { relative forward 
 ## [1] 1
 \end{verbatim}
 
+\begin{quote}
 \[
 \therefore ||x-x_{a}||_{\infty} \leq 1\\
 \because ||x||_{\infty} = 2 = \max\{|\bar{x}|\} \text{ and } x_{a}=\left[\begin{array}{c}2.0750 \\ 0.1625 \\ 0.4500 \\ -0.1875 \end{array}\right]\\
@@ -339,6 +340,7 @@ Cond(A)=||A||_{\infty}||A^{-1}||_{\infty}=32=\max\frac{\text { relative forward 
 \text{and:  } 
 \begin{aligned}-0.8375 & \leq x_{2} \leq 1.1625 \\-0.55 & \leq x_{3} \leq 1.45 \\-1.1875 & \leq x_{4} \leq 0.8125 \end{aligned}
 \]
+\end{quote}
 
 \begin{quote}
 I believe this is what we can find for \(x\)
@@ -432,7 +434,7 @@ the missing lines of the function, you can also test your code on this
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-7-1.pdf}
+\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-6-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -441,7 +443,7 @@ the missing lines of the function, you can also test your code on this
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-7-2.pdf}
+\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-6-2.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -450,7 +452,7 @@ the missing lines of the function, you can also test your code on this
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-7-3.pdf}
+\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-6-3.pdf}
 
 \begin{enumerate}
 \def\labelenumi{(\alph{enumi})}
@@ -535,7 +537,7 @@ which is a rotation matrix that rotates vectors counter-clockwise by
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-10-1.pdf}
+\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-9-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -543,7 +545,7 @@ which is a rotation matrix that rotates vectors counter-clockwise by
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-10-2.pdf}
+\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-9-2.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -551,7 +553,7 @@ which is a rotation matrix that rotates vectors counter-clockwise by
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-10-3.pdf}
+\includegraphics{365_HW3_files/figure-latex/unnamed-chunk-9-3.pdf}
 
 \begin{quote}
 Therefore, they are not necessarily equal to 1.
