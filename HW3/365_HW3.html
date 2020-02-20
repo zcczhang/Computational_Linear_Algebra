@@ -368,6 +368,9 @@ summary {
 </div>
 
 
+<p><span class="math display">\[
+\begin{array}{l}{\left(\begin{array}{ccc}{1} &amp; {0} &amp; {0} \\ {\frac{2}{3}} &amp; {1} &amp; {0} \\ {-\frac{1}{3}} &amp; {-\frac{1}{2}} &amp; {1}\end{array}\right)(y)=\left(\begin{array}{l}{5} \\ {5} \\ {2}\end{array}\right) \Rightarrow y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)} \\ {\left(\begin{array}{ccc}{3} &amp; {1} &amp; {1} \\ {0} &amp; {-\frac{2}{3}} &amp; {\frac{1}{3}} \\ {0} &amp; {0} &amp; {1.5}\end{array}\right)(x)=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \Rightarrow x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)}\end{array}
+\]</span></p>
 <div id="problem-1" class="section level3">
 <h3>Problem 1</h3>
 <p><strong>In class, we showed how to construct a sequence of unit lower-triangular matrices <span class="math inline">\(\{L_{k}\}_{k=1,2,\ldots,n-1}\)</span> of the form</strong></p>
@@ -478,7 +481,7 @@ x_{8}\left[\begin{array}{r} {0} \\ {0} \\ {0} \\ {0} \\ {0} \\ {-1} \\ {-1} \\ {
 </blockquote>
 <p><strong>b) Use your function from Exercise 1 (on the activity) to perform an LU factorization of <span class="math inline">\(A\)</span>. Do you notice anything special about the structures of <span class="math inline">\(L\)</span> and <span class="math inline">\(U\)</span>?</strong></p>
 <p><em>Solution</em></p>
-<pre class="r"><code>myLU = function(A,tol=10^-8) {
+<pre class="r"><code>myLU = function(A,tol=10^-20) {
   n = nrow(A)
   L = diag(x=1,nrow=n)  
   U=A
@@ -765,29 +768,42 @@ U = A = \begin{pmatrix}-1 &amp; 0 &amp; 1 \\
 2 &amp; 0 &amp; 1 
 \end{pmatrix} \text{, } P  =\left(\begin{array}{ccc}{0} &amp; {1} &amp; {0} \\ {1} &amp; {0} &amp; {0} \\ {0} &amp; {0} &amp; {1}\end{array}\right)\\
 \]</span> <span class="math display">\[
-U = \left(\begin{array}{ccc}{3} &amp; {1} &amp; {1} \\ {-1} &amp; {0} &amp; {1} \\ {2} &amp; {0} &amp; {1}\end{array}\right) \frac{row2=\frac{1}{3} row1+row2}{row3=row3-\frac{2}{3} row1}\left(\begin{array}{rrr}{3} &amp; {1} &amp; {1} \\ {0} &amp; {\frac{1}{3}} &amp; {\frac{4}{3}} \\ {0} &amp; {-\frac{2}{3}} &amp; {\frac{1}{3}}\end{array}\right)
+U = \left(\begin{array}{ccc}{3} &amp; {1} &amp; {1} \\ {-1} &amp; {0} &amp; {1} \\ {2} &amp; {0} &amp; {1}\end{array}\right) \frac{row2=\frac{1}{3} row1+row2}{row3=row3-\frac{2}{3} row1}\left(\begin{array}{rrr}{3} &amp; {1} &amp; {1} \\ {0} &amp; {\frac{1}{3}} &amp; {\frac{4}{3}} \\ {0} &amp; {-\frac{2}{3}} &amp; {\frac{1}{3}}\end{array}\right)   \quad
+L=\left(\begin{array}{ccc}{1} &amp; {0} &amp; {0} \\ {-\frac{1}{3}} &amp; {1} &amp; {0} \\ {\frac{2}{3}} &amp; {0} &amp; {1}\end{array}\right) 
 \]</span> <span class="math display">\[
-L=\left(\begin{array}{ccc}{1} &amp; {0} &amp; {0} \\ {-\frac{1}{3}} &amp; {1} &amp; {0} \\ {\frac{2}{3}} &amp; {0} &amp; {1}\end{array}\right) \quad P=\left(\begin{array}{ccc}{0} &amp; {1} &amp; {0} \\ {1} &amp; {0} &amp; {0} \\ {0} &amp; {0} &amp; {1}\end{array}\right)
+\text{exchange the last two rows: }U  = \left(\begin{array}{rrr}{3} &amp; {1} &amp; {1} \\  {0} &amp; {-\frac{2}{3}} &amp; {\frac{1}{3}} \\ {0} &amp; {\frac{1}{3}} &amp; {\frac{4}{3}} \end{array}\right) \quad 
+P  =\left(\begin{array}{ccc}{0} &amp; {1} &amp; {0} \\ {0} &amp; {0} &amp; {1} \\ {1} &amp; {0} &amp; {0}\end{array}\right) \quad
+L=\left(\begin{array}{ccc}{1} &amp; {0} &amp; {0} \\{\frac{2}{3}} &amp; {1} &amp; {0} \\ {-\frac{1}{3}} &amp; {0} &amp; {1} \end{array}\right) 
 \]</span> <span class="math display">\[
-s
+row3=\frac{1}{2} row2+row3:   \quad
+U=\left(\begin{array}{ccc}
+{3} &amp; {1} &amp; {1} \\
+{0} &amp; {-\frac{2}{3}} &amp; {\frac{1}{3}} \\
+{0} &amp; {0} &amp; {\frac{3}{2}}
+\end{array}\right) \quad L=\left(\begin{array}{ccc}
+{1} &amp; {0} &amp; {0} \\
+{\frac{2}{3}} &amp; {1} &amp; {0} \\
+{-\frac{1}{3}} &amp; {\frac{1}{2}} &amp; {1}
+\end{array}\right) \quad P=\left(\begin{array}{lll}
+{0} &amp; {1} &amp; {0} \\
+{0} &amp; {0} &amp; {1} \\
+{1} &amp; {0} &amp; {0}
+\end{array}\right)
 \]</span></p>
 <pre class="r"><code>P = cbind(c(0,1,0),c(1,0,0),c(0,0,1))
 A = rbind(c(-1,0,1),c(3,1,1),c(2,0,1))
-L = cbind(c(1,-1/3,0),c(0,1,2),c(0,0,1))
-U = cbind(c(3,0,0),c(1,1/3,0),c(1,4/3,3))
+L = cbind(c(1,2/3,-1/3),c(0,1,1/2),c(0,0,1))
+U = cbind(c(3,0,0),c(1,-2/3,0),c(1,1/3,3/2))
 P %*% A</code></pre>
 <pre><code>##      [,1] [,2] [,3]
 ## [1,]    3    1    1
 ## [2,]   -1    0    1
 ## [3,]    2    0    1</code></pre>
 <pre class="r"><code>L %*% U</code></pre>
-<pre><code>##      [,1]      [,2]     [,3]
-## [1,]    3 1.0000000 1.000000
-## [2,]   -1 0.0000000 1.000000
-## [3,]    0 0.6666667 5.666667</code></pre>
-<p><span class="math display">\[
-\begin{array}{l}{\left(\begin{array}{ccc}{1} &amp; {0} &amp; {0} \\ {\frac{2}{3}} &amp; {1} &amp; {0} \\ {-\frac{1}{3}} &amp; {-\frac{1}{2}} &amp; {1}\end{array}\right)(y)=\left(\begin{array}{l}{5} \\ {5} \\ {2}\end{array}\right) \Rightarrow y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)} \\ {\left(\begin{array}{ccc}{3} &amp; {1} &amp; {1} \\ {0} &amp; {-\frac{2}{3}} &amp; {\frac{1}{3}} \\ {0} &amp; {0} &amp; {1.5}\end{array}\right)(x)=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \Rightarrow x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)}\end{array}
-\]</span></p>
+<pre><code>##      [,1]       [,2]     [,3]
+## [1,]    3  1.0000000 1.000000
+## [2,]    2  0.0000000 1.000000
+## [3,]   -1 -0.6666667 1.333333</code></pre>
 </div>
 
 

@@ -5,6 +5,10 @@ output:
   html_document: default
 ---
 
+$$
+\begin{array}{l}{\left(\begin{array}{ccc}{1} & {0} & {0} \\ {\frac{2}{3}} & {1} & {0} \\ {-\frac{1}{3}} & {-\frac{1}{2}} & {1}\end{array}\right)(y)=\left(\begin{array}{l}{5} \\ {5} \\ {2}\end{array}\right) \Rightarrow y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)} \\ {\left(\begin{array}{ccc}{3} & {1} & {1} \\ {0} & {-\frac{2}{3}} & {\frac{1}{3}} \\ {0} & {0} & {1.5}\end{array}\right)(x)=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \Rightarrow x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)}\end{array}
+$$
+
 ### Problem 1
 **In class, we showed how to construct a sequence of unit lower-triangular matrices $\{L_{k}\}_{k=1,2,\ldots,n-1}$ of the form** 
 
@@ -142,7 +146,7 @@ $$
 *Solution*
 
 ```{r}
-myLU = function(A,tol=10^-8) {
+myLU = function(A,tol=10^-20) {
   n = nrow(A)
   L = diag(x=1,nrow=n)  
   U=A
@@ -446,26 +450,40 @@ U = A = \begin{pmatrix}-1 & 0 & 1 \\
 \end{pmatrix} \text{, } P  =\left(\begin{array}{ccc}{0} & {1} & {0} \\ {1} & {0} & {0} \\ {0} & {0} & {1}\end{array}\right)\\
 $$
 $$
-U = \left(\begin{array}{ccc}{3} & {1} & {1} \\ {-1} & {0} & {1} \\ {2} & {0} & {1}\end{array}\right) \frac{row2=\frac{1}{3} row1+row2}{row3=row3-\frac{2}{3} row1}\left(\begin{array}{rrr}{3} & {1} & {1} \\ {0} & {\frac{1}{3}} & {\frac{4}{3}} \\ {0} & {-\frac{2}{3}} & {\frac{1}{3}}\end{array}\right)
+U = \left(\begin{array}{ccc}{3} & {1} & {1} \\ {-1} & {0} & {1} \\ {2} & {0} & {1}\end{array}\right) \frac{row2=\frac{1}{3} row1+row2}{row3=row3-\frac{2}{3} row1}\left(\begin{array}{rrr}{3} & {1} & {1} \\ {0} & {\frac{1}{3}} & {\frac{4}{3}} \\ {0} & {-\frac{2}{3}} & {\frac{1}{3}}\end{array}\right)   \quad
+L=\left(\begin{array}{ccc}{1} & {0} & {0} \\ {-\frac{1}{3}} & {1} & {0} \\ {\frac{2}{3}} & {0} & {1}\end{array}\right) 
 $$
 $$
-L=\left(\begin{array}{ccc}{1} & {0} & {0} \\ {-\frac{1}{3}} & {1} & {0} \\ {\frac{2}{3}} & {0} & {1}\end{array}\right) \quad P=\left(\begin{array}{ccc}{0} & {1} & {0} \\ {1} & {0} & {0} \\ {0} & {0} & {1}\end{array}\right)
+\text{exchange the last two rows: }U  = \left(\begin{array}{rrr}{3} & {1} & {1} \\  {0} & {-\frac{2}{3}} & {\frac{1}{3}} \\ {0} & {\frac{1}{3}} & {\frac{4}{3}} \end{array}\right) \quad 
+P  =\left(\begin{array}{ccc}{0} & {1} & {0} \\ {0} & {0} & {1} \\ {1} & {0} & {0}\end{array}\right) \quad
+L=\left(\begin{array}{ccc}{1} & {0} & {0} \\{\frac{2}{3}} & {1} & {0} \\ {-\frac{1}{3}} & {0} & {1} \end{array}\right) 
 $$
 $$
-s
+row3=\frac{1}{2} row2+row3:   \quad
+U=\left(\begin{array}{ccc}
+{3} & {1} & {1} \\
+{0} & {-\frac{2}{3}} & {\frac{1}{3}} \\
+{0} & {0} & {\frac{3}{2}}
+\end{array}\right) \quad L=\left(\begin{array}{ccc}
+{1} & {0} & {0} \\
+{\frac{2}{3}} & {1} & {0} \\
+{-\frac{1}{3}} & {\frac{1}{2}} & {1}
+\end{array}\right) \quad P=\left(\begin{array}{lll}
+{0} & {1} & {0} \\
+{0} & {0} & {1} \\
+{1} & {0} & {0}
+\end{array}\right)
 $$
 
 
 ```{r}
 P = cbind(c(0,1,0),c(1,0,0),c(0,0,1))
 A = rbind(c(-1,0,1),c(3,1,1),c(2,0,1))
-L = cbind(c(1,-1/3,0),c(0,1,2),c(0,0,1))
-U = cbind(c(3,0,0),c(1,1/3,0),c(1,4/3,3))
+L = cbind(c(1,2/3,-1/3),c(0,1,1/2),c(0,0,1))
+U = cbind(c(3,0,0),c(1,-2/3,0),c(1,1/3,3/2))
 P %*% A
 L %*% U
 ```
 
-$$
-\begin{array}{l}{\left(\begin{array}{ccc}{1} & {0} & {0} \\ {\frac{2}{3}} & {1} & {0} \\ {-\frac{1}{3}} & {-\frac{1}{2}} & {1}\end{array}\right)(y)=\left(\begin{array}{l}{5} \\ {5} \\ {2}\end{array}\right) \Rightarrow y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)} \\ {\left(\begin{array}{ccc}{3} & {1} & {1} \\ {0} & {-\frac{2}{3}} & {\frac{1}{3}} \\ {0} & {0} & {1.5}\end{array}\right)(x)=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \Rightarrow x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)}\end{array}
-$$
+
 
