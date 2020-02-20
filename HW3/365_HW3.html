@@ -368,9 +368,6 @@ summary {
 </div>
 
 
-<p><span class="math display">\[
-\begin{array}{l}{\left(\begin{array}{ccc}{1} &amp; {0} &amp; {0} \\ {\frac{2}{3}} &amp; {1} &amp; {0} \\ {-\frac{1}{3}} &amp; {-\frac{1}{2}} &amp; {1}\end{array}\right)(y)=\left(\begin{array}{l}{5} \\ {5} \\ {2}\end{array}\right) \Rightarrow y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)} \\ {\left(\begin{array}{ccc}{3} &amp; {1} &amp; {1} \\ {0} &amp; {-\frac{2}{3}} &amp; {\frac{1}{3}} \\ {0} &amp; {0} &amp; {1.5}\end{array}\right)(x)=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \Rightarrow x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)}\end{array}
-\]</span></p>
 <div id="problem-1" class="section level3">
 <h3>Problem 1</h3>
 <p><strong>In class, we showed how to construct a sequence of unit lower-triangular matrices <span class="math inline">\(\{L_{k}\}_{k=1,2,\ldots,n-1}\)</span> of the form</strong></p>
@@ -431,7 +428,8 @@ L_{k}^{-1} = \begin{pmatrix} 1 &amp; &amp; &amp; &amp; &amp; \\
 <blockquote>
 <p><span class="math display">\[
 \because \forall k\leq j\leq n \text{, }\text{ }\text{ }e_{k}^{\top} \ell_{j}=0  \\
-\begin{array}{c}\therefore {L_{k}^{-1} L_{k+1}^{-1}=\left(I+\ell_{k} e_{k}^{\top}\right)\left(I+\ell_{k+1} e_{k+1}^{\top}\right)=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}+\ell_{k} e_{k}^{\top} \ell_{k+1} e_{k+1}^{\top}=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}} \\ 
+\begin{array}{c}\therefore {L_{k}^{-1} L_{k+1}^{-1}=\left(I+\ell_{k} e_{k}^{\top}\right)\left(I+\ell_{k+1} e_{k+1}^{\top}\right)=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}+\ell_{k} e_{k}^{\top} \ell_{k+1} e_{k+1}^{\top} \\
+=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}} \\ 
 \begin{aligned} L_{k}^{-1} L_{k+1}^{-1} L_{k+2}^{-1} &amp;=\left(I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}\right)\left(I+\ell_{k+2}e_{k+2}^{\top}\right) \\ &amp;=I+l_{k} e_{k}^{\top}+l_{k+1} e_{k+1}^{\top}+l_{k+2}^{\top} k_{k+2}^{\top}+0 \end{aligned} \\
 ......\\
 {\therefore L:=L_{1}^{-1} L_{2}^{-1} \ldots L_{n-2}^{-1} L_{n-1}^{-1}=I+\ell_{1} e_{1}^{\top}+\ell_{2} e_{2}^{\top}+\ldots+\ell_{n-1} e_{n-1}^{\top}=\left(\begin{array}{cccc}{1} &amp; {} &amp; {} &amp; {} \\
@@ -632,6 +630,7 @@ Cond(A)=||A||_{\infty}||A^{-1}||_{\infty}=32=\max\frac{\text { relative forward 
 <p><strong>Note: sometimes you will see these matrices just called <em>orthogonal matrices</em>. The analagous matrices that contain complex entries (<span class="math inline">\(Q^*Q=QQ^*=I\)</span>, where the <span class="math inline">\(~^*\)</span> is a conjugate transpose) are called <em>unitary</em>.</strong></p>
 <p><strong>Show that <span class="math inline">\(||Q||_2=||Q^{-1}||_2=1\)</span>, and therefore the 2-norm condition number of any orthonormal matrix <span class="math inline">\(Q\)</span> is <span class="math inline">\(\kappa_2(Q)=||Q||_2 ||Q^{-1}||_2=1\)</span>.</strong> <br> <br></p>
 <p><em>Proof</em></p>
+<blockquote>
 <p><span class="math display">\[
 \|Q\|_2=\max_{\|x\|\neq 0}\frac{\|Qx\|_{2}}{\|x\|_2}=\max_{\|x\|\neq 0}(\frac{\|Qx\|_{2}^2}{\|x\|_2^2})^{1/2} 
 = \max_{\|x\|\neq0} (\frac{\left(Qx\right)^{\top} Qx}{x^{\top}x})^{1/2} =\max_{\|x\|\neq0} (\frac{x^{\top} Q^{\top} Qx}{x^{\top}x})^{1/2} 
@@ -646,6 +645,7 @@ Cond(A)=||A||_{\infty}||A^{-1}||_{\infty}=32=\max\frac{\text { relative forward 
 \therefore ||Q||_2=||Q^{-1}||_2=1  \\
 \therefore \kappa_2(Q)=||Q||_2 ||Q^{-1}||_2=1
 \]</span></p>
+</blockquote>
 <p><br><br></p>
 </div>
 <div id="problem-5" class="section level3">
@@ -759,7 +759,9 @@ UnitCircleMap(A,p=1)</code></pre>
 3 &amp; 1 &amp; 1 \\
 2 &amp; 0 &amp; 1 
 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2\\ x_3\end{pmatrix}=\begin{pmatrix} 2 \\ 5 \\ 5 \end{pmatrix}=b. \]</span></p>
-<p><em>solution</em> <span class="math display">\[
+<p><em>Solution</em></p>
+<blockquote>
+<p><span class="math display">\[
 U = A = \begin{pmatrix}-1 &amp; 0 &amp; 1 \\
 3 &amp; 1 &amp; 1 \\
 2 &amp; 0 &amp; 1 
@@ -783,16 +785,41 @@ U=\left(\begin{array}{ccc}
 \end{array}\right) \quad L=\left(\begin{array}{ccc}
 {1} &amp; {0} &amp; {0} \\
 {\frac{2}{3}} &amp; {1} &amp; {0} \\
-{-\frac{1}{3}} &amp; {\frac{1}{2}} &amp; {1}
+{-\frac{1}{3}} &amp; {-\frac{1}{2}} &amp; {1}
 \end{array}\right) \quad P=\left(\begin{array}{lll}
 {0} &amp; {1} &amp; {0} \\
 {0} &amp; {0} &amp; {1} \\
 {1} &amp; {0} &amp; {0}
 \end{array}\right)
 \]</span></p>
-<pre class="r"><code>P = cbind(c(0,1,0),c(1,0,0),c(0,0,1))
+</blockquote>
+<blockquote>
+<p><span class="math display">\[
+Ly=Pb:\\
+\left(\begin{array}{ccc}
+{1} &amp; {0} &amp; {0} \\
+{\frac{2}{3}} &amp; {1} &amp; {0} \\
+{-\frac{1}{3}} &amp; {-\frac{1}{2}} &amp; {1}
+\end{array}\right) y = \left(\begin{array}{lll}
+{0} &amp; {1} &amp; {0} \\
+{0} &amp; {0} &amp; {1} \\
+{1} &amp; {0} &amp; {0}
+\end{array}\right) \left(\begin{array}{l}{2} \\ {5} \\ {5} \end{array}\right) \\
+\therefore y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)
+\\
+Ux = y:\\
+\left(\begin{array}{ccc}
+{3} &amp; {1} &amp; {1} \\
+{0} &amp; {-\frac{2}{3}} &amp; {\frac{1}{3}} \\
+{0} &amp; {0} &amp; {\frac{3}{2}}
+\end{array}\right) x =\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \\
+\therefore x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)
+\]</span></p>
+</blockquote>
+<pre class="r"><code># Test
+P = cbind(c(0,1,0),c(1,0,0),c(0,0,1))
 A = rbind(c(-1,0,1),c(3,1,1),c(2,0,1))
-L = cbind(c(1,2/3,-1/3),c(0,1,1/2),c(0,0,1))
+L = cbind(c(1,2/3,-1/3),c(0,1,-1/2),c(0,0,1))
 U = cbind(c(3,0,0),c(1,-2/3,0),c(1,1/3,3/2))
 P %*% A</code></pre>
 <pre><code>##      [,1] [,2] [,3]
@@ -800,10 +827,13 @@ P %*% A</code></pre>
 ## [2,]   -1    0    1
 ## [3,]    2    0    1</code></pre>
 <pre class="r"><code>L %*% U</code></pre>
-<pre><code>##      [,1]       [,2]     [,3]
-## [1,]    3  1.0000000 1.000000
-## [2,]    2  0.0000000 1.000000
-## [3,]   -1 -0.6666667 1.333333</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    3    1    1
+## [2,]    2    0    1
+## [3,]   -1    0    1</code></pre>
+<pre class="r"><code>b = c(2,5,5)
+solve(A, b)</code></pre>
+<pre><code>## [1]  1 -1  3</code></pre>
 </div>
 
 

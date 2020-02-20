@@ -5,10 +5,6 @@ output:
   html_document: default
 ---
 
-$$
-\begin{array}{l}{\left(\begin{array}{ccc}{1} & {0} & {0} \\ {\frac{2}{3}} & {1} & {0} \\ {-\frac{1}{3}} & {-\frac{1}{2}} & {1}\end{array}\right)(y)=\left(\begin{array}{l}{5} \\ {5} \\ {2}\end{array}\right) \Rightarrow y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)} \\ {\left(\begin{array}{ccc}{3} & {1} & {1} \\ {0} & {-\frac{2}{3}} & {\frac{1}{3}} \\ {0} & {0} & {1.5}\end{array}\right)(x)=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \Rightarrow x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)}\end{array}
-$$
-
 ### Problem 1
 **In class, we showed how to construct a sequence of unit lower-triangular matrices $\{L_{k}\}_{k=1,2,\ldots,n-1}$ of the form** 
 
@@ -84,9 +80,11 @@ $$
 
 *Solution:*
 
->$$
+>
+$$
 \because \forall k\leq j\leq n \text{, }\text{ }\text{ }e_{k}^{\top} \ell_{j}=0  \\
-\begin{array}{c}\therefore {L_{k}^{-1} L_{k+1}^{-1}=\left(I+\ell_{k} e_{k}^{\top}\right)\left(I+\ell_{k+1} e_{k+1}^{\top}\right)=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}+\ell_{k} e_{k}^{\top} \ell_{k+1} e_{k+1}^{\top}=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}} \\ 
+\begin{array}{c}\therefore {L_{k}^{-1} L_{k+1}^{-1}=\left(I+\ell_{k} e_{k}^{\top}\right)\left(I+\ell_{k+1} e_{k+1}^{\top}\right)=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}+\ell_{k} e_{k}^{\top} \ell_{k+1} e_{k+1}^{\top} \\
+=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}} \\ 
 \begin{aligned} L_{k}^{-1} L_{k+1}^{-1} L_{k+2}^{-1} &=\left(I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}\right)\left(I+\ell_{k+2}e_{k+2}^{\top}\right) \\ &=I+l_{k} e_{k}^{\top}+l_{k+1} e_{k+1}^{\top}+l_{k+2}^{\top} k_{k+2}^{\top}+0 \end{aligned} \\
 ......\\
 {\therefore L:=L_{1}^{-1} L_{2}^{-1} \ldots L_{n-2}^{-1} L_{n-1}^{-1}=I+\ell_{1} e_{1}^{\top}+\ell_{2} e_{2}^{\top}+\ldots+\ell_{n-1} e_{n-1}^{\top}=\left(\begin{array}{cccc}{1} & {} & {} & {} \\
@@ -289,7 +287,7 @@ $$ Q^{\top}Q=QQ^T=I;~i.e., Q^{-1}=Q^T.$$
 
 *Proof*
 
-
+>
 $$
 \|Q\|_2=\max_{\|x\|\neq 0}\frac{\|Qx\|_{2}}{\|x\|_2}=\max_{\|x\|\neq 0}(\frac{\|Qx\|_{2}^2}{\|x\|_2^2})^{1/2} 
 = \max_{\|x\|\neq0} (\frac{\left(Qx\right)^{\top} Qx}{x^{\top}x})^{1/2} =\max_{\|x\|\neq0} (\frac{x^{\top} Q^{\top} Qx}{x^{\top}x})^{1/2} 
@@ -439,7 +437,9 @@ $$ Ax=\begin{pmatrix}-1 & 0 & 1 \\
 2 & 0 & 1 
 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2\\ x_3\end{pmatrix}=\begin{pmatrix} 2 \\ 5 \\ 5 \end{pmatrix}=b. $$
 
-*solution*
+*Solution*
+
+>
 $$
 U = A = \begin{pmatrix}-1 & 0 & 1 \\
 3 & 1 & 1 \\
@@ -467,7 +467,7 @@ U=\left(\begin{array}{ccc}
 \end{array}\right) \quad L=\left(\begin{array}{ccc}
 {1} & {0} & {0} \\
 {\frac{2}{3}} & {1} & {0} \\
-{-\frac{1}{3}} & {\frac{1}{2}} & {1}
+{-\frac{1}{3}} & {-\frac{1}{2}} & {1}
 \end{array}\right) \quad P=\left(\begin{array}{lll}
 {0} & {1} & {0} \\
 {0} & {0} & {1} \\
@@ -475,15 +475,41 @@ U=\left(\begin{array}{ccc}
 \end{array}\right)
 $$
 
+>
+$$
+Ly=Pb:\\
+\left(\begin{array}{ccc}
+{1} & {0} & {0} \\
+{\frac{2}{3}} & {1} & {0} \\
+{-\frac{1}{3}} & {-\frac{1}{2}} & {1}
+\end{array}\right) y = \left(\begin{array}{lll}
+{0} & {1} & {0} \\
+{0} & {0} & {1} \\
+{1} & {0} & {0}
+\end{array}\right) \left(\begin{array}{l}{2} \\ {5} \\ {5} \end{array}\right) \\
+\therefore y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)
+\\
+Ux = y:\\
+\left(\begin{array}{ccc}
+{3} & {1} & {1} \\
+{0} & {-\frac{2}{3}} & {\frac{1}{3}} \\
+{0} & {0} & {\frac{3}{2}}
+\end{array}\right) x =\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \\
+\therefore x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)
+$$
 
 ```{r}
+# Test
 P = cbind(c(0,1,0),c(1,0,0),c(0,0,1))
 A = rbind(c(-1,0,1),c(3,1,1),c(2,0,1))
-L = cbind(c(1,2/3,-1/3),c(0,1,1/2),c(0,0,1))
+L = cbind(c(1,2/3,-1/3),c(0,1,-1/2),c(0,0,1))
 U = cbind(c(3,0,0),c(1,-2/3,0),c(1,1/3,3/2))
 P %*% A
 L %*% U
 ```
-
+```{r}
+b = c(2,5,5)
+solve(A, b)
+```
 
 
