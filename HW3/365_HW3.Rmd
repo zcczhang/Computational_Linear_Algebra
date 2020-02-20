@@ -1,12 +1,20 @@
 ---
-title: "Math 365/Comp 365: Homework 3"
+title: 'Math 365/Comp 365: Homework 3'
 author: "Charles Zhang"
-output: html_document
+output:
+  html_document: default
 ---
 
 ### Problem 0 
 Complete the [Technical Report Reflection Form.](https://drive.google.com/file/d/1xn2JykJPtHj_Xy1cg3NvNZ2FpB5MZtk3/view?usp=sharing)
 Please print out this form, and staple it to the rest of your assignment. 
+
+```{r}
+library(bookdown)
+```
+$$
+\begin{array}{l}{\left(\begin{array}{ccc}{1} & {0} & {0} \\ {\frac{2}{3}} & {1} & {0} \\ {-\frac{1}{3}} & {-\frac{1}{2}} & {1}\end{array}\right)(y)=\left(\begin{array}{l}{5} \\ {5} \\ {2}\end{array}\right) \Rightarrow y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)} \\ {\left(\begin{array}{ccc}{3} & {1} & {1} \\ {0} & {-\frac{2}{3}} & {\frac{1}{3}} \\ {0} & {0} & {1.5}\end{array}\right)(x)=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right) \Rightarrow x=\left(\begin{array}{c}{1} \\ {-1} \\ {3}\end{array}\right)}\end{array}
+$$
 
 ### Problem 1
 In class, we showed how to construct a sequence of unit lower-triangular matrices $\{L_{k}\}_{k=1,2,\ldots,n-1}$ of the form  
@@ -111,49 +119,54 @@ e) Use the R function `solve(A)` to compute $A^{-1}$. Note that $A^{-1}$ is a **
 
 ### Problem 3
 
-*This problem is taken from the in-class portion of an old midterm.*
+***This problem is taken from the in-class portion of an old midterm.***
 
-You are trying to solve a linear system of four equations:
+**You are trying to solve a linear system of four equations:**
 
-$$\left[\begin{array}{ccc} && \\ & A &   \\ && \\ && \end{array}\right]
-\left[\begin{array}{c}x_1 \\ x_2 \\ x_3 \\ x_4 \end{array}\right]=\left[\begin{array}{c}3 \\ -2 \\ 4 \\ 2.25 \end{array}\right]~,$$
-but unfortunately $A$ is a black box and you cannot see the contents. Oh my! Luckily, from the physics of the problem, you do have three pieces of information about the system and the solution:
+**$$\left[\begin{array}{ccc} && \\ & A &   \\ && \\ && \end{array}\right]
+\left[\begin{array}{c}x_1 \\ x_2 \\ x_3 \\ x_4 \end{array}\right]=\left[\begin{array}{c}3 \\ -2 \\ 4 \\ 2.25 \end{array}\right]~,$$**
+**but unfortunately $A$ is a black box and you cannot see the contents. Oh my! Luckily, from the physics of the problem, you do have three pieces of information about the system and the solution:**
 
 - $||x||_{\infty}=2$
 
-- The condition number of $A$, using the $\infty$-norm, is 32
+- **The condition number of $A$, using the $\infty$-norm, is 32**
 
-- $\left[\begin{array}{ccc} && \\ & A &   \\ && \\ && \end{array}\right]
-\left[\begin{array}{r}2.0750 \\ 0.1625 \\ 0.4500 \\ -0.1875 \end{array}\right]=\left[\begin{array}{c}3 \\ -2 \\ 4 \\ 2.1875 \end{array}\right]$
+- **$\left[\begin{array}{ccc} && \\ & A &   \\ && \\ && \end{array}\right]
+\left[\begin{array}{r}2.0750 \\ 0.1625 \\ 0.4500 \\ -0.1875 \end{array}\right]=\left[\begin{array}{c}3 \\ -2 \\ 4 \\ 2.1875 \end{array}\right]$**
 
-Is this information enough to determine the solution $x$ to $Ax=b$? If yes, find $x$. If no, say as much as you can about $x$.
+**Is this information enough to determine the solution $x$ to $Ax=b$? If yes, find $x$. If no, say as much as you can about $x$.**
 
 
-> \(Cond(A)=||A||_{\infty}||A^{-1}||_{\infty}=32\)
+<br>
+<br>
+<br>
 
-```{r}
-Cond = function(A,p=2) {
-  if (p == 2) {  # by default use the 
-    s = svd(A)$d
-    s = s[s>0]
-    return(max(s)/min(s))
-  }
-  if (p == 1) {  # use the 1 norm
-    Ainv = solve(A)
-    return(max(colSums(abs(A)))*max(colSums(abs(Ainv))))
-  }
-  if (p == 'I') {   # use the infinity norm
-    Ainv = solve(A)
-    return(max(rowSums(abs(A)))*max(rowSums(abs(Ainv))))
-  }
-}
+
+```{solution}
+$$
+Cond(A)=||A||_{\infty}||A^{-1}||_{\infty}=32=\max\frac{\text { relative forward error }}{\text { relative backward error }}=\max\frac{\frac{\left\|x-x_{a}\right\|_{\infty}}{\|x\|_{\infty}}}{\frac{\left\|A x_{a}-b\right\|_{\infty}}{\|b\|_{\infty}}}=\max\frac{\frac{\left\|x-x_{a}\right\|_{\infty}}{2}}{\frac{|2.25-2.1875|}{4}}
+$$
 ```
 ```{r}
-x2 <- c(2.0750, 0.1625, 0.4500, -0.1875)
-b2 <-c(3, -2, 4, 2.1875)
-
+32*(2.25-2.1875)/2
 ```
 
+$$
+\therefore ||x-x_{a}||_{\infty} \leq 1\\
+\because ||x||_{\infty} = 2 = \max\{|\bar{x}|\} \text{ and } x_{a}=\left[\begin{array}{c}2.0750 \\ 0.1625 \\ 0.4500 \\ -0.1875 \end{array}\right]\\
+\therefore |x_{i}-x_{ai}|\leq 1 \; i=1,2,3,4 \\
+\therefore |x_{1}|=2\\
+\text{and:  } 
+\begin{aligned}-0.8375 & \leq x_{2} \leq 1.1625 \\-0.55 & \leq x_{3} \leq 1.45 \\-1.1875 & \leq x_{4} \leq 0.8125 \end{aligned}
+$$
+
+> I believe this is what we can find for $x$
+
+
+<br>
+<br>
+<br>
+<br>
 
 
 ### Problem 4
@@ -184,11 +197,15 @@ UnitCircleMap = function(A,p=2) {
   }
   else if (p==1){
     # Insert some code here to create points along the unit 1-norm circle
+    x=c(seq(1,0,len=500),seq(0,-1,len=500),seq(-1,0,len=500),seq(0,1,len=500))
+    y=c(seq(0,1,len=500),seq(1,0,len=500),seq(0,-1,len=500),seq(-1,0,len=500))
     nn=norm(A,type="1")
     ni=as.character(p)
   }
   else if (p=="I"){
-    # Insert some code here to create points along the unit infinity-norm circle  
+    # Insert some code here to create points along the unit infinity-norm circle
+    x=c(rep(1,500),seq(1,-1,len=500),rep(-1,500),seq(-1,1,len=500))
+    y=c(seq(-1,1,len=500),rep(1,500),seq(1,-1,len=500),rep(-1,500))
     nn=norm(A,type="I")
     ni="Inf"
   }
@@ -214,16 +231,53 @@ Here is an example of how the function should be called, and the output it shoul
 ```{r}
 A=cbind(c(1,0),c(2,2))
 UnitCircleMap(A,p=2)
+A=cbind(c(1,0),c(2,2))
+UnitCircleMap(A,p=1)
+A=cbind(c(1,0),c(2,2))
+UnitCircleMap(A,p='I')
 ```
 
 (b) Compute the condition number of the matrix $A$ above using `Cond` (using the $p=1,2, \infty$-norms). Visually explain why the condition number for each $p$ is the value you found.
 
+```{r}
+Cond = function(A,p=2) {
+  if (p == 2) {  # by default use the 
+    s = svd(A)$d
+    s = s[s>0]
+    return(max(s)/min(s))
+  }
+  if (p == 1) {  # use the 1 norm
+    Ainv = solve(A)
+    return(max(colSums(abs(A)))*max(colSums(abs(Ainv))))
+  }
+  if (p == 'I') {   # use the infinity norm
+    Ainv = solve(A)
+    return(max(rowSums(abs(A)))*max(rowSums(abs(Ainv))))
+  }
+}
+```
+
+```{r}
+A=cbind(c(1,0),c(2,2))
+Cond(A,1)
+Cond(A,2)
+Cond(A,"I")
+```
 (c) Use your code to determine whether $||Q||_1=||Q||_{\infty}=||Q||_2=1$ for all orthonormal matrices $Q$. 
 
 **Hint**: Try $Q=\begin{pmatrix} 
 \frac{1}{\sqrt{2}} & \frac{-1}{\sqrt{2}} \\
 \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \end{pmatrix}$, which is a rotation matrix that rotates vectors counter-clockwise by $\frac{\pi}{4}$.
 
+```{r}
+A=cbind(c(1/sqrt(2),1/sqrt(2)),c(-1/sqrt(2),1/sqrt(2)))
+UnitCircleMap(A,p=1)
+UnitCircleMap(A,p=2)
+UnitCircleMap(A,p="I")
+```
+
+> Therefore, they are not necessarily equal to 1.
+ 
 ### Problem 6
 
 This was Question 5 on the Activity on norms.
@@ -232,10 +286,13 @@ Prove that
 $$ ||A||_{\infty}=\max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}.$$
 
 
-> \( \because ||x||_{\infty} = \max_{1 \leq i\leq n}\{|\bar{x_i}|\}\\
+```{proof}
+$$
+\because ||x||_{\infty} = \max_{1 \leq i\leq n}\{|\bar{x_i}|\}\\
 \therefore ||A||_{\infty}=\max_{||x||_{\infty}=1}\{||Ax||_{\infty}\}=\max_{||x||_{\infty}=1}\max_{1 \leq i \leq n}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\}=\max_{1 \leq i \leq n}\max_{||x||_{\infty}=1}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\} \\= 
-\max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}. \)
-
+\max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}.
+$$
+```
 
 ### Problem 7
 Solve the following system by finding the $PA=LU$ factorization and then carrying out the two-step back substitution (all by hand, that is, not using any R functions. Of course, you can type your solution, and check your work in R, though.):
@@ -245,4 +302,35 @@ $$ Ax=\begin{pmatrix}-1 & 0 & 1 \\
 2 & 0 & 1 
 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2\\ x_3\end{pmatrix}=\begin{pmatrix} 2 \\ 5 \\ 5 \end{pmatrix}=b. $$
 
+
+```{solution}
+$$
+U = A = \begin{pmatrix}-1 & 0 & 1 \\
+3 & 1 & 1 \\
+2 & 0 & 1 
+\end{pmatrix}\text{, } P = I =\left(\begin{array}{ccc}{1} & {0} & {0} \\ {0} & {1} & {0} \\ {0} & {0} & {1}\end{array}\right) \\
+\text{exchange the first two rows: }U  = \begin{pmatrix}3 & 1 & 1 \\-1 & 0 & 1 \\
+2 & 0 & 1 
+\end{pmatrix} \text{, } P  =\left(\begin{array}{ccc}{0} & {1} & {0} \\ {1} & {0} & {0} \\ {0} & {0} & {1}\end{array}\right)\\
+$$
+$$
+U = \left(\begin{array}{ccc}{3} & {1} & {1} \\ {-1} & {0} & {1} \\ {2} & {0} & {1}\end{array}\right) \frac{row2=\frac{1}{3} row1+row2}{row3=row3-\frac{2}{3} row1}\left(\begin{array}{rrr}{3} & {1} & {1} \\ {0} & {\frac{1}{3}} & {\frac{4}{3}} \\ {0} & {-\frac{2}{3}} & {\frac{1}{3}}\end{array}\right)
+$$
+$$
+L=\left(\begin{array}{ccc}{1} & {0} & {0} \\ {-\frac{1}{3}} & {1} & {0} \\ {\frac{2}{3}} & {0} & {1}\end{array}\right) \quad P=\left(\begin{array}{ccc}{0} & {1} & {0} \\ {1} & {0} & {0} \\ {0} & {0} & {1}\end{array}\right)
+$$
+$$
+s
+$$
+
+```
+
+```{r}
+P = cbind(c(0,1,0),c(1,0,0),c(0,0,1))
+A = rbind(c(-1,0,1),c(3,1,1),c(2,0,1))
+L = cbind(c(1,-1/3,0),c(0,1,2),c(0,0,1))
+U = cbind(c(3,0,0),c(1,1/3,0),c(1,4/3,3))
+P %*% A
+L %*% U
+```
 
