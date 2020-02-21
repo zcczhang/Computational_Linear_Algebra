@@ -399,8 +399,7 @@ norm(Ainv,"2")
 norm(Ainv,"I")
 ```
 
-> The 
-
+> The product of the norm of matrix A and inverse of A is the condition number.
 
 **(c) Use your code to determine whether $||Q||_1=||Q||_{\infty}=||Q||_2=1$ for all orthonormal matrices $Q$. **
 
