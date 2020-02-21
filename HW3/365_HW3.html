@@ -733,8 +733,15 @@ Cond(A,1)</code></pre>
 <pre><code>## [1] 4.265564</code></pre>
 <pre class="r"><code>Cond(A,&quot;I&quot;)</code></pre>
 <pre><code>## [1] 6</code></pre>
+<pre class="r"><code>Ainv = solve(A)
+norm(Ainv,&quot;1&quot;)</code></pre>
+<pre><code>## [1] 1.5</code></pre>
+<pre class="r"><code>norm(Ainv,&quot;2&quot;)</code></pre>
+<pre><code>## [1] 1.460405</code></pre>
+<pre class="r"><code>norm(Ainv,&quot;I&quot;)</code></pre>
+<pre><code>## [1] 2</code></pre>
 <blockquote>
-<p>!!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!! !!!!!!!!</p>
+<p>The</p>
 </blockquote>
 <p><strong>(c) Use your code to determine whether <span class="math inline">\(||Q||_1=||Q||_{\infty}=||Q||_2=1\)</span> for all orthonormal matrices <span class="math inline">\(Q\)</span>. </strong></p>
 <p><strong>Hint: Try <span class="math inline">\(Q=\begin{pmatrix} \frac{1}{\sqrt{2}} &amp; \frac{-1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} &amp; \frac{1}{\sqrt{2}} \end{pmatrix}\)</span>, which is a rotation matrix that rotates vectors counter-clockwise by <span class="math inline">\(\frac{\pi}{4}\)</span>.</strong></p>
