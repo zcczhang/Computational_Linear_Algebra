@@ -416,7 +416,11 @@ norm(Ainv,"2")
 norm(Ainv,"I")
 ```
 
-> The product of the norm of matrix A showing in figures and inverse of A is the condition number.
+$$
+\text { Cond }(A)=\|A\|_{p} \cdot\left\|A^{-1}\right\|_{p}=\frac{\left(\max _{\|x\|_{p}=1}\|A \vec{x}\|_{p}\right)}{\left(\min _{\|x\|_{p}=1}\|A \vec{x}\|_{p}\right)}
+$$
+
+> The product of the norm of matrix A and inverse of A is the condition number. Geometrically, the long axies over the minor axies in the image after lineaer transformation, is the norm. In this case, the longest distances are $2\sqrt{2}$, $2\sqrt{2}$, $3\sqrt{2}$ when p = 1, 2, infinity, and the shortest distances are $\sqrt{2}/2$, around 1, and $\sqrt{2}$. Therefore, the norm could be eyeballed by get the division: 4, 2.92, and 3 when p = 1, 2, and infinity. 
 
 **(c) Use your code to determine whether $||Q||_1=||Q||_{\infty}=||Q||_2=1$ for all orthonormal matrices $Q$. **
 
@@ -446,9 +450,11 @@ $$ ||A||_{\infty}=\max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\
 *Proof:*
 
 $$
-\because ||x||_{\infty} = \max_{1 \leq i\leq n}\{|\bar{x_i}|\}$$
+\because ||x||_{\infty} = \max_{1 \leq i\leq n}\{|\bar{x_i}|\}
 $$
-\therefore ||A||_{\infty}=\max_{||x||_{\infty}=1}\{||Ax||_{\infty}\}=\max_{||x||_{\infty}=1}\max_{1 \leq i \leq n}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\}=\max_{1 \leq i \leq n}\max_{||x||_{\infty}=1}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\} $$
+$$
+\therefore ||A||_{\infty}=\max_{||x||_{\infty}=1}\{||Ax||_{\infty}\}=\max_{||x||_{\infty}=1}\max_{1 \leq i \leq n}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\}=\max_{1 \leq i \leq n}\max_{||x||_{\infty}=1}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\} 
+$$
 $$
 = \max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}.
 $$
