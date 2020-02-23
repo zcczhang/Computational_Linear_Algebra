@@ -329,7 +329,7 @@ $$
 **(a) Modify my `UnitCircleMap` function, which shows the image of the unit ball under a linear mapping $A$ and computes the matrix norm of $A$. We want to let the user choose the norm to be 1, 2, or $\infty$ ("I"). The code is below, and there are a few places where you need to insert a few lines.** 
 
 ```{r}
-UnitCircleMap = function(A,p=2) {
+UnitCircleMap = function(A,p=2, name="A") {
   
   if (p==2) {
     t = seq(0,2*pi,len=1000)
@@ -364,7 +364,7 @@ UnitCircleMap = function(A,p=2) {
   plot(x,y,type='l',col='black',xlim=c(m,M),ylim=c(m,M),xlab="x1",ylab="x2")
   lines(newx,newy,col='red')
   
-  normSize=sprintf("||A||_%s = %1.2f",ni,nn)
+  normSize=sprintf("||%s||_%s = %1.2f",name,ni,nn)
   text(-.7*M,.9*M,normSize)
 }
 ```
@@ -373,10 +373,8 @@ UnitCircleMap = function(A,p=2) {
 
 ```{r}
 A=cbind(c(1,0),c(2,2))
-UnitCircleMap(A,p=2)
-A=cbind(c(1,0),c(2,2))
 UnitCircleMap(A,p=1)
-A=cbind(c(1,0),c(2,2))
+UnitCircleMap(A,p=2)
 UnitCircleMap(A,p='I')
 ```
 
@@ -417,10 +415,10 @@ norm(Ainv,"I")
 ```
 
 $$
-\text { Cond }(A)=\|A\|_{p} \cdot\left\|A^{-1}\right\|_{p}=\frac{\left(\max _{\|x\|_{p}=1}\|A \vec{x}\|_{p}\right)}{\left(\min _{\|x\|_{p}=1}\|A \vec{x}\|_{p}\right)}
+\text { Cond }(A)=\|A\|_{p} \cdot\|A^{-1}\|_{p}
 $$
 
-> The product of the norm of matrix A and inverse of A is the condition number. Geometrically, the long axies over the minor axies in the image after lineaer transformation, is the norm. In this case, the longest distances are $2\sqrt{2}$, $2\sqrt{2}$, $3\sqrt{2}$ when p = 1, 2, infinity, and the shortest distances are $\sqrt{2}/2$, around 1, and $\sqrt{2}$. Therefore, the norm could be eyeballed by get the division: 4, 2.92, and 3 when p = 1, 2, and infinity. 
+> The product of the norm of matrix A and inverse of A is the condition number. Geometrically, the long axies over the minor axies in the image after lineaer transformation, is the norm. In this case, the longest distances are $2\sqrt{2}$, $2\sqrt{2}$, $3\sqrt{2}$ when p = 1, 2, infinity, and the shortest distances are $\sqrt{2}/2$, around 1, and $\sqrt{2}$. Therefore, the norm could be eyeballed by get the division: 4, 2.92, and 3 when p = 1, 2, and infinity. Similarly, the norm of $A^{-1}$ can be got by the same eyeball process. And the multiplication of those is the condition number. 
 
 **(c) Use your code to determine whether $||Q||_1=||Q||_{\infty}=||Q||_2=1$ for all orthonormal matrices $Q$. **
 
@@ -431,10 +429,10 @@ $$
 *Solution:*
 
 ```{r}
-A=cbind(c(1/sqrt(2),1/sqrt(2)),c(-1/sqrt(2),1/sqrt(2)))
-UnitCircleMap(A,p=1)
-UnitCircleMap(A,p=2)
-UnitCircleMap(A,p="I")
+Q = cbind(c(1/sqrt(2),1/sqrt(2)),c(-1/sqrt(2),1/sqrt(2)))
+UnitCircleMap(Q,p=1, name="Q")
+UnitCircleMap(Q,p=2, name="Q")
+UnitCircleMap(Q,p="I", name="Q")
 ```
 
 > Therefore, they are not necessarily equal to 1.
@@ -459,6 +457,13 @@ $$
 = \max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}.
 $$
 
+
+
+$$
+\begin{aligned}\|A\|_{\infty}=& \max _{\|x\|_{\infty}=1}\|A x\|_{\infty}=
+\max _{\|x\|_{\infty}=1} \left\{ \max _{1 \leq i \leq n}\left\{\left|\sum_{i=1}^{n}A_{i} x_{j} \right|\right\}\leqslant \max _{\| x \|_{\infty}=1} \max _{1 \leq i \leq n}\sum_{j=1}^{n}\left|A_{i}\right|\left|x_{j}\right|\right.\\ 
+& \leqslant \max _{1 \leq j \leq n} \sum_{j=1}^{n}\| A_{ij} \| = \text{max row sum}\end{aligned}
+$$
 
 ### Problem 7
 **Solve the following system by finding the $PA=LU$ factorization and then carrying out the two-step back substitution (all by hand, that is, not using any R functions. Of course, you can type your solution, and check your work in R, though.):**
