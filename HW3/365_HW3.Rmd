@@ -1,9 +1,8 @@
 ---
-title: 'Math 365/Comp 365: Homework 3'
-author: "Charles Zhang"
+title: '**Math 365/Comp 365: Homework 3**'
+author: "**Charles Zhang**"
 output: 
-  html_document:
-    keep_md: yes
+  pdf_document
 ---
 
 ### Problem 1
@@ -44,17 +43,17 @@ $$
 **Hint**: **Start by showing that $L_k=I-\ell_k e_k^{\top}$, where $e_k$ is an $n \times 1$ vector with a 1 in the $k^{th}$ entry, and zeros elsewhere, and**
 
 $$ \ell_k = \begin{pmatrix} 0 \\ \vdots \\ 0 \\ \ell_{k+1,k} \\ \vdots \\ \ell_{n,k} \end{pmatrix}. $$
-<br><br>
 
 *Solution:*
-
->$$
+$$
 \begin{array}{l}{L_{k}=I-\ell_{k} e_{k}^{\top}} \\ 
 {L_{k} (I-\ell_{k}e_{k}^{\top})=(I-\ell_{k}e_{k}^{\top})(I+\ell_{k}e_{k}^{\top})} \\ 
-{=I+\ell_{k} e_{k}^{\top}-\ell_{k} e_{k}^{\top}-\ell_{k} e_{k}^{\top} \ell_{k} e_{k}^{\top}} \\ 
+{=I+\ell_{k} e_{k}^{\top}-\ell_{k} e_{k}^{\top}-\ell_{k} e_{k}^{\top} \ell_{k} e_{k}^{\top}}\\ 
 {\because e_{k}^{\top} \ell_{k}=0} \\ 
 {\therefore L_{k}\left(I+\ell_{k} e_{k}^{\top}\right)=I} \\ 
 {L_{k}^{-1}=I+\ell_{k} e_{k}^{\top}}\end{array} \\
+$$
+$$
 = \begin{pmatrix} 1 & & & & & \\
 & \ddots & & & & \\
 & & 1 & & & \\
@@ -64,12 +63,14 @@ $$ \ell_k = \begin{pmatrix} 0 \\ \vdots \\ 0 \\ \ell_{k+1,k} \\ \vdots \\ \ell_{
 \end{pmatrix}
 $$
 
+
 <br>
 <br>
 <br>
 **(b) Now show that**
 
-$$L:= L_{1}^{-1} L_{2}^{-1} \ldots L_{n-2}^{-1} L_{n-1}^{-1} = \begin{pmatrix} 1 & & & & \\
+$$
+L:= L_{1}^{-1} L_{2}^{-1} \ldots L_{n-2}^{-1} L_{n-1}^{-1} = \begin{pmatrix} 1 & & & & \\
 \ell_{21} & 1 & & & \\
 \ell_{31} & \ell_{32} & 1 & &  \\
 \vdots & \vdots & \ddots & \ddots & \\
@@ -81,11 +82,13 @@ $$
 
 *Solution:*
 
->
+ 
 $$
-\because \forall k\leq j\leq n \text{, }\text{ }\text{ }e_{k}^{\top} \ell_{j}=0  \\
-\begin{array}{c}\therefore {L_{k}^{-1} L_{k+1}^{-1}=\left(I+\ell_{k} e_{k}^{\top}\right)\left(I+\ell_{k+1} e_{k+1}^{\top}\right)=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}+\ell_{k} e_{k}^{\top} \ell_{k+1} e_{k+1}^{\top} \\
-=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}} \\ 
+\because \forall k\leq j\leq n \text{, }\text{ }\text{ }e_{k}^{\top} \ell_{j}=0 
+$$
+$$
+\begin{array}{c}\therefore {L_{k}^{-1} L_{k+1}^{-1}=\left(I+\ell_{k} e_{k}^{\top}\right)\left(I+\ell_{k+1} e_{k+1}^{\top}\right)=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}+\ell_{k} e_{k}^{\top} \ell_{k+1} e_{k+1}^{\top}} \\
+=I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top} \\ 
 \begin{aligned} L_{k}^{-1} L_{k+1}^{-1} L_{k+2}^{-1} &=\left(I+\ell_{k} e_{k}^{\top}+\ell_{k+1} e_{k+1}^{\top}\right)\left(I+\ell_{k+2}e_{k+2}^{\top}\right) \\ &=I+l_{k} e_{k}^{\top}+l_{k+1} e_{k+1}^{\top}+l_{k+2}^{\top} k_{k+2}^{\top}+0 \end{aligned} \\
 ......\\
 {\therefore L:=L_{1}^{-1} L_{2}^{-1} \ldots L_{n-2}^{-1} L_{n-1}^{-1}=I+\ell_{1} e_{1}^{\top}+\ell_{2} e_{2}^{\top}+\ldots+\ell_{n-1} e_{n-1}^{\top}=\left(\begin{array}{cccc}{1} & {} & {} & {} \\
@@ -101,25 +104,32 @@ $$
 *This problem is from Section 2.5, page 131 of Linear Algebra and Its Applications, by David Lay, the textbook many of you used for MATH 236.*
 
 
-![](https://raw.githubusercontent.com/zcczhang/Computational_Linear_Algebra/master/HW3/HWpic.jpeg?token=AMSJACTRRCKPRBSRLGAAXZS6KINBY)
+![](/Users/zzhang4/Documents/GitHub/Computational_Linear_Algebra/HW3/HWpic.jpeg)
 
 
 **An important concern in the study of heat transfer is to determine the steady-state temperature distribution of a thin plate when the temperature around the boundary is known. Assume the plate shown in the figure above represents a cross section of a metal beam, with negligible heat flow in the direction perpendicular to the plate. Let the variables $x_1, x_2, \ldots, x_8$ denote the temperatures at nodes 1 through 8 in the picture. In steady state, the temperature at a node is approximately equal to the average of the four nearest nodes (to the left, above, right, below).**
 
 **a) The solution to the approximate steady-state heat flow problem for this plate can be written as a system of linear equations $Ax=b$, where $x=[x_1, x_2, \ldots, x_8]$ is the vector of temperatures at nodes 1 through 8. Find the $8 \times 8$ matrix $A$ and the vector $b$. Hint: $A$ should be a banded matrix with many zeros in the top right and bottom left parts of $A$.**
 
-*Solution* 
+*Solution:* 
 
->
 $$
-x_{1} = 1/4(0+5+x_{3}+x_{2})\\
+x_{1} = 1/4(0+5+x_{3}+x_{2}) 
+$$
+$$
 x_{2} = 1/4(10+5+x_{1}+x_{4})\\
+$$
+$$
 x_{3} = 1/4(0+x_{1}+x_{4}+x_{5})\\
+$$$$
 x_{4} = 1/4(10+x_{6}+x_{2}+x_{3})\\
-x_{5} = 1/4(0+x_{7}+x_{3}+x_{6})\\
-x_{6} = 1/4(10+x_{5}+x_{4}+x_{8})\\
-x_{7} = 1/4(0+20+x_{5}+x_{8})\\
-x_{8} = 1/4(10+20+x_{6}+x_{7})\\
+$$$$
+x_{5} = 1/4(0+x_{7}+x_{3}+x_{6})\\$$$$
+x_{6} = 1/4(10+x_{5}+x_{4}+x_{8})\\$$$$
+x_{7} = 1/4(0+20+x_{5}+x_{8})\\$$$$
+x_{8} = 1/4(10+20+x_{6}+x_{7})
+$$
+$$
 \therefore
 x_{1}\left[\begin{array}{r} {4} \\ {-1} \\ {-1} \\ {0} \\ {0} \\ {0} \\ {0} \\ {0}\end{array}\right] +
 x_{2}\left[\begin{array}{r} {-1} \\ {4} \\ {0} \\ {-1} \\ {0} \\ {0} \\ {0} \\ {0}\end{array}\right] +
@@ -130,6 +140,7 @@ x_{6}\left[\begin{array}{r} {0} \\ {0} \\ {0} \\ {-1} \\ {-1} \\ {4} \\ {0} \\ {
 x_{7}\left[\begin{array}{r} {0} \\ {0} \\ {0} \\ {0} \\ {-1} \\ {0} \\ {4} \\ {-1}\end{array}\right] +
 x_{8}\left[\begin{array}{r} {0} \\ {0} \\ {0} \\ {0} \\ {0} \\ {-1} \\ {-1} \\ {4}\end{array}\right] = 
 \left[\begin{array}{r} {5} \\ {15} \\ {0} \\ {10} \\ {0} \\ {10} \\ {20} \\ {30}\end{array}\right] \\
+$$$$
 \therefore A=\left[\begin{array}{rrrrrrrr}{4} & {-1} & {-1} & {0} & {0} & {0} & {0} & {0} \\ 
 {-1} & {4} & {0} & {-1} & {0} & {0} & {0} & {0} \\ 
 {-1} & {0} & {4} & {-1} & {-1} & {0} & {0} & {0} \\ 
@@ -143,7 +154,7 @@ $$
 
 **b) Use your function from Exercise 1 (on the activity) to perform an LU factorization of $A$. Do you notice anything special about the structures of $L$ and $U$?**
 
-*Solution*
+*Solution:*
 
 ```{r}
 myLU = function(A,tol=10^-20) {
@@ -163,7 +174,9 @@ myLU = function(A,tol=10^-20) {
 }
 ```
 ```{r}
-A=cbind(c(4,-1,-1,0,0,0,0,0),c(-1,4,0,-1,0,0,0,0),c(-1,0,4,-1,-1,0,0,0),c(0,-1,-1,4,0,-1,0,0),c(0,0,-1,0,4,-1,-1,0),c(0,0,0,-1,-1,4,0,-1),c(0,0,0,0,-1,0,4,-1),c(0,0,0,0,0,-1,-1,4))
+A=cbind(c(4,-1,-1,0,0,0,0,0), c(-1,4,0,-1,0,0,0,0),c(-1,0,4,-1,-1,0,0,0),
+        c(0,-1,-1,4,0,-1,0,0),c(0,0,-1,0,4,-1,-1,0),c(0,0,0,-1,-1,4,0,-1),
+        c(0,0,0,0,-1,0,4,-1),c(0,0,0,0,0,-1,-1,4))
 (out=myLU(A))
 ```
 
@@ -200,7 +213,7 @@ mySolve=function(L,U,b,tol=1e-10){
 
 **Make sure you understand what the code is doing, and then use it to find the steady-state temperatures at nodes 1 through 8.**
 
-*Solution*
+*Solution:*
 
 ```{r}
 b=c(5,15,0,10,0,10,20,30)
@@ -220,16 +233,13 @@ b[8]=40
 
 **e) Use the R function `solve(A)` to compute $A^{-1}$. Note that $A^{-1}$ is a dense matrix (without many zeros). When $A$ is large, $L$ and $U$ can be stored in much less space than $A^{-1}$. This fact is another reason for preferring the LU factorization of $A$ to $A^{-1}$ itself.**
 
-*Solution* 
+*Solution:* 
 
 ```{r}
 solve(A)
 ```
 
 <br><br><br>
-
-
-
 
 ### Problem 3
 
@@ -252,7 +262,7 @@ $$\left[\begin{array}{ccc} && \\ & A &   \\ && \\ && \end{array}\right]
 
 <br>
 
-*Solution*
+*Solution:*
 
 $$
 Cond(A)=||A||_{\infty}||A^{-1}||_{\infty}=32=\max\frac{\text { relative forward error }}{\text { relative backward error }} \geq \frac{\frac{\left\|x-x_{a}\right\|_{\infty}}{\|x\|_{\infty}}}{\frac{\left\|A x_{a}-b\right\|_{\infty}}{\|b\|_{\infty}}} \geq   \frac{\frac{\left\|x-x_{a}\right\|_{\infty}}{2}}{\frac{|2.25-2.1875|}{4}}
@@ -262,11 +272,11 @@ $$
 32*(2.25-2.1875)/2
 ```
 
->$$
-\therefore ||x-x_{a}||_{\infty} \leq 1\\
-\because ||x||_{\infty} = 2 = \max\{|\bar{x}|\} \text{ and } x_{a}=\left[\begin{array}{c}2.0750 \\ 0.1625 \\ 0.4500 \\ -0.1875 \end{array}\right]\\
-\therefore |x_{i}-x_{ai}|\leq 1 \; i=1,2,3,4 \\
-\therefore |x_{1}|=2\\
+$$
+\therefore ||x-x_{a}||_{\infty} \leq 1\\$$$$
+\because ||x||_{\infty} = 2 = \max\{|\bar{x}|\} \text{ and } x_{a}=\left[\begin{array}{c}2.0750 \\ 0.1625 \\ 0.4500 \\ -0.1875 \end{array}\right]\\$$$$
+\therefore |x_{i}-x_{ai}|\leq 1 \; i=1,2,3,4 \\$$$$
+\therefore |x_{1}|=2\\$$$$
 \text{and:  } 
 \begin{aligned}-0.8375 & \leq x_{2} \leq 1.1625 \\-0.55 & \leq x_{3} \leq 1.45 \\-1.1875 & \leq x_{4} \leq 0.8125 \end{aligned}
 $$
@@ -287,21 +297,27 @@ $$ Q^{\top}Q=QQ^T=I;~i.e., Q^{-1}=Q^T.$$
 <br>
 <br>
 
-*Proof*
+*Proof:*
 
->
 $$
 \|Q\|_2=\max_{\|x\|\neq 0}\frac{\|Qx\|_{2}}{\|x\|_2}=\max_{\|x\|\neq 0}(\frac{\|Qx\|_{2}^2}{\|x\|_2^2})^{1/2} 
-= \max_{\|x\|\neq0} (\frac{\left(Qx\right)^{\top} Qx}{x^{\top}x})^{1/2} =\max_{\|x\|\neq0} (\frac{x^{\top} Q^{\top} Qx}{x^{\top}x})^{1/2} 
-= \max_{\|x\|\neq0} (\frac{x^{\top} x}{x^{\top}x})^{1/2} \\
+= \max_{\|x\|\neq0} (\frac{\left(Qx\right)^{\top} Qx}{x^{\top}x})^{1/2} =\max_{\|x\|\neq0} (\frac{x^{\top} Q^{\top} Qx}{x^{\top}x})^{1/2}
+$$
+$$
+= \max_{\|x\|\neq0} (\frac{x^{\top} x}{x^{\top}x})^{1/2} 
 = \max_{\|x\|\neq0} (\frac{x^{\top} Q Q^{\top}x}{x^{\top}x})^{1/2} 
 = \max_{\|x\|\neq0} (\frac{x^{\top} (Q^{-1})^{\top} Q^{-1}x}{x^{\top}x})^{1/2}
+$$
+$$
 =\max_{\|x\|\neq 0}(\frac{\left(Q^{-1}x\right)^{\top} Q^{-1}x}{x^{\top}x})^{1/2}
 =\max_{\|x\|\neq 0}\frac{\|Q^{-1}x\|_{2}}{\|x\|_2}
 =\|Q^{-1}\|_{2}
 = 1
-\\
-\therefore ||Q||_2=||Q^{-1}||_2=1  \\
+$$
+$$
+\therefore ||Q||_2=||Q^{-1}||_2=1
+$$
+$$
 \therefore \kappa_2(Q)=||Q||_2 ||Q^{-1}||_2=1
 $$
 
@@ -367,7 +383,7 @@ UnitCircleMap(A,p='I')
 
 **(b) Compute the condition number of the matrix $A$ above using `Cond` (using the $p=1,2, \infty$-norms). Visually explain why the condition number for each $p$ is the value you found.**
 
-*Solution*
+*Solution:*
 
 ```{r}
 Cond = function(A,p=2) {
@@ -409,7 +425,7 @@ norm(Ainv,"I")
 \frac{1}{\sqrt{2}} & \frac{-1}{\sqrt{2}} \\
 \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \end{pmatrix}$, which is a rotation matrix that rotates vectors counter-clockwise by $\frac{\pi}{4}$.**
 
-*Solution*
+*Solution:*
 
 ```{r}
 A=cbind(c(1/sqrt(2),1/sqrt(2)),c(-1/sqrt(2),1/sqrt(2)))
@@ -428,12 +444,14 @@ UnitCircleMap(A,p="I")
 $$ ||A||_{\infty}=\max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}.$$
 
 
-*Proof*
+*Proof:*
 
 $$
-\because ||x||_{\infty} = \max_{1 \leq i\leq n}\{|\bar{x_i}|\}\\
-\therefore ||A||_{\infty}=\max_{||x||_{\infty}=1}\{||Ax||_{\infty}\}=\max_{||x||_{\infty}=1}\max_{1 \leq i \leq n}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\}=\max_{1 \leq i \leq n}\max_{||x||_{\infty}=1}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\} \\= 
-\max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}.
+\because ||x||_{\infty} = \max_{1 \leq i\leq n}\{|\bar{x_i}|\}$$
+$$
+\therefore ||A||_{\infty}=\max_{||x||_{\infty}=1}\{||Ax||_{\infty}\}=\max_{||x||_{\infty}=1}\max_{1 \leq i \leq n}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\}=\max_{1 \leq i \leq n}\max_{||x||_{\infty}=1}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\} $$
+$$
+= \max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}.
 $$
 
 
@@ -445,21 +463,22 @@ $$ Ax=\begin{pmatrix}-1 & 0 & 1 \\
 2 & 0 & 1 
 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2\\ x_3\end{pmatrix}=\begin{pmatrix} 2 \\ 5 \\ 5 \end{pmatrix}=b. $$
 
-*Solution*
+*Solution:*
 
->
 $$
 U = A = \begin{pmatrix}-1 & 0 & 1 \\
 3 & 1 & 1 \\
 2 & 0 & 1 
-\end{pmatrix}\text{, } P = I =\left(\begin{array}{ccc}{1} & {0} & {0} \\ {0} & {1} & {0} \\ {0} & {0} & {1}\end{array}\right) \\
+\end{pmatrix}\text{, } P = I =\left(\begin{array}{ccc}{1} & {0} & {0} \\ {0} & {1} & {0} \\ {0} & {0} & {1}\end{array}\right)
+$$
+$$
 \text{exchange the first two rows: }U  = \begin{pmatrix}3 & 1 & 1 \\-1 & 0 & 1 \\
 2 & 0 & 1 
 \end{pmatrix} \text{, } P  =\left(\begin{array}{ccc}{0} & {1} & {0} \\ {1} & {0} & {0} \\ {0} & {0} & {1}\end{array}\right)\\
 $$
 $$
 U = \left(\begin{array}{ccc}{3} & {1} & {1} \\ {-1} & {0} & {1} \\ {2} & {0} & {1}\end{array}\right) \frac{row2=\frac{1}{3} row1+row2}{row3=row3-\frac{2}{3} row1}\left(\begin{array}{rrr}{3} & {1} & {1} \\ {0} & {\frac{1}{3}} & {\frac{4}{3}} \\ {0} & {-\frac{2}{3}} & {\frac{1}{3}}\end{array}\right)   \quad
-L=\left(\begin{array}{ccc}{1} & {0} & {0} \\ {-\frac{1}{3}} & {1} & {0} \\ {\frac{2}{3}} & {0} & {1}\end{array}\right) 
+L=\left(\begin{array}{ccc}{1} & {0} & {0} \\ {-\frac{1}{3}} & {1} & {0} \\ {\frac{2}{3}} & {0} & {1}\end{array}\right)
 $$
 $$
 \text{exchange the last two rows: }U  = \left(\begin{array}{rrr}{3} & {1} & {1} \\  {0} & {-\frac{2}{3}} & {\frac{1}{3}} \\ {0} & {\frac{1}{3}} & {\frac{4}{3}} \end{array}\right) \quad 
@@ -483,9 +502,9 @@ U=\left(\begin{array}{ccc}
 \end{array}\right)
 $$
 
->
+ 
 $$
-Ly=Pb:\\
+Ly=Pb:\\$$$$
 \left(\begin{array}{ccc}
 {1} & {0} & {0} \\
 {\frac{2}{3}} & {1} & {0} \\
@@ -494,10 +513,10 @@ Ly=Pb:\\
 {0} & {1} & {0} \\
 {0} & {0} & {1} \\
 {1} & {0} & {0}
-\end{array}\right) \left(\begin{array}{l}{2} \\ {5} \\ {5} \end{array}\right) \\
+\end{array}\right) \left(\begin{array}{l}{2} \\ {5} \\ {5} \end{array}\right) \\$$$$
 \therefore y=\left(\begin{array}{c}{5} \\ {\frac{5}{3}} \\ {\frac{9}{2}}\end{array}\right)
-\\
-Ux = y:\\
+\\$$$$
+Ux = y:\\$$$$
 \left(\begin{array}{ccc}
 {3} & {1} & {1} \\
 {0} & {-\frac{2}{3}} & {\frac{1}{3}} \\
