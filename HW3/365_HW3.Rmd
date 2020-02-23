@@ -104,7 +104,7 @@ $$
 *This problem is from Section 2.5, page 131 of Linear Algebra and Its Applications, by David Lay, the textbook many of you used for MATH 236.*
 
 
-![](/Users/zzhang4/Documents/GitHub/Computational_Linear_Algebra/HW3/HWpic.jpeg)
+![](~HW3/HWpic.jpeg)
 
 
 **An important concern in the study of heat transfer is to determine the steady-state temperature distribution of a thin plate when the temperature around the boundary is known. Assume the plate shown in the figure above represents a cross section of a metal beam, with negligible heat flow in the direction perpendicular to the plate. Let the variables $x_1, x_2, \ldots, x_8$ denote the temperatures at nodes 1 through 8 in the picture. In steady state, the temperature at a node is approximately equal to the average of the four nearest nodes (to the left, above, right, below).**
