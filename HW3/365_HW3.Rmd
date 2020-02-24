@@ -451,18 +451,29 @@ $$
 \because ||x||_{\infty} = \max_{1 \leq i\leq n}\{|\bar{x_i}|\}
 $$
 $$
-\therefore ||A||_{\infty}=\max_{||x||_{\infty}=1}\{||Ax||_{\infty}\}=\max_{||x||_{\infty}=1}\max_{1 \leq i \leq n}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\}=\max_{1 \leq i \leq n}\max_{||x||_{\infty}=1}\{\sum^{n}_{j=1}|A_{ij}x_{j}|\} 
-$$
-$$
-= \max_{1 \leq i \leq n}\left\{ \sum_{j=1}^n |A_{ij}| \right\}=\text{maximum absolute row sum}.
-$$
-
-
-
-$$
 \begin{aligned}\|A\|_{\infty}=& \max _{\|x\|_{\infty}=1}\|A x\|_{\infty}=
-\max _{\|x\|_{\infty}=1} \left\{ \max _{1 \leq i \leq n}\left\{\left|\sum_{i=1}^{n}A_{i} x_{j} \right|\right\}\leqslant \max _{\| x \|_{\infty}=1} \max _{1 \leq i \leq n}\sum_{j=1}^{n}\left|A_{i}\right|\left|x_{j}\right|\right.\\ 
-& \leqslant \max _{1 \leq j \leq n} \sum_{j=1}^{n}\| A_{ij} \| = \text{max row sum}\end{aligned}
+\max _{\|x\|_{\infty}=1} \left\{ \max _{1 \leq i \leq n}\left\{\left|\sum_{i=1}^{n}A_{ij} x_{j} \right|\right\}\leqslant \max _{\| x \|_{\infty}=1} \max _{1 \leq i \leq n}\sum_{j=1}^{n}\left|A_{ij}\right|\left|x_{j}\right|\right.\\ 
+& \leqslant \max _{1 \leq j \leq n} \sum_{i=1}^{n}| A_{ij} | = \text{max absolute row sum}\end{aligned}
+$$
+$$
+\begin{aligned} \text { Assume } \bar{y} \in \mathbb{R}^{n}, \text { and } y_{j}=\left\{\begin{array}{ll}{1} & {\text { if } A_{k j} \geq 0} \\ {-1} & {\text { if } A_{k j}<0}\end{array}\right.\text{for } 1\leq i \leq n
+\end{aligned}
+$$
+$$
+\because y \subseteq \{x|\|x\|_{\infty}=1\}
+$$
+$$
+\begin{aligned}
+\therefore \|A\|_{\infty}=& \max _{\|x\|=1}\|A x\|_{\infty} \geqslant\|A y\|_{\infty} \\ & \geqslant \max _{1 \leq i \leq n}\left|\sum_{j=1}^{n} A_{i j} y_{j}\right| =\max _{1 \leq i \leq n} \sum_{j=1}^{n} |A_{i j} | = \text{max absolute row sum} \end{aligned}
+$$
+
+$$
+\begin{aligned} \therefore {\|A\|_{\infty} \leq \max _{1 \leq i \leq n} \sum_{j=1}^{n} |A_{i j} |} \text{, and }
+\|A\|_{\infty} \geq\max _{1 \leq i \leq n} \sum_{j=1}^{n} |A_{i j}|
+\end{aligned}
+$$
+$$
+\therefore  \|A\|_{\infty} =\text{max absolute row sum}
 $$
 
 ### Problem 7
