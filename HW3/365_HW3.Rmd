@@ -1,10 +1,7 @@
 ---
 title: '**Math 365/Comp 365: Homework 3**'
 author: "**Charles Zhang**"
-output: 
-  html_document:
-    keep_md: yes
-    keep_pdf: yes
+output: pdf_document
 ---
 
 ### Problem 1
@@ -106,7 +103,7 @@ $$
 *This problem is from Section 2.5, page 131 of Linear Algebra and Its Applications, by David Lay, the textbook many of you used for MATH 236.*
 
 
-![](/Users/zzhang4/Documents/GitHub/Computational_Linear_Algebra/HW3/HWpic.jpeg)
+![](~HW3/HWpic.jpeg)
 
 
 **An important concern in the study of heat transfer is to determine the steady-state temperature distribution of a thin plate when the temperature around the boundary is known. Assume the plate shown in the figure above represents a cross section of a metal beam, with negligible heat flow in the direction perpendicular to the plate. Let the variables $x_1, x_2, \ldots, x_8$ denote the temperatures at nodes 1 through 8 in the picture. In steady state, the temperature at a node is approximately equal to the average of the four nearest nodes (to the left, above, right, below).**
@@ -417,10 +414,10 @@ norm(Ainv,"I")
 ```
 
 $$
-\text { Cond }(A)=\|A\|_{p} \cdot\|A^{-1}\|_{p}
+\text { Cond }(A)=\|A\|_{p} \cdot\left\|A^{-1}\right\|_{p}=\frac{\left(\max _{\|x\|_{p}=1}\|A \vec{x}\|_{p}\right)}{\left(\min _{\|x\|_{p}=1}\|A \vec{x}\|_{p}\right)}
 $$
 
-> The product of the norm of matrix A and inverse of A is the condition number. Geometrically, the long axies over the minor axies in the image after lineaer transformation, is the norm. In this case, the longest distances are $2\sqrt{2}$, $2\sqrt{2}$, $3\sqrt{2}$ when p = 1, 2, infinity, and the shortest distances are $\sqrt{2}/2$, around 1, and $\sqrt{2}$. Therefore, the norm could be eyeballed by get the division: 4, 2.92, and 3 when p = 1, 2, and infinity. Similarly, the norm of $A^{-1}$ can be got by the same eyeball process. And the multiplication of those is the condition number. 
+> The product of the norm of matrix A and inverse of A is the condition number. Geometrically, it's the longest vector from the origin over the shortest. When $p=1$, which is the sum of absolute of cordinate geometrically, the norm of A could be got by $2+2=4$, where (2,2) is the  coridinate of the farest points from the origin. And $\|A^{-1}\|_{1}$ equals to $\frac{1}{2/3}$, which is the sum of vector closest to the origin. Similarly, when $p = 2$, which is the length of vector geometrically, it's the longest length over the shortest one, which is 2.92 over 1/1.46 approximately equals to 4.265564 $(\|A\|_{2}=2.92, \|A^{-1}\|_{2}=1.46)$. And when $p=\infty$, it's the largest absolute value of cordinates, so the condition number is $3/(1/2)=6$ $(\|A\|_{\infty}=3, \|A^{-1}\|_{\infty}=1/2)$
 
 **(c) Use your code to determine whether $||Q||_1=||Q||_{\infty}=||Q||_2=1$ for all orthonormal matrices $Q$. **
 
