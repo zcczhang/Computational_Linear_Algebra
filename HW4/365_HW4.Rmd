@@ -1,0 +1,397 @@
+# Math 365 / Comp 365: Homework 4
+
+### *Please bring a stapled hard copy of your answers to class*
+
+### INSERT YOUR NAME HERE
+
+#### *Note: Problems 2 through 4 on this homework were all taken from the take-home portions of old midterm exams.*
+
+```{r,message=FALSE}
+require(Matrix)
+require(jpeg)
+set.seed(365)
+```
+
+Feel free to use my implementation of `vnorm` and `jacobi` and `GaussSeidel`:
+
+```{r}
+# Vector norm
+vnorm = function(v,p=2) { 
+  if ( p =="I") {
+    return(max(abs(v)))
+  }
+  else {
+    return(sum(abs(v)^p)^(1/p))
+  }
+}
+```
+```{r}
+# Solves Ax = b iteratively using the Jacobi Method
+# m is the maximum number of iterations: default m = 25
+# p is the p value of the matrix norm
+# tol is the stopping tolerance (using the relative residual norm on the backward error)
+jacobi = function(A,b,m=25,x = rep(0,n),p=2,tol=0.5*10^(-6),history=FALSE) {
+  n = length(b)
+  if (history) {
+    hist = matrix(NA,nrow=length(b),ncol=(m+1))
+    hist[,1] = x
+  }
+  d = diag(A)
+  R = A
+  R[cbind((1:n),(1:n))] = 0  # allows for r to be sparse  
+  steps=0
+  for (j in 1:m) {
+    x = (b - R %*% x)/d 
+    steps = steps+1
+    if (history) {hist[,(j+1)] = as.matrix(x)}
+    if (vnorm(b-A%*%x,p) <= vnorm(b,p)*tol) break 
+  }
+  if (history) return(list(x=x,iterations=steps,history = hist[,1:(steps+1)]))
+  else return(list(x=x,steps=steps))
+}
+```
+```{r}
+GaussSeidel = function(A,b,m=25,x = rep(0,n),p=2,tol=0.5*10^(-6),history=FALSE) {
+  n = length(b)
+  if (history) {
+    hist = matrix(NA,nrow=length(b),ncol=(m+1))
+    hist[,1] = x
+  }
+  d = diag(A)
+  L = A
+  U = A
+  U[lower.tri(A,diag=TRUE)] = 0  # U is the upper triangular part of A
+  L[upper.tri(A,diag=TRUE)] = 0  # L is the lower triangular part of A 
+  steps=0
+  for (j in 1:m) {
+    bu = b - U %*% x 
+    steps = steps+1
+    for (i in 1:n){  
+      x[i] = (bu[i] - L[i,] %*% x)/d[i]    # successivly update x as we use it.
+    }
+    if (history) {hist[,(j+1)] = as.matrix(x)}
+    if (vnorm(b-A%*%x,p) <= vnorm(b,p)*tol) break 
+  }
+  if (history) return(list(x=x,iterations=steps,history = hist[,1:(steps+1)]))
+  else return(list(x=x,steps=steps))
+}
+```
+### Problem 1
+
+a) Find (by hand but then check your work in R) the Cholesky factorization $A=R^T R$ of the matrix
+$$ A=\begin{pmatrix}4 & -2 & 0 \\
+-2 & 2 & -3 \\
+0 & -3 & 10 
+\end{pmatrix}. $$
+
+b) Show that the Cholesky factorization procedure fails for the matrix 
+$$ B=\begin{pmatrix}4 & 2 & 0 \\
+2 & 1 & 3 \\
+0 & 3 & 4 
+\end{pmatrix}. $$
+
+c) Why does the Cholesky factorization work for the symmetric matrix $A$, but not for the symmetric matrix $B$? Hint: `eigen` may be useful.
+
+### Problem 2
+
+Tridiagonal matrices show up a lot in applications.  These are matrices whose only nonzero entries are on the main diagonal and just above or just below the main diagonal.  
+
+a) Write a function `TriDiag(d,a,b)` which takes three vectors as input and puts them on the 3 diagonals.  For example, if you call 
+```
+TriDiag( c(5,3,5,4,4), c(1,2,3,4), c(11,12,13,14) ) 
+```
+you should get the matrix:
+```{r,echo=FALSE}
+print(rbind(c(5,11,0,0,0),c(1,3,12,0,0),c(0,2,5,13,0),c(0,0,3,4,14),c(0,0,0,4,4)))
+```
+
+Try to use as few `for` loops as possible (you can actually do it without any `for` loops). 
+
+Bonus: Build in an option to output a sparse matrix (in which case the `Matrix` package is required). In practice, you would almost always be using sparse matrices when dealing with large, tridiaganal matrices.
+
+b) Illustrate your function on the following command:
+```
+n = 10
+TriDiag(rep(5,n),rep(-1,n-1),rep(1,n-1))
+```
+
+c) Use your `TriDiag` function and my implementation of Jacobi's method (above) to solve Computer Problem 2 in Section 2.5 of the book. Don't worry about finding the number of steps to reach a certain forward error. Instead, just try it with some different numbers of steps, and comment briefly on the convergence. Why might the convergence behave this way?
+
+### Problem 3: Sparse LU Factorization
+
+Sparse matrices commonly appear when trying to solve partial differential equations by discretizing them. There are different methods to do this, but one of the most straightforward uses finite difference approximations for the partial differential operators, just as you used finite difference approximations for the derivative operator in Technical Report 1.
+
+For example, when doing a discrete approximation to a 2D heat diffusion problem, you end up with a sparse matrix with a block structure. Specifically, if the approximation grid contains $k_1$ by $k_2$ interior locations, you end up with a $(k_1\cdot k_2) \times (k_1\cdot k_2)$ matrix of the form
+$$A=\begin{bmatrix}
+B&-I& & & & \\
+-I&B& -I & & & \\
+& -I& \ddots & \ddots & &  \\
+& & \ddots & \ddots & \ddots &  \\
+& &  & \ddots & \ddots & -I  \\
+& &  & & -I & B  
+\end{bmatrix},$$
+where each $I$ is the $k_1 \times k_1$ identity matrix, and each $B$ is a $k_1 \times k_1$ matrix of the form
+$$B=\begin{bmatrix}
+4&-1& & & & \\
+-1&4& -1 & & & \\
+& -1& \ddots & \ddots & &  \\
+& & \ddots & \ddots & \ddots &  \\
+& &  & \ddots & \ddots & -1 \\
+& &  & & -1 & 4  
+\end{bmatrix}.$$ 
+
+Looking back at $A$, there are then $k_2$ copies of $B$ down the diagonal of $A$. For example, if $k_1=5$ and $k_2=3$, the sparsity pattern looks like this:
+
+![](/Users/apple/Desktop/Computational_Linear_Algebra/HW4/HW41.png)
+
+Here is the actual matrix for that same case:
+![](/Users/apple/Desktop/Computational_Linear_Algebra/HW4/HW42.jpeg)
+
+As a final example, here is the actual matrix for the case of $k_1=8$ and $k_2=4$
+![](/Users/apple/Desktop/Computational_Linear_Algebra/HW4/HW43.jpeg)
+
+
+(a) Generate the matrix $A$ above for the case of $k_1=5$ and $k_2=3$.
+
+***Extra Credit***: Write a function `sparsePattern(k1,k2)` that takes any values of $k_1$ and $k_2$ and returns the matrix A. Check that it matches the examples above and try it on a couple of different matrices.
+
+
+
+One issue with using the LU decomposition on a sparse matrix like $A$ is that the factors $L$ and $U$ have more non-zero entries than $A$. This phenomenon is called *fill-in*. Here is an example you can try once you have formed $A$:
+
+```
+myLUFast = function(A,tol=10^-8) {
+  n = nrow(A)
+  L = diag(x=1,nrow=n)  # start with L = identity matrix
+  U=A
+  for ( k in 1:(n-1) ) {
+    pivot = U[k,k]
+    if (abs(pivot) < tol) stop('zero pivot encountered')
+    mults=U[(k+1):n,k]/pivot
+    U[(k+1):n,k]=0
+    U[(k+1):n,(k+1):n]=U[(k+1):n,(k+1):n]-mults%o%U[k,(k+1):n]
+    L[(k+1):n,k]=mults
+  }
+  return(list(L=L,U=U))
+}
+out=myLUFast(as.matrix(A))
+L=as(out$L,"sparseMatrix")
+U=as(out$U,"sparseMatrix")
+image(A)
+image(L)
+image(U)
+```
+
+Can we find triangular matrices $L$ and $U$ that are sparser and still satisfy $A=LU$? No, recall that the factorization is unique. Instead, one approach is to force $L$ and $U$ to be sparser, but have $LU$ only approximate $A$.
+
+b) Your main task is to write a function `mySparseLU` that returns a lower unit triangular matrix $L$ and an upper triangular matrix $U$ such that $L$ and $U$ only have off-diagonal non-zeros entries in the locations where $A$ has off-diagonal non-zero entries. In the following pseudocode for the algorithm, $NZ(A)$ is the set of indices of non-zero entries of $A$. For example, if $A_{3,4}\neq 0$, then $(3,4)\in NZ(A)$.
+
+### Pseudocode for Sparse LU Approximate Factorization
+
+Input: $A$
+
+Output: $L$ (lower unit triangular) and $U$ (upper triangular)
+
+1. **for** $i=2,3,\ldots,n$ **do**
+2. $~~~$ **for** $k=1,2,\ldots,i-1$ and for $(i,k)\in NZ(A)$ **do**
+3. $~~~~~~~~~~~A_{ik}={A_{ik}}~/~{A_{kk}}$
+4. $~~~~~~~~~~~$**for** $j=k+1,\ldots,n$ and for $(i,j)\in NZ(A)$ **do**
+5. $~~~~~~~~~~~~~~~~~A_{ij}=A_{ij}-A_{ik}A_{kj}$
+6. $~~~~~~~~~~~$**end for** 
+7. $~~~$ **end for** 
+8. **end for**
+9. Let $U$ be the upper triangular part of $A$ (including the diagonal) 
+10. Let $L$ be the strictly lower triangular part of $A$ (not including the diagonal)
+11. Set every element of the diagonal of $L$ to be 1
+
+You may find the functions `upper.tri` and `lower.tri` useful. Your function `mySparseLU(A)` should return a list containing $L$ and $U$.
+
+To test your function, use your $A$ matrix from part (a), with $k_1=5$ and $k_2=3$, and double check that your $L$ and $U$ matrices have the same sparsity pattern as the lower and upper triangular parts of the original $A$, respectively:
+```
+out=mySparseLU(A)
+image(A)
+image(out$L)
+image(out$U)
+```
+
+While it is nice to preserve the sparsity pattern, we can also see that $A$ is only approximately equal to $LU$:
+```
+approx=out$L%*%out$U
+approx.error=A-approx
+image(A)
+image(approx)
+image(approx.error)
+```
+
+There is a tradeoff between how many additional non-zero entries we allow in $L$ and $U$ versus how accurately $LU$ approximates $A$. Generalizations of the algorithm you implemented manage that tradeoff, allowing the user some choice over how accurate of an approximation she requires for the application at hand.
+
+
+### Problem 4: Diagonal Dominance and Jacobi Convergence
+
+Perform a numerical experiment (or experiments) to test the following statement: *In general, the greater the diagonal dominance in a matrix, the faster the Jacobi method converges to the solution.* I am leaving it completely open ended as to how you do this. Be sure to explain your work and precisely how your numerical results support your conclusions.
+
+### Problem 5: Jacobi and Gauss-Seidel Methods 
+
+*This problem is from the activity on iterative methods.* 
+
+We are interested in solving our favorite problem: $Ax=b$, where $b$ is a $1000 \times 1$ column vector with every entry equal to 1. For $A$, we will use the `ThreeBanded` function we wrote in the activity on sparse matrices with $N=1000$ and an offset of 100.
+
+```{r}
+ThreeBanded=function(n,offset){
+  spMatrix(n,n,i=c(1:n,1:(n-1),2:n,(offset+1):n,1:(n-offset)),j=c(1:n,2:n,1:(n-1),1:(n-offset),(offset+1):n),x=c(.5+sqrt(1:n),rep(1,(2*(2*n-1-offset)))))
+}
+n=1000
+A=ThreeBanded(n,100)
+```
+
+Let's inspect our $A$ matrix to see the sparsity pattern:
+```{r}
+image(A)
+```
+
+We'll use two different iterative methods to solve $Ax=b$: Jacobi's method and Gauss-Seidel.
+
+Feel free to use my implementation of `vnorm` and `jacobi` and `GaussSeidel`:
+
+
+a) Briefly discuss if Jacobi's method will converge on this matrix $A$ and why.
+
+b) Run 35 iterations of Jacobi's method, with an initial guess, $x^{(0)}$, of all zeros. From the sequence of approximations $\left\{x^{(k)}\right\}_{k=0,1,\ldots,35}$, compute the sequence of residuals $\left\{r^{(k)}\right\}_{k=0,1,\ldots,35}$ with $r^{(k)}=b-Ax^{(k)}$, and then compute the two-norms of the residual vectors. Save your residual norms in a vector called `jac.res.norms`, and plot the residual norms versus the iteration number using the following code:
+```
+plot(0:35,jac.res.norms,pch=20,type="o",log="y",xlab="iteration (k)",ylab=expression("|| r"[k]~"||"[2]),col="blue",ylim=c(1e-2,1e2))
+grid()
+```
+Note: to compute the residuals, you will either have to modify the output of my `jacobi.r` code or compute the residuals after calling that function. Either is fine, but I recommend the latter method, as it will make the subsequent part of this problem easier.
+
+c) Now, repeat the process with the Gauss-Seidel method, saving the residual norms as `gs.res.norms`, and plot using the following code:
+```
+plot(0:35,jac.res.norms,pch=20,type="o",log="y",xlab="iteration (k)",ylab=expression("|| r"[k]~"||"[2]),col="blue",ylim=c(1e-4,1e2))
+lines(0:35,gs.res.norms,pch=20,type="o",col="red")
+grid()
+```
+
+
+
+### Problem 6: Easy linear solvers
+
+We have discussed methods for solving $Ax=b$, but I claim there are a few matrices which can be solved "easily". Write programs to solve these five kinds of "easy" systems of equations (most only require a line or two of code, and the more difficult ones you have seen before). See the comments in the model codes below for details of what input arguments each function should take. 
+Once you have written each program, demonstrate it by solving the example matrix I have included in each question. In commented lines, I have provided code that sets up the problem.  Once your program works, you can just uncomment these lines.  
+**Finally, state what the computational complexity is of each method for $A$ an $n \times n$ matrix (no justification is required).**
+
+a) Diagonal Matrices
+$$A = \begin{pmatrix}
+2&&\\&3&\\&&-0.5
+\end{pmatrix};\quad b = \begin{pmatrix}3\\6\\5  \end{pmatrix}$$
+
+```{r}
+my.solve.diagonal <- function(d,b){
+  # Solve the system D x = b
+  # The full matrix D is not provided. Instead, we have d,
+  #    which is a vector (not a matrix) containing the diagonal 
+  #    entries of D.  This allows us to avoid storing lots of zeros. 
+  
+  # You add code here building x from d and b.
+  return(x)
+} 
+
+# x <- my.solve.diagonal(c(2,3,-0.5),c(3,6,5))
+# print(x)
+```
+
+b) Upper Triangular Matrices
+$$
+A = \begin{pmatrix}
+2&1&-1\\&3&2\\&&-0.5
+\end{pmatrix};\quad b = \begin{pmatrix}3\\7\\5  \end{pmatrix}
+$$
+
+```{r}
+my.solve.uppertri <- function(U,b){
+  # Solve the system Ux = b
+  # assume that U is a full matrix with zeros below the diagonal. 
+  
+  # You add code here building x using U and b.
+
+  return(x)
+} 
+# U <- cbind(c(2,0,0),c(1,3,0),c(-1,2,-0.5))
+# x <- my.solve.uppertri(U,c(3,7,5))
+# print(x)
+
+```
+
+
+c) Lower Triangular Matrices
+
+$$A = \begin{pmatrix}
+2&&\\0&3&\\-1&3&-0.5
+\end{pmatrix};\quad b = \begin{pmatrix}4\\6\\5  \end{pmatrix}$$
+
+```{r}
+my.solve.lowertri <- function(L,b){
+  # Solve the system Lx = b
+  # assume that L is a full matrix with zeros above the diagonal. 
+  
+  # You add code here building x using L and b.
+  return(x)
+} 
+
+# L <- cbind(c(2,0,-1),c(0,3,3),c(0,0,-0.5))
+# x <- my.solve.lowertri(L,c(4,6,5))
+# print(x)
+
+```
+
+
+d) Orthogonal Matrices
+
+$$
+A = \begin{pmatrix}
+\frac{-1}{9}&\frac{8}{9}&\frac{4}{9}\\\frac{8}{9}&\frac{-1}{9}&\frac{4}{9}\\\frac{4}{9}&\frac{4}{9}&\frac{-7}{9}
+\end{pmatrix};\quad b = \begin{pmatrix}3\\6\\9  \end{pmatrix}
+$$
+
+```{r}
+my.solve.orthogonal <- function(Q,b){
+  # Solve the system Qx = b
+  # assume that Q is a full orthogonal matrix 
+  
+  # You add code here building x using Q and b.
+  return(x)
+} 
+
+# Q <- cbind(c(-1,8,4),c(8,-1,4),c(4,4,-7))/9
+# x <- my.solve.orthogonal(Q,c(3,6,9))
+# print(x)
+
+
+```
+
+e) Permutation Matrices
+
+$$
+A = \begin{pmatrix}
+0&1&0&0\\0&0&0&1\\1&0&0&0\\0&0&1&0
+\end{pmatrix};\quad b = \begin{pmatrix}3\\6\\5\\1  \end{pmatrix}
+$$
+
+
+```{r}
+my.solve.permutation <- function(p,b){
+  # Solve the system P x = b
+  # note: a full matrix P is not provided.  Instead we have 
+  #    a vector of integers called p.  This gives the position of the 1 in each row.  
+  # for example, if p = (2,3,1,4), ... 
+  #   then P = rbind(c(0,1,0,0),c(0,0,1,0),c(1,0,0,0),c(0,0,0,1)). 
+  
+  # You add code here building x such that Px=b.
+  return(x)
+} 
+
+# p <- c(2,4,1,3)
+# x <- my.solve.permutation(p,c(3,6,5,1))
+# print(x)
+
+```
+
+
