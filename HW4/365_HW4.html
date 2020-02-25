@@ -439,10 +439,69 @@ jacobi = function(A,b,m=25,x = rep(0,n),p=2,tol=0.5*10^(-6),history=FALSE) {
 <div id="problem-1" class="section level3">
 <h3>Problem 1</h3>
 <ol style="list-style-type: lower-alpha">
-<li><p>Find (by hand but then check your work in R) the Cholesky factorization <span class="math inline">\(A=R^T R\)</span> of the matrix <span class="math display">\[ A=\begin{pmatrix}4 &amp; -2 &amp; 0 \\
+<li>Find (by hand but then check your work in R) the Cholesky factorization <span class="math inline">\(A=R^T R\)</span> of the matrix <span class="math display">\[ A=\begin{pmatrix}4 &amp; -2 &amp; 0 \\
 -2 &amp; 2 &amp; -3 \\
 0 &amp; -3 &amp; 10 
-\end{pmatrix}. \]</span></p></li>
+\end{pmatrix}. \]</span></li>
+</ol>
+<p><span class="math display">\[
+\begin{array}{l}{ A=\left(\begin{array}{ccc}
+{4} &amp; {-2} &amp; {0} \\ 
+{-2} &amp; {2} &amp; {-3} \\ 
+{0} &amp; {-3} &amp; {10}
+\end{array}\right) =
+\left(\begin{array}{ccc}
+{2} &amp; {0} &amp; {0} \\ 
+{-1} &amp; {1} &amp; {0} \\ 
+{0} &amp; {0} &amp; {1}
+\end{array}\right)\left(\begin{array}{ccc}
+{1} &amp; {0} &amp; {0} \\ 
+{0} &amp; {1} &amp; {-3} \\ 
+{0} &amp; {-3} &amp; {10}
+\end{array}\right)\left(\begin{array}{ccc}
+{2} &amp; {-1} &amp; {0} \\ 
+{0} &amp; {1} &amp; {0} \\ 
+{0} &amp; {0} &amp; {1}
+\end{array}\right) = 
+R_{1}^{T} A_{1} R_{1}} \\ 
+{A_{1} = \left(\begin{array}{ccc}
+{1} &amp; {0} &amp; {0} \\ 
+{0} &amp; {1} &amp; {-3} \\ 
+{0} &amp; {-3} &amp; {1}
+\end{array}\right)\left(\begin{array}{ccc}
+{1} &amp; {0} &amp; {0} \\ 
+{0} &amp; {1} &amp; {0} \\ 
+{0} &amp; {0} &amp; {1}\end{array}\right)\left(\begin{array}{ccc}
+{1} &amp; {0} &amp; {0} \\ 
+{0} &amp; {1} &amp; {-3} \\ 
+{0} &amp; {0} &amp; {1}
+\end{array}\right) = 
+R_{2}^{T} A_{2} R_{2}} 
+\end{array}
+\]</span> <span class="math display">\[\therefore A = R_{1}^{T} R_{2}^{T} R_{2} R_{1} = R^{T} R\]</span>\ <span class="math display">\[\therefore R = R_{2} R_{1} = 
+\left(\begin{array}{ccc}
+{2} &amp; {0} &amp; {0} \\ 
+{-1} &amp; {1} &amp; {0} \\ 
+{0} &amp; {0} &amp; {1}
+\end{array}\right) 
+\left(\begin{array}{ccc}
+{1} &amp; {0} &amp; {0} \\ 
+{0} &amp; {1} &amp; {-3} \\ 
+{0} &amp; {0} &amp; {1}
+\end{array}\right) = 
+\left(\begin{array}{ccc}
+{2} &amp; {-1} &amp; {0} \\ 
+{0} &amp; {1} &amp; {-3} \\ 
+{0} &amp; {0} &amp; {1}
+\end{array}\right)
+\]</span></p>
+<pre class="r"><code>R = cbind(c(2,0,0), c(-1,1,0), c(0,-3,1))
+t(R) %*% R</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    4   -2    0
+## [2,]   -2    2   -3
+## [3,]    0   -3   10</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
 <li><p>Show that the Cholesky factorization procedure fails for the matrix <span class="math display">\[ B=\begin{pmatrix}4 &amp; 2 &amp; 0 \\
 2 &amp; 1 &amp; 3 \\
 0 &amp; 3 &amp; 4 
@@ -567,8 +626,12 @@ image(approx.error)</code></pre>
 <p><em>This problem is from the activity on iterative methods.</em></p>
 <p>We are interested in solving our favorite problem: <span class="math inline">\(Ax=b\)</span>, where <span class="math inline">\(b\)</span> is a <span class="math inline">\(1000 \times 1\)</span> column vector with every entry equal to 1. For <span class="math inline">\(A\)</span>, we will use the <code>ThreeBanded</code> function we wrote in the activity on sparse matrices with <span class="math inline">\(N=1000\)</span> and an offset of 100.</p>
 <pre class="r"><code>ThreeBanded=function(n,offset){
-  spMatrix(n,n,i=c(1:n,1:(n-1),2:n,(offset+1):n,1:(n-offset)),j=c(1:n,2:n,1:(n-1),1:(n-offset),(offset+1):n),x=c(.5+sqrt(1:n),rep(1,(2*(2*n-1-offset)))))
+  spMatrix(n, n,
+           i=c(1:n, 1:(n-1), 2:n, (offset+1):n, 1:(n-offset)), 
+           j=c(1:n, 2:n, 1:(n-1), 1:(n-offset), (offset+1):n),
+           x=c(.5+sqrt(1:n), rep(1,(2*(2*n-1-offset)))))
 }
+
 n=1000
 A=ThreeBanded(n,100)</code></pre>
 <p>Let’s inspect our <span class="math inline">\(A\)</span> matrix to see the sparsity pattern:</p>

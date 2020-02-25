@@ -84,6 +84,65 @@ $$ A=\begin{pmatrix}4 & -2 & 0 \\
 0 & -3 & 10 
 \end{pmatrix}. $$
 
+$$
+\begin{array}{l}{ A=\left(\begin{array}{ccc}
+{4} & {-2} & {0} \\ 
+{-2} & {2} & {-3} \\ 
+{0} & {-3} & {10}
+\end{array}\right) =
+\left(\begin{array}{ccc}
+{2} & {0} & {0} \\ 
+{-1} & {1} & {0} \\ 
+{0} & {0} & {1}
+\end{array}\right)\left(\begin{array}{ccc}
+{1} & {0} & {0} \\ 
+{0} & {1} & {-3} \\ 
+{0} & {-3} & {10}
+\end{array}\right)\left(\begin{array}{ccc}
+{2} & {-1} & {0} \\ 
+{0} & {1} & {0} \\ 
+{0} & {0} & {1}
+\end{array}\right) = 
+R_{1}^{T} A_{1} R_{1}} \\ 
+{A_{1} = \left(\begin{array}{ccc}
+{1} & {0} & {0} \\ 
+{0} & {1} & {-3} \\ 
+{0} & {-3} & {1}
+\end{array}\right)\left(\begin{array}{ccc}
+{1} & {0} & {0} \\ 
+{0} & {1} & {0} \\ 
+{0} & {0} & {1}\end{array}\right)\left(\begin{array}{ccc}
+{1} & {0} & {0} \\ 
+{0} & {1} & {-3} \\ 
+{0} & {0} & {1}
+\end{array}\right) = 
+R_{2}^{T} A_{2} R_{2}} 
+\end{array}
+$$
+$$\therefore A = R_{1}^{T} R_{2}^{T} R_{2} R_{1} = R^{T} R$$\\
+$$\therefore R = R_{2} R_{1} = 
+\left(\begin{array}{ccc}
+{2} & {0} & {0} \\ 
+{-1} & {1} & {0} \\ 
+{0} & {0} & {1}
+\end{array}\right) 
+\left(\begin{array}{ccc}
+{1} & {0} & {0} \\ 
+{0} & {1} & {-3} \\ 
+{0} & {0} & {1}
+\end{array}\right) = 
+\left(\begin{array}{ccc}
+{2} & {-1} & {0} \\ 
+{0} & {1} & {-3} \\ 
+{0} & {0} & {1}
+\end{array}\right)
+$$
+
+```{r}
+R = cbind(c(2,0,0), c(-1,1,0), c(0,-3,1))
+t(R) %*% R
+```
+
 b) Show that the Cholesky factorization procedure fails for the matrix 
 $$ B=\begin{pmatrix}4 & 2 & 0 \\
 2 & 1 & 3 \\
@@ -238,8 +297,12 @@ We are interested in solving our favorite problem: $Ax=b$, where $b$ is a $1000 
 
 ```{r}
 ThreeBanded=function(n,offset){
-  spMatrix(n,n,i=c(1:n,1:(n-1),2:n,(offset+1):n,1:(n-offset)),j=c(1:n,2:n,1:(n-1),1:(n-offset),(offset+1):n),x=c(.5+sqrt(1:n),rep(1,(2*(2*n-1-offset)))))
+  spMatrix(n, n,
+           i=c(1:n, 1:(n-1), 2:n, (offset+1):n, 1:(n-offset)), 
+           j=c(1:n, 2:n, 1:(n-1), 1:(n-offset), (offset+1):n),
+           x=c(.5+sqrt(1:n), rep(1,(2*(2*n-1-offset)))))
 }
+
 n=1000
 A=ThreeBanded(n,100)
 ```
@@ -256,12 +319,25 @@ Feel free to use my implementation of `vnorm` and `jacobi` and `GaussSeidel`:
 
 a) Briefly discuss if Jacobi's method will converge on this matrix $A$ and why.
 
+> It converges beacuse the Jacobi method converges if the matrix A is strictly diagonally dominant.
+
 b) Run 35 iterations of Jacobi's method, with an initial guess, $x^{(0)}$, of all zeros. From the sequence of approximations $\left\{x^{(k)}\right\}_{k=0,1,\ldots,35}$, compute the sequence of residuals $\left\{r^{(k)}\right\}_{k=0,1,\ldots,35}$ with $r^{(k)}=b-Ax^{(k)}$, and then compute the two-norms of the residual vectors. Save your residual norms in a vector called `jac.res.norms`, and plot the residual norms versus the iteration number using the following code:
 ```
 plot(0:35,jac.res.norms,pch=20,type="o",log="y",xlab="iteration (k)",ylab=expression("|| r"[k]~"||"[2]),col="blue",ylim=c(1e-2,1e2))
 grid()
 ```
 Note: to compute the residuals, you will either have to modify the output of my `jacobi.r` code or compute the residuals after calling that function. Either is fine, but I recommend the latter method, as it will make the subsequent part of this problem easier.
+
+```{r}
+b=matrix(1,nrow=1000,ncol=1)
+numIts=35
+
+jac.out=jacobi(A,b,m=numIts,history=TRUE)
+jac.res=rep(b,(numIts+1),nrow=n)-A%*%jac.out$history
+jac.res.norms=sqrt(colSums(jac.res*jac.res))
+plot(0:35,jac.res.norms,pch=20,type="o",log="y",xlab="iteration (k)",ylab=expression("|| r"[k]~"||"[2]),col="blue",ylim=c(1e-2,1e2))
+grid()
+```
 
 c) Now, repeat the process with the Gauss-Seidel method, saving the residual norms as `gs.res.norms`, and plot using the following code:
 ```
