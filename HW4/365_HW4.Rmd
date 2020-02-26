@@ -1,8 +1,8 @@
-# Math 365 / Comp 365: Homework 4
-
-### *Please bring a stapled hard copy of your answers to class*
-
-### INSERT YOUR NAME HERE
+---
+title: '**Math 365 / Comp 365: Homework 4**'
+author: '**Charles Zhang**'
+output: pdf_document
+---
 
 #### *Note: Problems 2 through 4 on this homework were all taken from the take-home portions of old midterm exams.*
 
@@ -12,7 +12,7 @@ require(jpeg)
 set.seed(365)
 ```
 
-Feel free to use my implementation of `vnorm` and `jacobi` and `GaussSeidel`:
+**Feel free to use my implementation of `vnorm` and `jacobi` and `GaussSeidel`:**
 
 ```{r}
 # Vector norm
@@ -78,11 +78,13 @@ GaussSeidel = function(A,b,m=25,x = rep(0,n),p=2,tol=0.5*10^(-6),history=FALSE) 
 ```
 ### Problem 1
 
-a) Find (by hand but then check your work in R) the Cholesky factorization $A=R^T R$ of the matrix
+**a) Find (by hand but then check your work in R) the Cholesky factorization $A=R^T R$ of the matrix**
 $$ A=\begin{pmatrix}4 & -2 & 0 \\
 -2 & 2 & -3 \\
 0 & -3 & 10 
 \end{pmatrix}. $$
+
+*Solution: *
 
 $$
 \begin{array}{l}{ A=\left(\begin{array}{ccc}
@@ -119,7 +121,7 @@ R_{1}^{T} A_{1} R_{1}} \\
 R_{2}^{T} A_{2} R_{2}} 
 \end{array}
 $$
-$$\therefore A = R_{1}^{T} R_{2}^{T} R_{2} R_{1} = R^{T} R$$\\
+$$\therefore A = R_{1}^{T} R_{2}^{T} R_{2} R_{1} = R^{T} R$$
 $$\therefore R = R_{2} R_{1} = 
 \left(\begin{array}{ccc}
 {2} & {0} & {0} \\ 
@@ -143,13 +145,13 @@ R = cbind(c(2,0,0), c(-1,1,0), c(0,-3,1))
 t(R) %*% R
 ```
 
-b) Show that the Cholesky factorization procedure fails for the matrix 
+**b) Show that the Cholesky factorization procedure fails for the matrix **
 $$ B=\begin{pmatrix}4 & 2 & 0 \\
 2 & 1 & 3 \\
 0 & 3 & 4 
 \end{pmatrix}. $$
 
-c) Why does the Cholesky factorization work for the symmetric matrix $A$, but not for the symmetric matrix $B$? Hint: `eigen` may be useful.
+**c) Why does the Cholesky factorization work for the symmetric matrix $A$, but not for the symmetric matrix $B$? Hint: `eigen` may be useful.**
 
 ### Problem 2
 
@@ -201,13 +203,15 @@ $$B=\begin{bmatrix}
 
 Looking back at $A$, there are then $k_2$ copies of $B$ down the diagonal of $A$. For example, if $k_1=5$ and $k_2=3$, the sparsity pattern looks like this:
 
-![](/Users/apple/Desktop/Computational_Linear_Algebra/HW4/HW41.png)
+![](~HW4/HW41.png)
 
 Here is the actual matrix for that same case:
-![](/Users/apple/Desktop/Computational_Linear_Algebra/HW4/HW42.jpeg)
+
+![](~HW4/HW42.jpeg)
 
 As a final example, here is the actual matrix for the case of $k_1=8$ and $k_2=4$
-![](/Users/apple/Desktop/Computational_Linear_Algebra/HW4/HW43.jpeg)
+
+![](~HW4/HW43.jpeg)
 
 
 (a) Generate the matrix $A$ above for the case of $k_1=5$ and $k_2=3$.
@@ -293,7 +297,7 @@ Perform a numerical experiment (or experiments) to test the following statement:
 
 *This problem is from the activity on iterative methods.* 
 
-We are interested in solving our favorite problem: $Ax=b$, where $b$ is a $1000 \times 1$ column vector with every entry equal to 1. For $A$, we will use the `ThreeBanded` function we wrote in the activity on sparse matrices with $N=1000$ and an offset of 100.
+**We are interested in solving our favorite problem: $Ax=b$, where $b$ is a $1000 \times 1$ column vector with every entry equal to 1. For $A$, we will use the `ThreeBanded` function we wrote in the activity on sparse matrices with $N=1000$ and an offset of 100.**
 
 ```{r}
 ThreeBanded=function(n,offset){
@@ -312,36 +316,56 @@ Let's inspect our $A$ matrix to see the sparsity pattern:
 image(A)
 ```
 
-We'll use two different iterative methods to solve $Ax=b$: Jacobi's method and Gauss-Seidel.
+**We'll use two different iterative methods to solve $Ax=b$: Jacobi's method and Gauss-Seidel.**
 
-Feel free to use my implementation of `vnorm` and `jacobi` and `GaussSeidel`:
+**Feel free to use my implementation of `vnorm` and `jacobi` and `GaussSeidel`:**
 
 
-a) Briefly discuss if Jacobi's method will converge on this matrix $A$ and why.
+**a) Briefly discuss if Jacobi's method will converge on this matrix $A$ and why.**
 
 > It converges beacuse the Jacobi method converges if the matrix A is strictly diagonally dominant.
 
-b) Run 35 iterations of Jacobi's method, with an initial guess, $x^{(0)}$, of all zeros. From the sequence of approximations $\left\{x^{(k)}\right\}_{k=0,1,\ldots,35}$, compute the sequence of residuals $\left\{r^{(k)}\right\}_{k=0,1,\ldots,35}$ with $r^{(k)}=b-Ax^{(k)}$, and then compute the two-norms of the residual vectors. Save your residual norms in a vector called `jac.res.norms`, and plot the residual norms versus the iteration number using the following code:
+**b) Run 35 iterations of Jacobi's method, with an initial guess, $x^{(0)}$, of all zeros. From the sequence of approximations $\left\{x^{(k)}\right\}_{k=0,1,\ldots,35}$, compute the sequence of residuals $\left\{r^{(k)}\right\}_{k=0,1,\ldots,35}$ with $r^{(k)}=b-Ax^{(k)}$, and then compute the two-norms of the residual vectors. Save your residual norms in a vector called `jac.res.norms`, and plot the residual norms versus the iteration number using the following code:**
 ```
-plot(0:35,jac.res.norms,pch=20,type="o",log="y",xlab="iteration (k)",ylab=expression("|| r"[k]~"||"[2]),col="blue",ylim=c(1e-2,1e2))
+plot(0:35,jac.res.norms,pch=20,type="o",log="y",
+     xlab="iteration (k)",
+     ylab=expression("|| r"[k]~"||"[2]),
+     col="blue",ylim=c(1e-2,1e2))
 grid()
 ```
-Note: to compute the residuals, you will either have to modify the output of my `jacobi.r` code or compute the residuals after calling that function. Either is fine, but I recommend the latter method, as it will make the subsequent part of this problem easier.
+***Note: to compute the residuals, you will either have to modify the output of my `jacobi.r` code or compute the residuals after calling that function. Either is fine, but I recommend the latter method, as it will make the subsequent part of this problem easier.***
 
 ```{r}
 b=matrix(1,nrow=1000,ncol=1)
 numIts=35
 
-jac.out=jacobi(A,b,m=numIts,history=TRUE)
-jac.res=rep(b,(numIts+1),nrow=n)-A%*%jac.out$history
-jac.res.norms=sqrt(colSums(jac.res*jac.res))
-plot(0:35,jac.res.norms,pch=20,type="o",log="y",xlab="iteration (k)",ylab=expression("|| r"[k]~"||"[2]),col="blue",ylim=c(1e-2,1e2))
+out = jacobi(A,b,m=numIts,history=TRUE)
+res = rep(b,nrow=n)-A %*% out$history
+jac.res.norms = sqrt(colSums(res*res))
+plot(0:35,jac.res.norms,pch=20,type="o",log="y",
+     xlab="iteration (k)",
+     ylab=expression("|| r"[k]~"||"[2]),
+     col="blue",ylim=c(1e-2,1e2))
 grid()
 ```
 
-c) Now, repeat the process with the Gauss-Seidel method, saving the residual norms as `gs.res.norms`, and plot using the following code:
+**c) Now, repeat the process with the Gauss-Seidel method, saving the residual norms as `gs.res.norms`, and plot using the following code:**
 ```
-plot(0:35,jac.res.norms,pch=20,type="o",log="y",xlab="iteration (k)",ylab=expression("|| r"[k]~"||"[2]),col="blue",ylim=c(1e-4,1e2))
+plot(0:35,jac.res.norms,pch=20,type="o",log="y",
+    xlab="iteration (k)",
+    ylab=expression("|| r"[k]~"||"[2]),
+    col="blue",ylim=c(1e-4,1e2))
+lines(0:35,gs.res.norms,pch=20,type="o",col="red")
+grid()
+```
+```{r}
+gs.out=GaussSeidel(A, b, m=numIts, history = TRUE)
+gs.res=rep(b, (numIts+1), nrow=n) - A %*% gs.out$history
+gs.res.norms=sqrt(colSums(gs.res*gs.res))
+plot(0:35,jac.res.norms,pch=20,type="o",log="y",
+     xlab="iteration (k)",
+     ylab=expression("|| r"[k]~"||"[x2]),
+     col="blue",ylim=c(1e-4,1e2))
 lines(0:35,gs.res.norms,pch=20,type="o",col="red")
 grid()
 ```
