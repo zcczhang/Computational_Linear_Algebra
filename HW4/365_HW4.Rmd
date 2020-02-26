@@ -142,7 +142,7 @@ $$
 
 ```{r}
 R = cbind(c(2,0,0), c(-1,1,0), c(0,-3,1))
-t(R) %*% R
+(A = t(R) %*% R)
 ```
 
 **b) Show that the Cholesky factorization procedure fails for the matrix **
@@ -151,38 +151,69 @@ $$ B=\begin{pmatrix}4 & 2 & 0 \\
 0 & 3 & 4 
 \end{pmatrix}. $$
 
+
+
+
+
 **c) Why does the Cholesky factorization work for the symmetric matrix $A$, but not for the symmetric matrix $B$? Hint: `eigen` may be useful.**
+
+```{r}
+eigen(A)$values
+B<-rbind(c(4,2,0), c(2,1,3), c(0,3,4))
+eigen(B)$values
+```
+
+> Therrefore, only symmetric matrix which is positive definite like A can be Cholesky Factorized, and B can't.
 
 ### Problem 2
 
-Tridiagonal matrices show up a lot in applications.  These are matrices whose only nonzero entries are on the main diagonal and just above or just below the main diagonal.  
-
-a) Write a function `TriDiag(d,a,b)` which takes three vectors as input and puts them on the 3 diagonals.  For example, if you call 
+**Tridiagonal matrices show up a lot in applications. These are matrices whose only nonzero entries are on the main diagonal and just above or just below the main diagonal.**
+**a) Write a function `TriDiag(d,a,b)` which takes three vectors as input and puts them on the 3 diagonals.  For example, if you call **
 ```
 TriDiag( c(5,3,5,4,4), c(1,2,3,4), c(11,12,13,14) ) 
 ```
-you should get the matrix:
+**you should get the matrix:**
 ```{r,echo=FALSE}
 print(rbind(c(5,11,0,0,0),c(1,3,12,0,0),c(0,2,5,13,0),c(0,0,3,4,14),c(0,0,0,4,4)))
 ```
 
-Try to use as few `for` loops as possible (you can actually do it without any `for` loops). 
+**Try to use as few `for` loops as possible (you can actually do it without any `for` loops).**
 
-Bonus: Build in an option to output a sparse matrix (in which case the `Matrix` package is required). In practice, you would almost always be using sparse matrices when dealing with large, tridiaganal matrices.
+*B**onus: Build in an option to output a sparse matrix (in which case the `Matrix` package is required). In practice, you would almost always be using sparse matrices when dealing with large, tridiaganal matrices.**
 
-b) Illustrate your function on the following command:
+```{r}
+TriDiag <- function(d,a,b, sparse=FALSE) {
+  n <- length(d)
+  if ( length(a) != (n-1) || length(b) != (n-1) ) 
+    stop('vectors length diffeerent!')
+  if (sparse) {
+    Diag <- Matrix(0,nrow=n,ncol=n,sparse=TRUE)
+    diag(Diag) <- d
+  } else  Diag <- diag(d)
+  Diag[cbind((1:(n-1)),(2:n))] <- a
+  Diag[cbind((2:n),(1:(n-1)))] <- b
+  return(Diag)
+}
+TriDiag(c(5,3,5,4,4), c(1,2,3,4), c(11,12,13,14))
+TriDiag(c(5,3,5,4,4), c(1,2,3,4), c(11,12,13,14), TRUE)
 ```
+
+**b) Illustrate your function on the following command:**
+
+```{r}
 n = 10
 TriDiag(rep(5,n),rep(-1,n-1),rep(1,n-1))
 ```
 
-c) Use your `TriDiag` function and my implementation of Jacobi's method (above) to solve Computer Problem 2 in Section 2.5 of the book. Don't worry about finding the number of steps to reach a certain forward error. Instead, just try it with some different numbers of steps, and comment briefly on the convergence. Why might the convergence behave this way?
+**c) Use your `TriDiag` function and my implementation of Jacobi's method (above) to solve Computer Problem 2 in Section 2.5 of the book. Don't worry about finding the number of steps to reach a certain forward error. Instead, just try it with some different numbers of steps, and comment briefly on the convergence. Why might the convergence behave this way?**
+
+
 
 ### Problem 3: Sparse LU Factorization
 
-Sparse matrices commonly appear when trying to solve partial differential equations by discretizing them. There are different methods to do this, but one of the most straightforward uses finite difference approximations for the partial differential operators, just as you used finite difference approximations for the derivative operator in Technical Report 1.
+**Sparse matrices commonly appear when trying to solve partial differential equations by discretizing them. There are different methods to do this, but one of the most straightforward uses finite difference approximations for the partial differential operators, just as you used finite difference approximations for the derivative operator in Technical Report 1.**
 
-For example, when doing a discrete approximation to a 2D heat diffusion problem, you end up with a sparse matrix with a block structure. Specifically, if the approximation grid contains $k_1$ by $k_2$ interior locations, you end up with a $(k_1\cdot k_2) \times (k_1\cdot k_2)$ matrix of the form
+**For example, when doing a discrete approximation to a 2D heat diffusion problem, you end up with a sparse matrix with a block structure. Specifically, if the approximation grid contains $k_1$ by $k_2$ interior locations, you end up with a $(k_1\cdot k_2) \times (k_1\cdot k_2)$ matrix of the form**
 $$A=\begin{bmatrix}
 B&-I& & & & \\
 -I&B& -I & & & \\
@@ -191,7 +222,7 @@ B&-I& & & & \\
 & &  & \ddots & \ddots & -I  \\
 & &  & & -I & B  
 \end{bmatrix},$$
-where each $I$ is the $k_1 \times k_1$ identity matrix, and each $B$ is a $k_1 \times k_1$ matrix of the form
+**where each $I$ is the $k_1 \times k_1$ identity matrix, and each $B$ is a $k_1 \times k_1$ matrix of the form**
 $$B=\begin{bmatrix}
 4&-1& & & & \\
 -1&4& -1 & & & \\
@@ -201,26 +232,29 @@ $$B=\begin{bmatrix}
 & &  & & -1 & 4  
 \end{bmatrix}.$$ 
 
-Looking back at $A$, there are then $k_2$ copies of $B$ down the diagonal of $A$. For example, if $k_1=5$ and $k_2=3$, the sparsity pattern looks like this:
 
-![](~HW4/HW41.png)
+**(a) Generate the matrix $A$ above for the case of $k_1=5$ and $k_2=3$.**
 
-Here is the actual matrix for that same case:
+***Extra Credit***: **Write a function `sparsePattern(k1,k2)` that takes any values of $k_1$ and $k_2$ and returns the matrix A. Check that it matches the examples above and try it on a couple of different matrices.**
 
-![](~HW4/HW42.jpeg)
+```{r}
+sparsePattern=function(k1,k2){
+  K = k1*k2
+  ii = c((k1+1):K, 1:(K-k1), 2:K,1:(K-1), 1:K, seq(k1+1, K, by=k1), seq(k1,(K-1), by=k1))
+  jj = c(1:(K-k1), (k1+1):K,1:(K-1), 2:K, 1:K, seq(k1,(K-1), by=k1), seq(k1+1,K, by=k1))
+  xx = c(-rep(1,2*(K-k1)), -rep(1,2*(K-1)), rep(4,K), rep(0,2*(k2-1)))
+  args = data.frame(i=ii, j=jj, x=xx)
+  A = do.call(sparseMatrix, c(args,list(use.last.ij=TRUE)))
+  print(A)
+A = drop0(A)
+return(A)
+}
 
-As a final example, here is the actual matrix for the case of $k_1=8$ and $k_2=4$
+A=sparsePattern(5,3)
+image(A)
+```
 
-![](~HW4/HW43.jpeg)
-
-
-(a) Generate the matrix $A$ above for the case of $k_1=5$ and $k_2=3$.
-
-***Extra Credit***: Write a function `sparsePattern(k1,k2)` that takes any values of $k_1$ and $k_2$ and returns the matrix A. Check that it matches the examples above and try it on a couple of different matrices.
-
-
-
-One issue with using the LU decomposition on a sparse matrix like $A$ is that the factors $L$ and $U$ have more non-zero entries than $A$. This phenomenon is called *fill-in*. Here is an example you can try once you have formed $A$:
+**One issue with using the LU decomposition on a sparse matrix like $A$ is that the factors $L$ and $U$ have more non-zero entries than $A$. This phenomenon is called *fill-in*. Here is an example you can try once you have formed $A$:**
 
 ```
 myLUFast = function(A,tol=10^-8) {
