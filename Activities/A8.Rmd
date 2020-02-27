@@ -1,0 +1,76 @@
+
+## Math 365 / Comp 365: 
+## Sparse Matrices Activity
+
+
+Make sure to include the matrix package:
+```{r,message=FALSE}
+require(Matrix)
+```
+
+### Exercise 1
+
+a) Generate the following sparse matrix, and make sure it only takes up 1560 bytes of memory.
+```{r,echo=FALSE}
+m6 = spMatrix(7,7, i = c(1,3:5), j = c(2,1,4,6),  x = c(pi,1.5,sqrt(2),-3))
+print(m6)
+object.size(m6)
+```
+
+b) Generate the following sparse matrix with just one line of R code.
+```{r,echo=FALSE}
+m7 = spMatrix(16,16, i = c(1:16,4:16), j = c(1:16,rep(3,13)),  x = c(rep(1,16),-13:-1))
+print(m7)
+```
+
+c) Generate the following sparse matrix with just one line of R code.
+```{r,echo=FALSE}
+m8 = spMatrix(13,13, i = c(1:6,8:13,1:13), j = c(8:13,1:6,13:1),  x = c(11:16,6:1,seq(0,24,by=2)))
+print(m8)
+```
+
+### Exercise 2
+
+Write an `R` function `ThreeBanded(n,offset)` that generates an $n \times n$ ***sparse*** matrix with 
+
+(i) the $i^{th}$ diagonal entry equal to $0.5+\sqrt{i}$; 
+
+(ii) the entries on the first sub-diagonal and super-diagonal (one below and above the main diagonal) all equal to 1; 
+
+(iii) the entries $A_{ij}$, where $|i -j|$ = offset all equal to 1; and
+
+(iv) all other entries equal to zero. 
+
+You can assume that $n \geq 4$ and $2 \leq$ `offset` $<n$. 
+
+Here is an example:
+
+`> ThreeBanded(10,5)`
+
+$$\begin{bmatrix}
+1.50 & 1.00 & & & & 1.00 &  & & & \\
+1.00 & 1.91 & 1.00 & & & & 1.00  & && \\
+& 1.00 & 2.23 & 1.00  & & & & 1.00  && \\
+& & 1.00 & 2.50 & 1.00   & & &   & 1.00 & \\
+& & &  1.00 & 2.74 & 1.00    & & && 1.00\\ 
+1.00 & & & &  1.00 & 2.95 & 1.00     & &&  \\  
+& 1.00  & & & & 1.00 & 3.14 & 1.00 && \\ 
+&  & 1.00  & & & & 1.00 & 3.33 & 1.00 & \\   
+&  &  & 1.00  & & & & 1.00 & 3.50 & 1.00 \\
+&  &  & & 1.00  & & & & 1.00 & 3.66          
+\end{bmatrix}$$
+
+
+```{r}
+ThreeBanded=function(n,offset){
+  spMatrix(n, n,
+           i=c(1:n, 1:(n-1), 2:n, (offset+1):n, 1:(n-offset)), 
+           j=c(1:n, 2:n, 1:(n-1), 1:(n-offset), (offset+1):n),
+           x=c(.5+sqrt(1:n), rep(1,(2*(2*n-1-offset)))))
+}
+ThreeBanded(10,5)
+```
+
+
+
+

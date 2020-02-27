@@ -1,0 +1,108 @@
+
+## Math 365 / Comp 365:
+## Iterative Methods for Solving Systems
+
+```{r,message=FALSE}
+require(Matrix)
+```
+
+### Iterative methods for solving systems of linear equations
+
+We are interested in solving our favorite problem: $Ax=b$, where $b$ is a $1000 \times 1$ column vector with every entry equal to 1. For $A$, we will use the `ThreeBanded` function we wrote in the activity on sparse matrices with $N=1000$ and an offset of 100.
+
+```{r}
+ThreeBanded=function(n,offset){
+  spMatrix(n,n,i=c(1:n,1:(n-1),2:n,(offset+1):n,1:(n-offset)),j=c(1:n,2:n,1:(n-1),1:(n-offset),(offset+1):n),x=c(.5+sqrt(1:n),rep(1,(2*(2*n-1-offset)))))
+}
+n=1000
+A=ThreeBanded(n,100)
+```
+
+Let's inspect our $A$ matrix to see the sparsity pattern:
+```{r}
+image(A)
+```
+
+We'll use two different iterative methods to solve $Ax=b$: Jacobi's method and Gauss-Seidel.
+
+Feel free to use my implementation of `vnorm` and `jacobi` and `GaussSeidel`:
+
+```{r}
+# Vector norm
+vnorm = function(v,p=2) { 
+  if ( p =="I") {
+    return(max(abs(v)))
+  }
+  else {
+    return(sum(abs(v)^p)^(1/p))
+  }
+}
+```
+```{r}
+# Solves Ax = b iteratively using the Jacobi Method
+# m is the maximum number of iterations: default m = 25
+# p is the p value of the matrix norm
+# tol is the stopping tolerance (using the relative residual norm on the backward error)
+jacobi = function(A,b,m=25,x = rep(0,n),p=2,tol=0.5*10^(-6),history=FALSE) {
+  n = length(b)
+  if (history) {
+    hist = matrix(NA,nrow=length(b),ncol=(m+1))
+    hist[,1] = x
+  }
+  d = diag(A)
+  R = A
+  R[cbind((1:n),(1:n))] = 0  # allows for R to be sparse  
+  steps=0
+  for (j in 1:m) {
+    x = (b - R %*% x)/d 
+    steps = steps+1
+    if (history) {hist[,(j+1)] = as.matrix(x)}
+    if (vnorm(b-A%*%x,p) <= vnorm(b,p)*tol) break 
+  }
+  if (history) return(list(x=x,iterations=steps,history = hist[,1:(steps+1)]))
+  else return(list(x=x,steps=steps))
+}
+```
+```{r}
+GaussSeidel = function(A,b,m=25,x = rep(0,n),p=2,tol=0.5*10^(-6),history=FALSE) {
+  n = length(b)
+  if (history) {
+    hist = matrix(NA,nrow=length(b),ncol=(m+1))
+    hist[,1] = x
+  }
+  d = diag(A)
+  L = A
+  U = A
+  U[lower.tri(A,diag=TRUE)] = 0  # U is the upper triangular part of A
+  L[upper.tri(A,diag=TRUE)] = 0  # L is the lower triangular part of A 
+  steps=0
+  for (j in 1:m) {
+    bu = b - U %*% x 
+    steps = steps+1
+    for (i in 1:n){  
+      x[i] = (bu[i] - L[i,] %*% x)/d[i]    # successivly update x as we use it.
+    }
+    if (history) {hist[,(j+1)] = as.matrix(x)}
+    if (vnorm(b-A%*%x,p) <= vnorm(b,p)*tol) break 
+  }
+  if (history) return(list(x=x,iterations=steps,history = hist[,1:(steps+1)]))
+  else return(list(x=x,steps=steps))
+}
+```
+
+a) Briefly discuss if Jacobi's method will converge on this matrix $A$ and why.
+
+b) Run 35 iterations of Jacobi's method, with an initial guess, $x^{(0)}$, of all zeros. From the sequence of approximations $\left\{x^{(k)}\right\}_{k=0,1,\ldots,35}$, compute the sequence of residuals $\left\{r^{(k)}\right\}_{k=0,1,\ldots,35}$ with $r^{(k)}=b-Ax^{(k)}$, and then compute the two-norms of the residual vectors. Save your residual norms in a vector called `jac.res.norms`, and plot the residual norms versus the iteration number using the following code:
+```
+plot(0:35,jac.res.norms,pch=20,type="o",log="y",xlab="iteration (k)",ylab=expression("|| r"[k]~"||"[2]),col="blue",ylim=c(1e-2,1e2))
+grid()
+```
+Note: to compute the residuals, you will either have to modify the output of my `jacobi.r` code or compute the residuals after calling that function. Either is fine, but I recommend the latter method, as it will make the subsequent part of this problem easier.
+
+c) Now, repeat the process with the Gauss-Seidel method, saving the residual norms as `gs.res.norms`, and plot using the following code:
+```
+plot(0:35,jac.res.norms,pch=20,type="o",log="y",xlab="iteration (k)",ylab=expression("|| r"[k]~"||"[2]),col="blue",ylim=c(1e-4,1e2))
+lines(0:35,gs.res.norms,pch=20,type="o",col="red")
+grid()
+```
+
