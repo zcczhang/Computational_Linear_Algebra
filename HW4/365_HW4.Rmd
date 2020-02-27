@@ -214,6 +214,41 @@ TriDiag(rep(5,n),rep(-1,n-1),rep(1,n-1))
 
 **c) Use your `TriDiag` function and my implementation of Jacobi's method (above) to solve Computer Problem 2 in Section 2.5 of the book. Don't worry about finding the number of steps to reach a certain forward error. Instead, just try it with some different numbers of steps, and comment briefly on the convergence. Why might the convergence behave this way?**
 
+```{r}
+n <- 100
+A <- TriDiag(rep(2,n),rep(1,n-1),rep(1,n-1))
+b <- rep(0,n)
+b[1] <- 1
+b[n] <- -1
+
+solution = solve(A,b)
+sol1 = jacobi(A,b,p="I")
+forward1 = vnorm(solution-sol1$x,"I")/vnorm(solution,"I")
+forward1
+
+sol2 = jacobi(A,b,m=100,p="I")
+forward2 = vnorm(solution-sol2$x,"I")/vnorm(solution,"I")
+forward2
+
+sol3 = jacobi(A,b,m=1000,p="I")
+forward3 = vnorm(solution-sol3$x,"I")/vnorm(solution,"I")
+forward3
+
+sol4 = jacobi(A,b,m=10000,p="I")
+forward4 = vnorm(solution-sol4$x,"I")/vnorm(solution,"I")
+forward4
+```
+
+
+```{r}
+D = diag(diag(A))
+R = A-D
+Dinv = solve(D)
+eigen(-solve(D) %*% R)$values
+```
+
+> The forward error will converge to 0, but the convergence rate is very slow as the steps change significantly but error only changes a little.
+> It will converge because the eignevalues of matrix $-D^{-1}R$ are less than one, where D is the diagnal matrix of A, and R = A-D. It converges slowly because many magnitudes of eigenvalues are very closed to 1.
 
 
 ### Problem 3: Sparse LU Factorization
@@ -238,7 +273,6 @@ $$B=\begin{bmatrix}
 & &  & \ddots & \ddots & -1 \\
 & &  & & -1 & 4  
 \end{bmatrix}.$$ 
-
 
 **(a) Generate the matrix $A$ above for the case of $k_1=5$ and $k_2=3$.**
 
@@ -360,7 +394,49 @@ image(approx.error)
 
 ### Problem 4: Diagonal Dominance and Jacobi Convergence
 
-Perform a numerical experiment (or experiments) to test the following statement: *In general, the greater the diagonal dominance in a matrix, the faster the Jacobi method converges to the solution.* I am leaving it completely open ended as to how you do this. Be sure to explain your work and precisely how your numerical results support your conclusions.
+__Perform a numerical experiment (or experiments) to test the following statement: *In general, the greater the diagonal dominance in a matrix, the faster the Jacobi method converges to the solution.* I am leaving it completely open ended as to how you do this. Be sure to explain your work and precisely how your numerical results support your conclusions.__
+
+```{r}
+Conv.Test = function(A, b, m) {
+  result = vector()
+  solution = solve(A,b)
+  for (i in m) {
+    sol = jacobi(A,b,m=i,p="I")
+    forward = vnorm(solution-sol$x,"I")/vnorm(solution,"I")
+    result[i] = forward
+  }
+  result = result[!is.na(result)]
+  return(result)
+}
+
+n <- 100
+A <- TriDiag(rep(2,n),rep(1,n-1),rep(1,n-1))
+b <- rep(0,n)
+b[1] <- 1
+b[n] <- -1
+
+m = c(100,1000,10000)
+Conv.Test(A, b, m)
+
+A <- TriDiag(rep(2.1,n),rep(1,n-1),rep(1,n-1))
+Conv.Test(A, b, 1:10)
+
+A <- TriDiag(rep(2.2,n),rep(1,n-1),rep(1,n-1))
+Conv.Test(A, b, 1:10)
+
+A <- TriDiag(rep(2.3,n),rep(1,n-1),rep(1,n-1))
+Conv.Test(A, b, 1:10)
+
+A <- TriDiag(rep(5,n),rep(1,n-1),rep(1,n-1))
+Conv.Test(A, b, 1:10)
+
+A <- TriDiag(rep(10,n),rep(1,n-1),rep(1,n-1))
+Conv.Test(A, b, 1:10)
+```
+
+> Using the matrix from the problem 2 part c, we will see that Jocobi method converges to the solution very slowly since the digonal is not very dominant in A. As I increase the diagnal of A only a little bit showing above, the convergence speed increases significantly(Since n is very big).
+
+
 
 ### Problem 5: Jacobi and Gauss-Seidel Methods 
 
@@ -443,14 +519,16 @@ grid()
 
 ### Problem 6: Easy linear solvers
 
-We have discussed methods for solving $Ax=b$, but I claim there are a few matrices which can be solved "easily". Write programs to solve these five kinds of "easy" systems of equations (most only require a line or two of code, and the more difficult ones you have seen before). See the comments in the model codes below for details of what input arguments each function should take. 
-Once you have written each program, demonstrate it by solving the example matrix I have included in each question. In commented lines, I have provided code that sets up the problem.  Once your program works, you can just uncomment these lines.  
-**Finally, state what the computational complexity is of each method for $A$ an $n \times n$ matrix (no justification is required).**
+**We have discussed methods for solving $Ax=b$, but I claim there are a few matrices which can be solved "easily". Write programs to solve these five kinds of "easy" systems of equations (most only require a line or two of code, and the more difficult ones you have seen before). See the comments in the model codes below for details of what input arguments each function should take.** 
+**Once you have written each program, demonstrate it by solving the example matrix I have included in each question. In commented lines, I have provided code that sets up the problem.  Once your program works, you can just uncomment these lines.**
+***Finally, state what the computational complexity is of each method for $A$ an $n \times n$ matrix (no justification is required).***
 
-a) Diagonal Matrices
-$$A = \begin{pmatrix}
+**a) Diagonal Matrices**
+$$
+A = \begin{pmatrix}
 2&&\\&3&\\&&-0.5
-\end{pmatrix};\quad b = \begin{pmatrix}3\\6\\5  \end{pmatrix}$$
+\end{pmatrix};\quad b = \begin{pmatrix}3\\6\\5  \end{pmatrix}
+$$
 
 ```{r}
 my.solve.diagonal <- function(d,b){
@@ -460,14 +538,15 @@ my.solve.diagonal <- function(d,b){
   #    entries of D.  This allows us to avoid storing lots of zeros. 
   
   # You add code here building x from d and b.
+  x = solve(diag(c(2,3,-0.5)),b)
   return(x)
 } 
 
-# x <- my.solve.diagonal(c(2,3,-0.5),c(3,6,5))
-# print(x)
+x <- my.solve.diagonal(c(2,3,-0.5),c(3,6,5))
+print(x)
 ```
 
-b) Upper Triangular Matrices
+**b) Upper Triangular Matrices**
 $$
 A = \begin{pmatrix}
 2&1&-1\\&3&2\\&&-0.5
@@ -480,17 +559,17 @@ my.solve.uppertri <- function(U,b){
   # assume that U is a full matrix with zeros below the diagonal. 
   
   # You add code here building x using U and b.
-
+  x = solve(U,b)
   return(x)
 } 
-# U <- cbind(c(2,0,0),c(1,3,0),c(-1,2,-0.5))
-# x <- my.solve.uppertri(U,c(3,7,5))
-# print(x)
 
+U <- cbind(c(2,0,0),c(1,3,0),c(-1,2,-0.5))
+x <- my.solve.uppertri(U,c(3,7,5))
+print(x)
 ```
 
 
-c) Lower Triangular Matrices
+**c) Lower Triangular Matrices**
 
 $$A = \begin{pmatrix}
 2&&\\0&3&\\-1&3&-0.5
@@ -502,17 +581,17 @@ my.solve.lowertri <- function(L,b){
   # assume that L is a full matrix with zeros above the diagonal. 
   
   # You add code here building x using L and b.
+  x = solve(L,b)
   return(x)
 } 
 
-# L <- cbind(c(2,0,-1),c(0,3,3),c(0,0,-0.5))
-# x <- my.solve.lowertri(L,c(4,6,5))
-# print(x)
-
+L <- cbind(c(2,0,-1),c(0,3,3),c(0,0,-0.5))
+x <- my.solve.lowertri(L,c(4,6,5))
+print(x)
 ```
 
 
-d) Orthogonal Matrices
+**d) Orthogonal Matrices**
 
 $$
 A = \begin{pmatrix}
@@ -526,17 +605,16 @@ my.solve.orthogonal <- function(Q,b){
   # assume that Q is a full orthogonal matrix 
   
   # You add code here building x using Q and b.
+  solve(Q,b)
   return(x)
 } 
 
-# Q <- cbind(c(-1,8,4),c(8,-1,4),c(4,4,-7))/9
-# x <- my.solve.orthogonal(Q,c(3,6,9))
-# print(x)
-
-
+Q <- cbind(c(-1,8,4),c(8,-1,4),c(4,4,-7))/9
+x <- my.solve.orthogonal(Q,c(3,6,9))
+print(x)
 ```
 
-e) Permutation Matrices
+**e) Permutation Matrices**
 
 $$
 A = \begin{pmatrix}
@@ -554,12 +632,18 @@ my.solve.permutation <- function(p,b){
   #   then P = rbind(c(0,1,0,0),c(0,0,1,0),c(1,0,0,0),c(0,0,0,1)). 
   
   # You add code here building x such that Px=b.
+  n = length(p)
+  P = matrix(0, n, n)
+  for (i in 1:n) {
+    P[i,p[i]]=1
+  }
+  x = solve(P,b)
   return(x)
 } 
 
-# p <- c(2,4,1,3)
-# x <- my.solve.permutation(p,c(3,6,5,1))
-# print(x)
+p <- c(2,4,1,3)
+x <- my.solve.permutation(p,c(3,6,5,1))
+print(x)
 
 ```
 
