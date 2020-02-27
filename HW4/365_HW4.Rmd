@@ -238,25 +238,26 @@ $$B=\begin{bmatrix}
 ***Extra Credit***: **Write a function `sparsePattern(k1,k2)` that takes any values of $k_1$ and $k_2$ and returns the matrix A. Check that it matches the examples above and try it on a couple of different matrices.**
 
 ```{r}
-sparsePattern=function(k1,k2){
-  K = k1*k2
-  ii = c((k1+1):K, 1:(K-k1), 2:K,1:(K-1), 1:K, seq(k1+1, K, by=k1), seq(k1,(K-1), by=k1))
-  jj = c(1:(K-k1), (k1+1):K,1:(K-1), 2:K, 1:K, seq(k1,(K-1), by=k1), seq(k1+1,K, by=k1))
-  xx = c(-rep(1,2*(K-k1)), -rep(1,2*(K-1)), rep(4,K), rep(0,2*(k2-1)))
-  args = data.frame(i=ii, j=jj, x=xx)
-  A = do.call(sparseMatrix, c(args,list(use.last.ij=TRUE)))
-  print(A)
-A = drop0(A)
+sparsePattern = function(k1, k2){
+  N = k1*k2
+  i = c((k1+1):N, 1:(N-k1), 2:N,1:(N-1), 1:N, seq(k1+1, N, by=k1), seq(k1,(N-1),by=k1))
+  j = c(1:(N-k1), (k1+1):N,1:(N-1), 2:N, 1:N, seq(k1, (N-1), by=k1), seq(k1+1,N,by=k1))
+  x = c(-rep(1,2*(N-k1)), -rep(1,2*(N-1)), rep(4,N), rep(0,2*(k2-1)))
+  A = sparseMatrix(i=i, j=j, x=x)
 return(A)
 }
 
 A=sparsePattern(5,3)
 image(A)
+
+A=sparsePattern(8,4)
+image(A)
 ```
+
 
 **One issue with using the LU decomposition on a sparse matrix like $A$ is that the factors $L$ and $U$ have more non-zero entries than $A$. This phenomenon is called *fill-in*. Here is an example you can try once you have formed $A$:**
 
-```
+```{r}
 myLUFast = function(A,tol=10^-8) {
   n = nrow(A)
   L = diag(x=1,nrow=n)  # start with L = identity matrix
@@ -271,6 +272,7 @@ myLUFast = function(A,tol=10^-8) {
   }
   return(list(L=L,U=U))
 }
+A=sparsePattern(5,3)
 out=myLUFast(as.matrix(A))
 L=as(out$L,"sparseMatrix")
 U=as(out$U,"sparseMatrix")
@@ -279,9 +281,9 @@ image(L)
 image(U)
 ```
 
-Can we find triangular matrices $L$ and $U$ that are sparser and still satisfy $A=LU$? No, recall that the factorization is unique. Instead, one approach is to force $L$ and $U$ to be sparser, but have $LU$ only approximate $A$.
+**Can we find triangular matrices $L$ and $U$ that are sparser and still satisfy $A=LU$? No, recall that the factorization is unique. Instead, one approach is to force $L$ and $U$ to be sparser, but have $LU$ only approximate $A$.**
 
-b) Your main task is to write a function `mySparseLU` that returns a lower unit triangular matrix $L$ and an upper triangular matrix $U$ such that $L$ and $U$ only have off-diagonal non-zeros entries in the locations where $A$ has off-diagonal non-zero entries. In the following pseudocode for the algorithm, $NZ(A)$ is the set of indices of non-zero entries of $A$. For example, if $A_{3,4}\neq 0$, then $(3,4)\in NZ(A)$.
+**b) Your main task is to write a function `mySparseLU` that returns a lower unit triangular matrix $L$ and an upper triangular matrix $U$ such that $L$ and $U$ only have off-diagonal non-zeros entries in the locations where $A$ has off-diagonal non-zero entries. In the following pseudocode for the algorithm, $NZ(A)$ is the set of indices of non-zero entries of $A$. For example, if $A_{3,4}\neq 0$, then $(3,4)\in NZ(A)$.**
 
 ### Pseudocode for Sparse LU Approximate Factorization
 
@@ -303,16 +305,42 @@ Output: $L$ (lower unit triangular) and $U$ (upper triangular)
 
 You may find the functions `upper.tri` and `lower.tri` useful. Your function `mySparseLU(A)` should return a list containing $L$ and $U$.
 
-To test your function, use your $A$ matrix from part (a), with $k_1=5$ and $k_2=3$, and double check that your $L$ and $U$ matrices have the same sparsity pattern as the lower and upper triangular parts of the original $A$, respectively:
+```{r}
+mySparseLU = function(A){
+  n = nrow(A)
+  for (i in (2:n)){
+    for (k in (1:(i-1))){
+      if (A[i,k]!=0){
+        A[i,k]<-A[i,k]/A[k,k]
+        for (j in ((k+1):n)){
+          if (A[i,j]!=0){
+            A[i,j]<-A[i,j]-A[i,k]*A[k,j]
+          }    
+        }
+      }      
+    }
+  }
+
+  L = A
+  L[upper.tri(L)] = 0
+  diag(L) = rep(1,n)
+
+  U = A
+  U[lower.tri(U)] = 0
+  return(list(L=L,U=U))
+}
 ```
+
+**To test your function, use your $A$ matrix from part (a), with $k_1=5$ and $k_2=3$, and double check that your $L$ and $U$ matrices have the same sparsity pattern as the lower and upper triangular parts of the original $A$, respectively:**
+```{r}
 out=mySparseLU(A)
 image(A)
 image(out$L)
 image(out$U)
 ```
 
-While it is nice to preserve the sparsity pattern, we can also see that $A$ is only approximately equal to $LU$:
-```
+**While it is nice to preserve the sparsity pattern, we can also see that $A$ is only approximately equal to $LU$:**
+```{r}
 approx=out$L%*%out$U
 approx.error=A-approx
 image(A)
@@ -320,7 +348,7 @@ image(approx)
 image(approx.error)
 ```
 
-There is a tradeoff between how many additional non-zero entries we allow in $L$ and $U$ versus how accurately $LU$ approximates $A$. Generalizations of the algorithm you implemented manage that tradeoff, allowing the user some choice over how accurate of an approximation she requires for the application at hand.
+**There is a tradeoff between how many additional non-zero entries we allow in $L$ and $U$ versus how accurately $LU$ approximates $A$. Generalizations of the algorithm you implemented manage that tradeoff, allowing the user some choice over how accurate of an approximation she requires for the application at hand.**
 
 
 ### Problem 4: Diagonal Dominance and Jacobi Convergence
