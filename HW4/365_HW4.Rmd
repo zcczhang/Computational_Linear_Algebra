@@ -118,7 +118,8 @@ R_{1}^{T} A_{1} R_{1}} \\
 {0} & {1} & {-3} \\ 
 {0} & {0} & {1}
 \end{array}\right) = 
-R_{2}^{T} A_{2} R_{2}} 
+R_{2}^{T} A_{2} R_{2}} =
+R_{2}^{T} I R_{2}
 \end{array}
 $$
 $$\therefore A = R_{1}^{T} R_{2}^{T} R_{2} R_{1} = R^{T} R$$
@@ -151,9 +152,11 @@ $$ B=\begin{pmatrix}4 & 2 & 0 \\
 0 & 3 & 4 
 \end{pmatrix}. $$
 
+$$
+B=\left(\begin{array}{lll}4 & 2 & 0 \\ 2 & 1 & 3 \\ 0 & 3 & 4\end{array}\right)=\left(\begin{array}{lll}2 & 0 & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 1\end{array}\right)\left(\begin{array}{lll}1 & 0 & 0 \\ 0 & 0 & 3 \\ 0 & 3 & 4\end{array}\right)\left(\begin{array}{lll}2 & 1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{array}\right)=R_{1}^{T} B_{1} R_{1}
+$$
 
-
-
+> The dignal of matrix $B_{1}$ contains 0 so that it can never become an indentity matrix. Therefore, the Cholesky factorization procedure fails for the matrix B. 
 
 **c) Why does the Cholesky factorization work for the symmetric matrix $A$, but not for the symmetric matrix $B$? Hint: `eigen` may be useful.**
 
@@ -168,18 +171,22 @@ eigen(B)$values
 ### Problem 2
 
 **Tridiagonal matrices show up a lot in applications. These are matrices whose only nonzero entries are on the main diagonal and just above or just below the main diagonal.**
+
 **a) Write a function `TriDiag(d,a,b)` which takes three vectors as input and puts them on the 3 diagonals.  For example, if you call **
+
 ```
 TriDiag( c(5,3,5,4,4), c(1,2,3,4), c(11,12,13,14) ) 
 ```
+
 **you should get the matrix:**
+
 ```{r,echo=FALSE}
 print(rbind(c(5,11,0,0,0),c(1,3,12,0,0),c(0,2,5,13,0),c(0,0,3,4,14),c(0,0,0,4,4)))
 ```
 
 **Try to use as few `for` loops as possible (you can actually do it without any `for` loops).**
 
-*B**onus: Build in an option to output a sparse matrix (in which case the `Matrix` package is required). In practice, you would almost always be using sparse matrices when dealing with large, tridiaganal matrices.**
+***Bonus: Build in an option to output a sparse matrix (in which case the `Matrix` package is required). In practice, you would almost always be using sparse matrices when dealing with large, tridiaganal matrices.***
 
 ```{r}
 TriDiag <- function(d,a,b, sparse=FALSE) {
