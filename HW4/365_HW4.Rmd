@@ -361,13 +361,14 @@ mySparseLU = function(A){
       }      
     }
   }
-
+  
+  U = A
+  U[lower.tri(U)] = 0
+  
   L = A
   L[upper.tri(L)] = 0
   diag(L) = rep(1,n)
-
-  U = A
-  U[lower.tri(U)] = 0
+  
   return(list(L=L,U=U))
 }
 ```
