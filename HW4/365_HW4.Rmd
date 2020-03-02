@@ -398,45 +398,25 @@ image(approx.error)
 __Perform a numerical experiment (or experiments) to test the following statement: *In general, the greater the diagonal dominance in a matrix, the faster the Jacobi method converges to the solution.* I am leaving it completely open ended as to how you do this. Be sure to explain your work and precisely how your numerical results support your conclusions.__
 
 ```{r}
-Conv.Test = function(A, b, m) {
-  result = vector()
-  solution = solve(A,b)
-  for (i in m) {
-    sol = jacobi(A,b,m=i,p="I")
-    forward = vnorm(solution-sol$x,"I")/vnorm(solution,"I")
-    result[i] = forward
+A = matrix(rexp(100, rate=1), ncol=10)
+b <- runif(n = 10, min = 1, max = 10)
+Steps = function(A, b, d) {
+  steps = vector()
+  for (j in 1:length(d)) {
+    diag(A) = 0
+    for (i in 1:10) {
+      A[i,i] = sum(A[i,]) + d[j]
+    }
+    steps = c(steps, jacobi(A,b, m=100000, tol=10e-8)$steps)
   }
-  result = result[!is.na(result)]
-  return(result)
+  return(steps)
 }
 
-n <- 100
-A <- TriDiag(rep(2,n),rep(1,n-1),rep(1,n-1))
-b <- rep(0,n)
-b[1] <- 1
-b[n] <- -1
-
-m = c(100,1000,10000)
-Conv.Test(A, b, m)
-
-A <- TriDiag(rep(2.1,n),rep(1,n-1),rep(1,n-1))
-Conv.Test(A, b, 1:10)
-
-A <- TriDiag(rep(2.2,n),rep(1,n-1),rep(1,n-1))
-Conv.Test(A, b, 1:10)
-
-A <- TriDiag(rep(2.3,n),rep(1,n-1),rep(1,n-1))
-Conv.Test(A, b, 1:10)
-
-A <- TriDiag(rep(5,n),rep(1,n-1),rep(1,n-1))
-Conv.Test(A, b, 1:10)
-
-A <- TriDiag(rep(10,n),rep(1,n-1),rep(1,n-1))
-Conv.Test(A, b, 1:10)
+steps = Steps(A, b, 1:50)
+plot(1:50, steps)
 ```
 
-> Using the matrix from the problem 2 part c, we will see that Jocobi method converges to the solution very slowly since the digonal is not strictly dominant in A. As I increase the diagnal of A only a little bit showing above, the convergence speed increases significantly(Since n is very big).
-
+> I randomly created a 10$\times$ 10 matrix A and length 10 vector b. By chaning the diagonal entry to the sum of that row adding 1 to 50, matrix A is more and more diagonal dominant. Saving the steps that Jacobi method generated to converge to the solution, with the tolerance = 10e-8, we can see in the graph above that steps decrease significantly with greater diagonal dominance. Therefore, I can conclude that in general, the greater the diagonal dominance in a matrix, the faster the Jacobi method converges to the solution.
 
 
 ### Problem 5: Jacobi and Gauss-Seidel Methods 
@@ -561,8 +541,13 @@ my.solve.uppertri <- function(U,b){
   # assume that U is a full matrix with zeros below the diagonal. 
   
   # You add code here building x using U and b.
-  x = solve(U,b)
-  return(x)
+  n = nrow(U)
+  sol = rep(NaN, n)
+  sol[n] = b[n] / U[n, n]
+  for (i in (n-1):1){
+    sol[i] = (b[i] - sum(sol[(i+1):n] %*% U[i, (i+1): n]))/U[i, i]
+  }
+  return(sol)
 } 
 
 U <- cbind(c(2,0,0),c(1,3,0),c(-1,2,-0.5))
@@ -584,8 +569,14 @@ my.solve.lowertri <- function(L,b){
   # assume that L is a full matrix with zeros above the diagonal. 
   
   # You add code here building x using L and b.
-  x = solve(L,b)
-  return(x)
+  n = nrow(U)
+  sol = rep(NaN, n)
+  sol[1] = b[1] / U[1, 1]
+  for (i in 2:n){
+    sol[i] = (b[i] - sum(sol[0: (i-1)] %*% U[i, (i-1): 0]))/U[i, i]
+  }
+
+  return(sol)
 } 
 
 L <- cbind(c(2,0,-1),c(0,3,3),c(0,0,-0.5))
@@ -609,7 +600,7 @@ my.solve.orthogonal <- function(Q,b){
   # assume that Q is a full orthogonal matrix 
   
   # You add code here building x using Q and b.
-  x = solve(Q) %*% b
+  x = t(Q )%*% b
   return(x)
 } 
 Q <- cbind(c(-1,8,4),c(8,-1,4),c(4,4,-7))/9
