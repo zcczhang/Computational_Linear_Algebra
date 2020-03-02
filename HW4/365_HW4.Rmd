@@ -486,9 +486,7 @@ b = matrix(1,nrow=1000,ncol=1)
 
 out = jacobi(A,b,m=35,history=TRUE)
 res = rep(b,nrow=n)-A %*% out$history
-
 jac.res.norms = sqrt(colSums(res*res))
-
 plot(0:35,jac.res.norms,pch=20,type="o",log="y",
      xlab="iteration (k)",
      ylab=expression("|| r"[k]~"||"[2]),
