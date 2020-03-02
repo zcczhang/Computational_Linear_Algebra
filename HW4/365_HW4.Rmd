@@ -435,7 +435,7 @@ A <- TriDiag(rep(10,n),rep(1,n-1),rep(1,n-1))
 Conv.Test(A, b, 1:10)
 ```
 
-> Using the matrix from the problem 2 part c, we will see that Jocobi method converges to the solution very slowly since the digonal is not very dominant in A. As I increase the diagnal of A only a little bit showing above, the convergence speed increases significantly(Since n is very big).
+> Using the matrix from the problem 2 part c, we will see that Jocobi method converges to the solution very slowly since the digonal is not strictly dominant in A. As I increase the diagnal of A only a little bit showing above, the convergence speed increases significantly(Since n is very big).
 
 
 
