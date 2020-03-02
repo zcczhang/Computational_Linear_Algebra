@@ -482,12 +482,13 @@ grid()
 ***Note: to compute the residuals, you will either have to modify the output of my `jacobi.r` code or compute the residuals after calling that function. Either is fine, but I recommend the latter method, as it will make the subsequent part of this problem easier.***
 
 ```{r}
-b=matrix(1,nrow=1000,ncol=1)
-numIts=35
+b = matrix(1,nrow=1000,ncol=1)
 
-out = jacobi(A,b,m=numIts,history=TRUE)
+out = jacobi(A,b,m=35,history=TRUE)
 res = rep(b,nrow=n)-A %*% out$history
+
 jac.res.norms = sqrt(colSums(res*res))
+
 plot(0:35,jac.res.norms,pch=20,type="o",log="y",
      xlab="iteration (k)",
      ylab=expression("|| r"[k]~"||"[2]),
@@ -505,8 +506,8 @@ lines(0:35,gs.res.norms,pch=20,type="o",col="red")
 grid()
 ```
 ```{r}
-gs.out=GaussSeidel(A, b, m=numIts, history = TRUE)
-gs.res=rep(b, (numIts+1), nrow=n) - A %*% gs.out$history
+gs.out=GaussSeidel(A, b, m=35, history = TRUE)
+gs.res=rep(b, (35+1), nrow=n) - A %*% gs.out$history
 gs.res.norms=sqrt(colSums(gs.res*gs.res))
 plot(0:35,jac.res.norms,pch=20,type="o",log="y",
      xlab="iteration (k)",
@@ -571,7 +572,7 @@ x <- my.solve.uppertri(U,c(3,7,5))
 print(x)
 ```
 
-> Time Complexity: 
+> Time Complexity: $O(N^{2})$
 
 **c) Lower Triangular Matrices**
 
@@ -594,7 +595,7 @@ x <- my.solve.lowertri(L,c(4,6,5))
 print(x)
 ```
 
-> Time Complexity: 
+> Time Complexity: $O(N^{2})$
 
 **d) Orthogonal Matrices**
 
@@ -618,7 +619,7 @@ x <- my.solve.orthogonal(Q,c(3,6,9))
 print(x)
 ```
 
-> Time Complexity: 
+> Time Complexity: $O(N^{2})$
 
 **e) Permutation Matrices**
 
