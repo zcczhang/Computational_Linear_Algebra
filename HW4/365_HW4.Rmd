@@ -284,7 +284,8 @@ sparsePattern = function(k1, k2){
   i = c((k1+1):N, 1:(N-k1), 2:N,1:(N-1), 1:N, seq(k1+1, N, by=k1), seq(k1,(N-1),by=k1))
   j = c(1:(N-k1), (k1+1):N,1:(N-1), 2:N, 1:N, seq(k1, (N-1), by=k1), seq(k1+1,N,by=k1))
   x = c(-rep(1,2*(N-k1)), -rep(1,2*(N-1)), rep(4,N), rep(0,2*(k2-1)))
-  A = sparseMatrix(i=i, j=j, x=x)
+  A = sparseMatrix(i=i, j=j, x=x, use.last.ij=TRUE)
+  A = drop0(A)
 return(A)
 }
 
