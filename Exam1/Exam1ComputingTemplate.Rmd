@@ -46,23 +46,15 @@ Let $a=1$. Create the sparse matrix $W$. Run the command `image(W)` to make sure
 # Your code here
 # UNCOMMENT NEXT LINE ONCE YOU CALCULATE W
 W <- spMatrix(nrow =12, ncol=12, 
-              i=c(2:5,8:11,1:4,7:10),
-              j=c(1:4,7:10,2:5,8:11),
-              x=c(c(1,2,1,1),c(1,2,1,1),c(1,2,1,1),c(1,2,1,1)))
+              i=c(2:5,8:11,1:4,7:10,5,1,6,4,7,11,10,12),
+              j=c(1:4,7:10,2:5,8:11,1,5,4,6,11,7,12,10),
+              x=c(c(1,2,1,1),c(1,2,1,1),c(1,2,1,1),c(1,2,1,1),2,2,2,2,2,2,2,2))
 a = 1
-W[5,1] <- 2
-W[1,5] <- 2
-W[6,4] <- 2
-W[4,6] <- 2
 W[8,2] <- 2-a 
 W[2,8] <- 2-a
 W[8,6] <- a
 W[6,8] <- a 
-W[11,7] <- 2 
-W[7,11] <- 2 
-W[12,10] <- 2 
-W[10,12] <- 2
-W
+
 image(W)
 ```
 
@@ -74,7 +66,18 @@ The graph Laplacian matrix is defined as $L=D-W$, where $W$ is the weighted adja
 
 ```{r}
 # Your code here
-
+W <- spMatrix(nrow =12, ncol=12, 
+              i=c(2:5,8:11,1:4,7:10,5,1,6,4,7,11,10,12),
+              j=c(1:4,7:10,2:5,8:11,1,5,4,6,11,7,12,10),
+              x=c(c(1,2,1,1),c(1,2,1,1),c(1,2,1,1),c(1,2,1,1),2,2,2,2,2,2,2,2))
+a = .5
+W[8,2] <- 2-a 
+W[2,8] <- 2-a
+W[8,6] <- a
+W[6,8] <- a 
+D=diag(rowSums(W))
+L = D-W
+eigen(L)$values
 ```
 
 ### Part (C): 6 points
@@ -92,21 +95,24 @@ sg = function(a) {
   W[2,8] = 2-a
   W[8,6] = a
   W[6,8] = a
-  eigenValue = eigen(W)$values 
+  eigenValue = eigen(W)$values
+
   negEigen=min(eigenValue) 
   posEigen=max(eigenValue)
   for (i in eigenValue) {
     if (i<0 & i>negEigen) {
       negEigen=i 
     }
-    if (i>0&i<posEigen) { 
+    if (i>0 & i<posEigen) { 
       posEigen=i
     } 
   }
-  gap=posEigen-negEigen
-  return(gap) 
+  return(posEigen-negEigen) 
 }
 
+sg(1)
+
+# Your plot command here
 gapList = function(rangeA) { 
   gapList=list()
   for (a in rangeA){
@@ -114,9 +120,6 @@ gapList = function(rangeA) {
   return(gapList)
 }
 
-sg(1)
-
-# Your plot command here
 plot.function(gapList,0,2)
 ```
 
@@ -129,28 +132,37 @@ Now we want to determine for which value of $a$ the spectral gap of the graph sh
 
 ```{r}
 # Your code here
-FDDeriv = function(f,delta=.000001){ function(x){(f(x+delta) - f(x-delta))/(2*delta)}
+FDDeriv = function(f,delta=.000001) { 
+  function(x){(f(x+delta) - f(x-delta))/(2*delta)}
 }
-g=FDDeriv(sg)
-gList = function(rangeA){
-gList=list()
-for (a in rangeA){
-gList[length(gList)+1]=g(a) }
-return(gList) }
+g = FDDeriv(sg)
+
+gList = function(rangeA) {
+  gList=list()
+  for (a in rangeA){
+    gList[length(gList)+1]=g(a) 
+  }
+    return(gList) 
+}
 plot.function(gList,0,2)
 
-secant = function(f, a, b, tol = 1e-05, maxiters = 12) { history = rep(NA, maxiters)
-history[1] = a
-history[2] = b
-for (k in 3:maxiters) {
-x1 = history[k-2]
-x2 = history[k-1]
-newx = x2 - (f(x2)*(x2-x1))/(f(x2)-f(x1)) 
-history[k] = newx
-change = newx - history[k-1]
-if (abs(change) < tol * max(abs(history[k - 1]), tol)) break }
-return(list(root = newx, history = history[!is.na(history)])) }
+secant = function(f, a, b, tol = 1e-05, maxiters = 12) { 
+  history = rep(NA, maxiters)
+  history[1] = a
+  history[2] = b
+  for (k in 3:maxiters) {
+    x1 = history[k-2]
+    x2 = history[k-1]
+    newx = x2 - (f(x2)*(x2-x1))/(f(x2)-f(x1)) 
+    history[k] = newx
+    change = newx - history[k-1]
+    if (abs(change) < tol * max(abs(history[k - 1]), tol)) 
+      break 
+    }
+  return(list(root = newx, history = history[!is.na(history)])) 
+}
 root=secant(g,0,2)$root
+
 # UNCOMMENT NEXT LINE ONCE YOU CALCULATE THE ROOT
 paste("Root =",as.character(root)) 
 ```
@@ -214,7 +226,7 @@ CorrelatedGBM <- function(N, S0, mu, sigma, cor.mat) {
   # Inputs: 
   #   N: Number of days in the path.
   #   mu: A vector of drift or average daily continuously compounded returns.  
-  #   sigma: A vector of volatility or standard deviation of daily continuously   compounded returns. 
+  #   sigma: A vector of volatility or standard deviation of daily continuously compounded returns. 
   #   S0: A vector of initial prices of the assets. 
   #   cor.mat: The correlation matrix of the daily continuously compounded 
   #            returns. 
@@ -229,11 +241,11 @@ CorrelatedGBM <- function(N, S0, mu, sigma, cor.mat) {
   # Fill in code below for Step i.
 	R = chol(cor.mat)
   # Step ii. (done for you):
-  X <- matrix(rnorm(N * length(mu), 0, 1), ncol = length(mu)) # Generate the Nxn random matrix
-  X <- apply(X, 2, cumsum) # cumulate value from random matrix to reflect compounded return.
+  X <- matrix(rnorm(N * length(mu), 0, 1), ncol = length(mu)) 
+  X <- apply(X, 2, cumsum) 
   
   # Fill in code below for Step iii.
-  Wt = X%*%R
+  Wt = X %*% R
   # Fill in code below for Step iv. and store it in GBMs:
   GBMs = GBM(N,sigma,mu, S0, Wt)
   return(GBMs)
@@ -256,8 +268,7 @@ v. Generate the vector that represents the current price value $S_0$ (that is, t
 ```{r message=FALSE, warning=FALSE}
 # Your code here
 library(readr)
-AirlineStockPrices <- read_csv("AirlineStockPrices.csv",
-col_names = FALSE, skip = 1)
+AirlineStockPrices <- read_csv("AirlineStockPrices.csv", col_names = FALSE, skip = 1)
 
 S <- as.matrix(AirlineStockPrices)
 R = matrix(0,nrow = nrow(S)-1, ncol = ncol(S))
@@ -270,9 +281,9 @@ cor.mat=cor(R)
 
 mu=colMeans(R)
 
-sigma =c(sd(R[,1]),sd(R[,2]),sd(R[,3])) 
+sigma =c(sd(R[,1]),sd(R[,2]),sd(R[,3]))
+
 S0=c(S[nrow(S),])
-S0
 ```
 
 ### Problem (C): 1 point
@@ -306,4 +317,16 @@ What do you observe about the stock prices? How will you invest based on the sim
 
 ### Problem (D) Solution
 
-*Include your answer in text here.*
+*Three stock prices remain low in the first year(0 to 1 year), and they increased after the first year, reached the highest at the midlle of 2 and 2.5 year in the figure. Then stocks overall decreased and rebounded at the end of the third year. The stock price of AAL fluctates the most, whereas DAL flucteates the least. Therefore, I would invest the AAL for its high potential, but I will invest UAL first for the beginning of the fourth year since the trend in the figure indicates that the UAL is experiencing an siginificant increase.*
+
+
+
+
+
+
+
+
+
+
+
+
