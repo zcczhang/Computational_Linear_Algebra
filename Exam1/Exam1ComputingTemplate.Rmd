@@ -60,21 +60,12 @@ image(W)
 
 ### Part (B): 1 point
 
-The graph Laplacian matrix is defined as $L=D-W$, where $W$ is the weighted adjacency matrix, and $D$ is a diagonal matrix, with the $i^{th}$ diagonal element equal to the degree of vertex $i$; that is, the sum of the weights of the edges leading into vertex $i$. You can compute $D$ with the command \texttt{D=diag(rowSums(W))}. Still using $a=\frac{1}{2}$, form the matrix $L$ and print out its eigenvalues. There should be one zero eigenvalue and the rest should be positive. For an undirected graph, the number of graph Laplacian eigenvalues equal to zero is equal to the number of connected components in the graph.
+The graph Laplacian matrix is defined as $L=D-W$, where $W$ is the weighted adjacency matrix, and $D$ is a diagonal matrix, with the $i^{th}$ diagonal element equal to the degree of vertex $i$; that is, the sum of the weights of the edges leading into vertex $i$. You can compute $D$ with the command \texttt{D=diag(rowSums(W))}. Still using $a=1$, form the matrix $L$ and print out its eigenvalues. There should be one zero eigenvalue and the rest should be positive. For an undirected graph, the number of graph Laplacian eigenvalues equal to zero is equal to the number of connected components in the graph.
 
 ### Part (B) solution
 
 ```{r}
 # Your code here
-W <- spMatrix(nrow =12, ncol=12, 
-              i=c(2:5,8:11,1:4,7:10,5,1,6,4,7,11,10,12),
-              j=c(1:4,7:10,2:5,8:11,1,5,4,6,11,7,12,10),
-              x=c(c(1,2,1,1),c(1,2,1,1),c(1,2,1,1),c(1,2,1,1),2,2,2,2,2,2,2,2))
-a = .5
-W[8,2] <- 2-a 
-W[2,8] <- 2-a
-W[8,6] <- a
-W[6,8] <- a 
 D=diag(rowSums(W))
 L = D-W
 eigen(L)$values
