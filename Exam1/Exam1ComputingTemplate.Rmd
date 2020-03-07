@@ -5,7 +5,6 @@ author: "**Charles Zhang**"
 output: pdf_document
 ---
 
-
 ## Instructions:
 
 * This portion of the exam should be added to the back of the written part and the essay, and you should submit a single, stapled copy.
