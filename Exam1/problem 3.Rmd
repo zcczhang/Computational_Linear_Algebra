@@ -1,0 +1,36 @@
+---
+output: pdf_document
+---
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+options(digits = 12)
+```
+## Appendix: code for problem 3
+```{r}
+M <- 1
+e <- 0.0167
+f <- function(E){M+e*sin(E)-E}
+fp <- function(E){e*cos(E)-1}
+fpp <- function(E){-e*sin(E)}
+rs <- function(E){E - f(E)/fp(E)-(f(E)/fp(E))^2*fpp(E)/2/fp(E)}
+steps <- 10
+E <- 201.5
+for (i in 1:steps){
+  E[i+1] <- rs(E[i])
+}
+E
+```
+```{r}
+error = abs(E-1.01417908716)
+y = error[2:7]/error[1:6]
+y
+plot(1:6,log(y))
+y = error[2:7]/error[1:6]^2
+y
+plot(1:6,log(y))
+
+y = error[2:7]/error[1:6]^3
+y
+plot(1:6,log(y))
+```
+
+
