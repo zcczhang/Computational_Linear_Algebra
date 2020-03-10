@@ -32,5 +32,12 @@ y = error[2:7]/error[1:6]^3
 y
 plot(1:6,log(y))
 ```
+```{r}
+x=log(error[1:5])
+y=log(error[2:6])
+plot(x,y)
+lm(y~x)
+```
+
 
 
