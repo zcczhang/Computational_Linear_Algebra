@@ -1,0 +1,63 @@
+---
+title: "Part1"
+output: html_document
+---
+
+```{r}
+A = Matrix(0,14,14,sparse = TRUE)
+A[2:7,1]=1
+A[c(1,6,7,14),2]=1
+A[c(2,4,5),3]=1
+A[c(5,8:10),4]=1
+A[c(4,11:13),5]=1
+A[c(7,14),6]=1
+A[c(6,14),7]=1
+A[10,8:9]=1
+A
+max(abs(eigen(t(A))$values))
+```
+
+```{r}
+jacobi = function(A,b,m=25,x = rep(0,n),p=2,tol=0.5*10^(-6),history=FALSE) {
+  n = length(b)
+  if (history) {
+    hist = matrix(NA,nrow=length(b),ncol=(m+1))
+    hist[,1] = x
+  }
+  d = diag(A)
+  R = A
+  R[cbind((1:n),(1:n))] = 0  # allows for r to be sparse  
+  steps=0
+  for (j in 1:m) {
+    x = (b - R %*% x)/d 
+    steps = steps+1
+    if (history) {hist[,(j+1)] = as.matrix(x)}
+    if (vnorm(b-A%*%x,p) <= vnorm(b,p)*tol) break 
+  }
+  if (history) return(list(x=x,iterations=steps,history = hist[,1:(steps+1)]))
+  else return(list(x=x,steps=steps))
+}
+```
+
+
+```{r}
+Katz.B = function(A, alpha) {
+  return(alpha^(-1)*diag(diag(1)) - t(A))
+}
+B = Katz.B(A, 0.8)
+#zd = t(A)*vector(1,14)
+#jacobi(B, d)
+rep(1,14)
+vector(1,14)
+```
+
+
+
+
+
+
+
+
+
+
+
