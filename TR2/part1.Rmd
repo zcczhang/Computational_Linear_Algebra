@@ -52,6 +52,11 @@ Katz.index = function(A, alphas) {
 Katz.index(A, 10:20/100)
 ```
 
+```{r}
+a=0.114337645
+I = diag(14)
+(solve(I-a*t(A))-I) %*% rep(1,14) 
+```
 
 
 
