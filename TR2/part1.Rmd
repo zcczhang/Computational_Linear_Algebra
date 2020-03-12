@@ -31,7 +31,7 @@ Katz.eigen = function(A,alphas){
   return(result)
 }
 
-Katz.eigen(A, 0:10/10)  # [0,0.73] converge
+Katz.eigen(A, 0:100/100)  # [0,0.73] converge
 ```
 ```{r}
 Katz.B = function(A, alpha) {
@@ -49,7 +49,7 @@ Katz.index = function(A, alphas) {
   return(result)
 }
 
-Katz.index(A, 1:10/10)
+Katz.index(A, 10:20/100)
 ```
 
 
