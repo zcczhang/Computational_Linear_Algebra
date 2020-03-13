@@ -1,0 +1,94 @@
+---
+title: "TR2_Draft"
+output: html_document
+---
+```{r, echo=FALSE}
+library(Matrix)
+source("https://drive.google.com/uc?export=download&id=10dNH3VbvxS8Z3OHjP4i9gRbtsf91VVBb")
+```
+
+# Part 1
+
+```{r}
+A = Matrix(0,14,14,sparse = TRUE)
+A[2:7,1]=1
+A[c(1,6,7,14),2]=1
+A[c(2,4,5),3]=1
+A[c(5,8:10),4]=1
+A[c(4,11:13),5]=1
+A[c(7,14),6]=1
+A[c(6,14),7]=1
+A[10,8:9]=1
+A
+```
+
+
+```{r}
+Katz.eigen = function(A,alphas){
+  result = vector()
+  for (a in alphas) {
+    result = c(result,max(Mod(eigen(a*A)$values)))
+  }
+  return(result)
+}
+
+Katz.eigen(A, 0:100/100)  # [0,0.73] converge
+```
+
+```{r}
+Katz.B = function(A, alpha) {
+  return(alpha^(-1)*diag(1,nrow(A)) - t(A))
+}
+
+Katz.index = function(A, alphas) {
+  d = t(A) %*% rep(1,nrow(A))
+  result = vector()
+  for (a in alphas) {
+    B = Katz.B(A, a)
+    result = c(result, jacobi(B,d, m=100))
+  }
+  return(result)
+}
+
+Katz.index(A, 10:20/100)
+```
+
+```{r}
+a=0.114337645
+I = diag(14)
+(solve(I-a*t(A))-I) %*% rep(1,14) 
+```
+
+# Part 2
+
+```{r}
+# NOTE: you will need to get the right path name to your copy of this file
+W = read.csv("/Users/apple/Desktop/Computational_Linear_Algebra/TR2/WikiLinks.csv")
+
+from=W$from
+to=W$to
+sites = sort(union(unique(to),unique(from)))
+n=length(sites)
+
+# The following functions convert between the site labels and the matrix index
+SiteToIndex = function(s) {match(s,sites)}
+IndexToSite = function(s) {sites[s]}
+
+ii = rep(0,length(to))
+jj = rep(0,length(from))
+for (i in 1:length(from)) ii[i] = SiteToIndex(from[i])
+for (i in 1:length(to)) jj[i] = SiteToIndex(to[i])
+xx = rep(1,length(jj))
+library("Matrix")
+A = spMatrix(nrow=n,ncol=n,i=ii,j=jj,x=xx)
+```
+
+```{r}
+Katz.eigen(A, 0:5/1000)  
+```
+
+```{r}
+Katz.index(A, 0.001)$steps
+Katz.index(A, 0.002)$steps
+```
+
