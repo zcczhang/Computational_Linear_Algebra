@@ -2,7 +2,7 @@
 
 ### *Please bring a stapled hard copy of your answers to class*
 
-### INSERT YOUR NAME HERE
+### Charles Zhang
 
 ```{r, message=FALSE, warning=FALSE}
 #The following line sources functions from the class file `365Functions.r`.
@@ -19,16 +19,41 @@ Consider the points (-2,0), (-1,14), (2,-4), (3,10). Find the degree 3 (i.e., th
 
 a) Calculate the Vandermonde matrix and solve the equation for the coefficients using `R`'s built-in `solve` function. 
 
+```{r}
+x=c(-2,-1,2,3)
+y=c(0,14,-4,10)
+V=Vandermonde(x)
+(c=solve(V,y))
+```
 b) By hand, find the interpolating polynomial using Newton's divided differences.  You need to multiply it out to see that you are getting the same answer as above.
 
+![](1.png)
+
 c) By hand, find the interpolating polynomial using Lagrange interpolation. Yes this is a pain. Yes it is worth doing this one time in your life to really feel in your gut that it works.
+
+![](2.png)
 
 d) In `365Functions.r`, I have included a function `Interpolator` that does polynomial interpolation using either the Vandermonde matrix or Newton's divided difference method. In theory, these two methods should yield the same interpolating polynomial (which is unique as long as the interpolation points are at different $x$ values). Have a quick look at my code to understand what it is doing. Then find an example where the two methods give two different answers or one method finds an answer and the other does not. Explain the discrepancy.
 
 ```{r}
-
+x = seq(1, 15) 
+y = runif(15) 
+xx = seq(1, 15)
+Interpolator(x, y, xx)
 
 ```
+```{r}
+# Interpolator(x, y, xx, Itype = "Vandermonde")
+```
+
+> The result can not get since the condition number = 4.26216e-32.
+
+```{r}
+v = Vandermonde(x) 
+Cond(v)
+```
+
+> Newton’s divided difference can solve the polynomial, but Vandermonde cannot, since the Vandermonde matrix is ill-conditioned. 
 
 ### Problem 2
 
@@ -46,28 +71,103 @@ plot(xx,yf,type='l',xlab="x",ylab="y",xlim=c(a,b),ylim=c(0,1),col='black',lwd=2)
 
 a) Use 5 evenly spaced nodes on the interval [0,10] to generate a polynomial interpolant $p_{e5}(x)$ of $f(x)$ on this interval (you can again use my `Interpolator` function). Make a plot with the graph of the function $f(x)$ in black, the graph of the interpolating polynomial in blue, and the 5 interpolating points in red.
 
+```{r}
+xi= seq(a,b,length=5) 
+yi = f(xi)
+y5 = Interpolator(xi,yi,xx)
+plot(xx,yf,type='l',xlab="x",ylab="y",xlim=c(a,b),ylim=c(0,1),col='black',lwd=2)
+points(xi, yi, pch=19, col='red')
+lines(xx,y5,col='blue',lwd=2)
+```
+
 b) Repeat part a) with 10 evenly spaced nodes on the interval [0,10].
+
+```{r}
+xi= seq(a,b,length=10) 
+yi = f(xi)
+y10 = Interpolator(xi,yi,xx)
+plot(xx,yf,type='l',xlab="x",ylab="y",xlim=c(a,b),ylim=c(0,1),col='black',lwd=2)
+points(xi, yi, pch=19, col='red')
+lines(xx,y10,col='blue',lwd=2)
+```
 
 c) Find the zeros of a degree 5 Chebyshev polynomial (shifted and stretched to cover the interval [0,10]). Repeat part a) using these 5 nodes to generate a polynomial interpolant $p_{c5}(x)$ of $f(x)$ on this interval (you can again use my `Interpolator` function).
 
+```{r}
+n = 5
+Cxi = (b-a)/2*cos((2*(1:n)-1)*pi/(2*n)) + (b+a)/2 
+Cyi = f(Cxi)
+yC5 = Interpolator(Cxi,Cyi,xx)
+plot(xx,yf,type='l',xlab="x",ylab="y",xlim=c(a,b),ylim=c(0,1),col='black',lwd=2)
+points(Cxi,Cyi,pch=19,col='red')
+lines(xx,yC5,col='blue',lwd=2)
+```
+
 d) Repeat part c) with the zeros of a degree 10 Chebyshev polynomial.
 
-e) Compare the errors $||f-p||_{\infty}$ for each of these four approximating polynomials on the interval $[0,10]$. You can approximate these errors by finding the maximum absolute value of the differences between the function and the approximating polynomial on the 1000 evenly spaced points you used to plot the function. Here is an example:
+```{r}
+n = 10
+Cxi10 = (b-a)/2*cos((2*(1:n)-1)*pi/(2*n)) + (b+a)/2 
+Cyi10 = f(Cxi10)
+yC10 = Interpolator(Cxi10,Cyi10,xx)
+plot(xx,yf,type='l',xlab="x",ylab="y",xlim=c(a,b),ylim=c(0,1),col='black',lwd=2)
+points(Cxi10,Cyi10,pch=19,col='red')
+lines(xx,yC10,col='blue',lwd=2)
 ```
-err = yf - yc5
+
+e) Compare the errors $||f-p||_{\infty}$ for each of these four approximating polynomials on the interval $[0,10]$. You can approximate these errors by finding the maximum absolute value of the differences between the function and the approximating polynomial on the 1000 evenly spaced points you used to plot the function. Here is an example:
+```{r}
+err5 = yf - y5
+print("5 Evenly Distributed Nodes Error:")
+print(max(abs(err5)))
+
+err10 = yf - y10
+print("10 Evenly Distributed Nodes Error:")
+print(max(abs(err10)))
+
+errC5 = yf - yC5
 print("Chebyshev Degree 5 Error:")
-print(max(abs(err)))
+print(max(abs(errC5)))
+
+errC10 = yf - yC10
+print("Chebyshev Degree 10 Error:")
+print(max(abs(errC10)))
 ```
 
 f) Show the errors from parts b) and d) on a single plot. Comment on the plot.
 
+```{r}
+plot(xx,err10, type='l', xlab="x",ylab="error",xlim=c(a,b),ylim=c(-.06,.06),col='black',lwd=2)
+lines(xx, errC10, type='l', col='blue',lwd=2)
+```
+
 g) On a single plot, show the errors from parts b) and d) divided by the function values `yf`. Comment on the plot.
+
+```{r}
+plot(xx,err10/yf, type='l', xlab="x",ylab="error",xlim=c(a,b),ylim=c(-.1,.1),col='black',lwd=2)
+lines(xx, errC10/yf, type='l', col='blue',lwd=2)
+```
 
 ### Problem 3
 
 Suppose you are designing a natural log (`ln`) key for a calculator that displays 5 digits to the right of the decimal point. Find the least degree $d$ for which Chebyshev interpolation on the interval $[1,e]$ will always approximate the natural log function to 5 digits of accuracy (i.e., the interpolation error will always be less than $0.5*10^{-5}$)?
 
 Hints: You will need to compute the derivatives of the natural log function, and use the error estimates in both equation (3.14) and Theorem 3.4 of the book.
+
+![](3.png)
+
+```{r}
+for (d in 1:50) {
+  err = (exp(1)-1)^(d+1)/(2^(2*d+1))/factorial(d+1)*factorial(d) 
+  if (err <= 0.5 * 10 ^-5) {
+  cat("Degree:", d, "\n") 
+  cat("Error:", err) 
+  break
+  } 
+}
+```
+
+> Take d = 12 to get the right hand side less than 0.5 * 10 ^-5
 
 ### Problem 4
 
@@ -89,12 +189,38 @@ a) Generate three different interpolating functions and plot all three functions
   * a natural cubic spline (you can use `R`'s built-in `splinefun` function with `method="natural"`)
   
   * a not-a-knot cubic spline (you can use `R`'s built-in `splinefun` function with `method="fmm"`) 
+  
+```{r}
+x = seq(1994,2014,len=1000)
+c=NewtonDD(year,bbld)
+py = Horner(c,x,year)
+ns = splinefun(year,bbld,method='natural')
+nsy=ns(x)
+fs = splinefun(year,bbld,method='fmm')
+fsy=fs(x)
+
+plot(x,py,type='l',col='blue',ylim=c(0,125),xlab='x',ylab='y')
+lines(x,nsy,type="l",col="black")
+lines(x,fsy,type="l",col="magenta")
+points(year,bbld,col='red',pch=20,cex=1.5)
+```
+
 
 b) Compute the three different predicted values for total world oil production in millions of barrels per day in 2010. 
 
+```{r}
+Horner(c,2010,year)
+ns(2010)
+fs(2010)
+```
+s
 c) *Briefly* state which method you think is the best of the three, and why.
 
+> The natural cubic spline is the best for prediction since it is the linear extrapolation based on the final two points
+
 d) What was the actual total world oil production in 2010 (use google)?
+
+>  87.16 million barrels per day.
 
 ### Problem 5
 
@@ -109,10 +235,25 @@ a) Write two functions `cheb.zeros(a,b,n)` and `cheb.extrema(a,b,n)` that return
 
 Run these commands to test your functions by generating 5 points on the interval $[2,6]$:
 
+
+```{r}
+cheb.zeros=function(a,b,n){
+ r=sort(cos((2*(1:n)-1)*pi/(2*n))) 
+ s=r*(b-a)/2
+return(s+(a+b)/2)
+}
+
+cheb.extrema=function(a,b,n){
+extrema=sort(cos(pi*(0:(n-1)/(n-1))))
+s=extrema*(b-a)/2
+return(s+(a+b)/2)}
 ```
+
+```{r}
 cheb.zeros(2,6,5)
 cheb.extrema(2,6,5)
 ```
+
 
 b) I've started a function `cheb.integrate(f,a,b,n,method)` for you that should take a function, an interval, a number of interpolation points, and the method (zeros or extrema), and returns an approximation of the definite integral $\int_a^b f(x) dx$. After calling your functions from part (a) to get the interpolation points, you need to (i) compute the coefficients of the interpolating polynomial, and (ii) use the coefficients to compute the integral of the interpolating polynomial over the interval $[a,b]$. For the first part of the task, you are allowed to use the Vandermonde matrix. Even though it is not particularly scalable and it would be better to use Newton's divided differences, it is more straightforward to code the interpolation with the Vandermonde matrix. 
 
@@ -120,8 +261,24 @@ As an aside, in practice, neither the Vandermonde or Newton's divided difference
 
 For the second part of the task, check your work with your calculus knowledge about the closed form of an integral of a polynomial over an interval.
 
-
+```{r}
+cheb.integrate=function(f,a,b,n,method='extrema'){
+  if(method=='extrema'){
+    x=cheb.extrema(a,b,n)
+  }
+  else if(method=='zeros'){
+    x=cheb.zeros(a,b,n)
+  }
+  else{stop('Nothing')}
+  
+  V = Vandermonde(x)
+  coeffs = solve(V,f(x))
+  integrated.coeffs=c(0,coeffs/(1:n)) #Taking antiderivative of polynomial 
+  return(Horner(integrated.coeffs,b)-Horner(integrated.coeffs,a))
+}
 ```
+
+```{r}
 cheb.integrate=function(f,a,b,n,method='extrema'){
   if(method=='extrema'){
     x=cheb.extrema(a,b,n)
