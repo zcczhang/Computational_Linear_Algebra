@@ -20,7 +20,9 @@ A[c(7,14),6]=1
 A[c(6,14),7]=1
 A[10,8:9]=1
 A
+image(A)
 ```
+
 
 
 ```{r}
@@ -32,7 +34,7 @@ Katz.eigen = function(A,alphas){
   return(result)
 }
 
-Katz.eigen(A, 0:100/100)  # [0,0.73] converge
+Katz.eigen(A, 0:100/100)  # [0,0.76] converge
 ```
 
 ```{r}
@@ -45,12 +47,15 @@ Katz.index = function(A, alphas) {
   result = vector()
   for (a in alphas) {
     B = Katz.B(A, a)
-    result = c(result, jacobi(B,d, m=100))
+    sol = c(result, jacobi(B,d, x= rep(1,14),m=100))
+    p = sol$x
+    p = p/max(p)
+    result = c(result, p)
   }
   return(result)
 }
 
-Katz.index(A, 10:20/100)
+Katz.index(A, 1:7/10)
 ```
 
 ```{r}
