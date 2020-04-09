@@ -213,7 +213,7 @@ Horner(c,2010,year)
 ns(2010)
 fs(2010)
 ```
-s
+
 c) *Briefly* state which method you think is the best of the three, and why.
 
 > The natural cubic spline is the best for prediction since it is the linear extrapolation based on the final two points
@@ -270,7 +270,7 @@ cheb.integrate=function(f,a,b,n,method='extrema'){
     x=cheb.zeros(a,b,n)
   }
   else{stop('Nothing')}
-  
+    
   V = Vandermonde(x)
   coeffs = solve(V,f(x))
   integrated.coeffs=c(0,coeffs/(1:n)) #Taking antiderivative of polynomial 
