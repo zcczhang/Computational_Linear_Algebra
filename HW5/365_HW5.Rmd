@@ -1,8 +1,8 @@
-# Math 365 / Comp 365: Homework 5
-
-### *Please bring a stapled hard copy of your answers to class*
-
-### Charles Zhang
+---
+title: "Homework5"
+author: "Charles Zhang"
+output: pdf_document
+---
 
 ```{r, message=FALSE, warning=FALSE}
 #The following line sources functions from the class file `365Functions.r`.
@@ -261,22 +261,6 @@ As an aside, in practice, neither the Vandermonde or Newton's divided difference
 
 For the second part of the task, check your work with your calculus knowledge about the closed form of an integral of a polynomial over an interval.
 
-```{r}
-cheb.integrate=function(f,a,b,n,method='extrema'){
-  if(method=='extrema'){
-    x=cheb.extrema(a,b,n)
-  }
-  else if(method=='zeros'){
-    x=cheb.zeros(a,b,n)
-  }
-  else{stop('Nothing')}
-    
-  V = Vandermonde(x)
-  coeffs = solve(V,f(x))
-  integrated.coeffs=c(0,coeffs/(1:n)) #Taking antiderivative of polynomial 
-  return(Horner(integrated.coeffs,b)-Horner(integrated.coeffs,a))
-}
-```
 
 ```{r}
 cheb.integrate=function(f,a,b,n,method='extrema'){
@@ -290,20 +274,22 @@ cheb.integrate=function(f,a,b,n,method='extrema'){
   
   # Fill in your code here to (i) find the coefficients of interpolating polynomial and (ii) use them to compute the integral of the interpolating polynomial over the interval [a,b]
   # Hint: my code here is 4 lines
-
+  
+  v = Vandermonde(x)
+  coeffs = solve(v, f(x))
+  int.coeffs=c(0, coeffs/(1:n)) 
+  return(Horner(int.coeffs,b) - Horner(int.coeffs,a))
 }
 ```
 
 Test your code on $\int_{-1}^2 x^2~dx$ with 5 points:
-```
+```{r}
 f=function(x){x^2}
 cheb.integrate(f,-1,2,5,method='extrema')
 cheb.integrate(f,-1,2,5,method='zeros')
 ```
 
 c) In the third method, called Simpson's Rule, we take $n$ evenly spaced points ($n$ should be an odd integer), with the first equal to $a$ and the last equal to $b$. Then we create a quadratic spline, with one quadratic function fit through the points $x_0$, $x_1$, and $x_2$, the next fit through the points $x_2$, $x_3$, and $x_4$, and so forth. The figure below, which is from http://tutorial.math.lamar.edu/Classes/CalcII/ApproximatingDefIntegrals.aspx, shows a picture demonstrating this process with $n=7$.
-
-![](Images/Simpson.PNG)
 
 Note that the black lines on top of the shaded areas are the quadratic functions passing through three points of the red function, which is the function we are approximating. The first quadratic goes through the points $(x_0,f(x_0))$, $(x_1,f(x_1))$, and $(x_2,f(x_2))$, and the area under it is shaded in green. The second quadratic goes through the points $(x_2,f(x_2))$, $(x_3,f(x_3))$, and $(x_4,f(x_4))$, and the area under it is shaded in yellow. The third quadratic (the easiest to recognize as a quadratic) goes through the points $(x_4,f(x_4))$, $(x_5,f(x_5))$, and $(x_6,f(x_6))$, and the area under it is shaded in blue.  The integral $\int_{x_0}^{x_6} f(x) dx$ is approximated by the sum of the green, yellow, and blue areas.
 
@@ -332,17 +318,25 @@ where $k$ indexes the quadratic segments. Note that the right-hand side is just 
 
 Implement a function `simpson.integrate` that takes a function $f$, an interval $[a,b]$, and an odd number of points $n$, and approximates $\int_{a}^{b}f(x)dx$ by the sum on the right-hand side of the most recent equation above. 
 
-```
+```{r}
 simpson.integrate=function(f,a,b,n){
 if(n%%2==0)
   stop('n must be odd')
 # fill in the rest of the function here
+  sum = 0
+  points = seq(a,b,length=n)
+  vals = f(points)
+  h = points[2] - points[1]
+  for (i in 1:((n-1)/2)) {
+    sum = sum + h/3*(vals[1+2*(i-1)] + 4*vals[2+2*(i-1)] + vals[3+2*(i-1)])
+  }
+  return(sum)
 }
 ```
 
 Test your `simpson.integrate` code on the integral $\int_0^1 x^{1.5}dx$, with $n=7$ points (i.e., an approximation comprised of three quadratic functions concatenated):
 
-```
+```{r}
 g=function(x){x^1.5}
 simpson.integrate(g,0,1,7)
 ```
@@ -351,7 +345,7 @@ simpson.integrate(g,0,1,7)
 d) For any good numerical integration method, the magnitude of the error between the actual definite integral value and the approximation should decrease as the number of integration points/sub-intervals you use for the approximation increases.
 Here is a function to plot the magnitudes of the errors for different values of $n$ and for each of the three methods you implemented above. The parameter `correct` is the actual value of the integral of $f$ over the interval $[a,b]$. You can compute this analytically by hand (woohoo!) or using Wolfram Alpha.
 
-```
+```{r}
 integration.test=function(f,a,b,max.n,correct){
   nn.odd=seq(3,max.n,by=2)
   nn=2:max.n
@@ -383,14 +377,41 @@ integration.test=function(f,a,b,max.n,correct){
 
 Here is an example:
 
-```
+```{r message=FALSE, warning=FALSE}
 g=function(x){cos(2*pi*x)+cos(6*pi*x)}
 xx=seq(0,.75,length=1000)
 plot(xx,g(xx),type='l',lwd=3,col="red",xlab="x",ylab="g(x)")
 integration.test(g,0,.75,19,-1/(3*pi))
 ```
 
+```{r message=FALSE, warning=FALSE}
+g=function(x){3*x^4+2*x^2+3}
+xx=seq(-1,1,length=1000)
+plot(xx,g(xx),type='l',lwd=3,col="red",xlab="x",ylab="g(x)")
+integration.test(g,0,.75,19,-1/(3*pi))
+```
+
+
+```{r message=FALSE, warning=FALSE}
+g=function(x){1/(1+4*x^2)}
+xx=seq(-1,1,length=1000)
+plot(xx,g(xx),type='l',lwd=3,col="red",xlab="x",ylab="g(x)")
+integration.test(g,0,.75,19,-1/(3*pi))
+```
+
+```{r message=FALSE, warning=FALSE}
+g=function(x){(x<=0)*(x+3)^2+(x>0)*x^3}
+xx=seq(-2,2,length=1000)
+plot(xx,g(xx),type='l',lwd=3,col="red",xlab="x",ylab="g(x)")
+integration.test(g,0,.75,19,-1/(3*pi))
+```
+
+
 Choose some integrals that are interesting to you and test out the performance of the three methods. How do they compare? Is one always the best? Try it for a function that is not as smooth. How does the smoothness affect the convergence? Do you run into computational problems if you try to make $n$ too large? If so, this is due to our use of the Vandermonde instead of the more efficient implementation discussed in the footnote above. You do not have to answer all of these questions comprehensively. I just want you to try a few examples to provoke some thought about the different methods, as well as to double check that your code is working correctly.
+
+> Overall the Chebyshev method is generally better than Simpson’s method, since the error decreases faster, and Chebyshev method converges faster than Simpson. Also, it seems like the more smooth the function is, the faster the error will converge. 
+
+
 
 ### Problem 6: Reflection on Technical Report 2
 
