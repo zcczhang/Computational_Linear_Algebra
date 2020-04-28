@@ -1,0 +1,582 @@
+## Math 365 / Comp 365: Exam 2
+
+### Due April 21 by 11:59pm Central
+
+### Academic Honesty Statement
+
+By typing my full first and last name below (if you are able), I pledge my honor that I have not participated in any dishonest work on this exam, nor do I know of dishonest work done by other students on this exam.
+
+## Charles Zhang
+
+## Score Sheet
+
+| Problem | Points | Out of |
+| :-----: | :----: | :----: |
+| 1       |        |   15    |
+| 2       |        |   15    |
+| 3       |        |   14    |
+| 4       |        |   14    |
+| 5       |        |   17    |
+| 6       |        |   25    |
+| Total   |        |   100   |
+| Bonus   |        |   1     |
+
+## Frame of this exercise
+
+The purpose of this exercise is to help you consolidate some of the ideas you've learned so far this term. The purpose is *not* for me to evaluate you. Even though you'll receive a numerical score on this exercise, this score does not in any way reflect on you as a person or a scholar. Learning science research shows that "intelligence" and "ability" are like a muscle. They are not at all fixed, but rather, grow with use and effort.
+
+## Instructions:
+
+* Complete this entire exercise here in the .rmd file. Once you have completed the exercise, please knit to .html, and upload both the .rmd and the .html files to Moodle. I would prefer everything to be typed in this single document. However, if you want to handwrite something, you must scan it in, send it as a .pdf and CLEARLY label where I should look for solutions if they are outside of the R files.
+* The exam is take-home, open notes, open Moodle, open R, and open book. You may not use the internet to look
+things up, except in the case of looking up coding help.
+* It is not okay to talk to each other or anyone else (other than Lori) about the exam! This of
+course includes discussing how you solve problems, but it even includes things like asking, \how
+is it going?" or \which problem are you working on?" or making comments like \problem 5 is
+easy."
+* Please leave intact the leading block which loads packages and data. If you have a problem executing that block, it may mean you need to install one or more of the packages.
+* Please read carefully the instructions for each problem. I have been specific about how to state answers to the problems so that they will be straightforward for me to read.
+* Please preserve all of the section headings in this document, and insert your solutions in the appropriate places.
+* You are certainly allowed to pull code from things we've used/developed in this course (e.g., any code I gave you as part of in-class activities, lecture notes, and so forth). You are also welcome to use any of the functions in the `365Functions.r` file that I automatically load for you below.
+* Hints: I may give a small hint or a little help with R for free. If you are stuck, I may sell a hint for points so that you can move forward. I will warn you of the point value before I sell you anything.
+
+
+
+```{r,message=FALSE,warning=FALSE}
+require(Matrix)
+require(mosaicData)
+source("https://drive.google.com/uc?export=download&id=10dNH3VbvxS8Z3OHjP4i9gRbtsf91VVBb") #365functions.R
+source("https://drive.google.com/uc?export=download&id=17uZI1yT3PbPzIdtG7jGomHx5gDRm0a8S") #ZoomData.R
+library(matlib)
+```
+
+
+## Problem 1 (15 points)
+ 
+### Part (a): 
+TRUE or FALSE (choose one and justify your answer by showing a counterexample if false or proving the statement if true).
+
+Let $u=\begin{bmatrix}1/3 \\ 2/3 \\ 2/3\end{bmatrix}$ and $v=\begin{bmatrix}~~2/3 \\ -1/3 \\ ~~2/3\end{bmatrix}$. Then $P=uu^{\top}+vv^{\top}$ is the matrix that orthogonally projects any vector $b \in \mathbb{R}^3$ onto the plane spanned by the vectors $u$ and $v$.
+
+### Part (a) Solution:
+**FALSE**
+
+$u \cdot v \neq 0$, so they are not orthogonal. 
+$P^{2} \neq P$, so it is not a projector.
+
+```{r}
+u = c(1/3, 2/3, 2/3) 
+v = c(2/3, -1/3, 2/3) 
+t(v) %*% u
+
+P = u %*% t(u) + v %*% t(v)
+P %*% P - P
+```
+
+### Part (b): 
+TRUE or FALSE (choose one and justify your answer by showing a counterexample if false or proving the statement if true).
+
+In class, it was shown that the length of a vector (using the 2-norm) is preserved under orthogonal transformations. The 1-norm is also preserved under orthogonal transformations.
+
+### Part (b) Solution:
+**FALSE**
+counterexample: 
+
+```{r}
+Q = cbind(c(cos(pi/4), sin(pi/4)), c(-sin(pi/4), cos(pi/4)))
+v = c(0, 1)
+vnorm(v, 1)
+vnorm(Q %*% v, 1)
+```
+
+As above, where Qv is an orthogonal transformation, the 1 norm of v and Qv are different.
+
+### Part (c): 
+TRUE or FALSE (choose one and justify your answer by showing a counterexample if false or proving the statement if true).
+
+Assume $P$ is a projection matrix (and thus, has nice properties as you showed in HW 6). $Px=x$ if and only if $x$ is in the column space of $P$.
+
+### Part (c) Solution:
+**TRUE**
+
+1. If $Px=x$: if x is not in the column space of P, let $x = Pm-r$, where m is orthogonal to P, then $Px-x=P(Pm-r)-Pm-r=Pm-m \neq 0$ since $Pm=0$ but 
+$m \neq 0$, which contradicts with the statement $Px=x$. Therefore, if $Px=x$, x is in the column space of P.
+
+2. If x is in the column space of P: then $\exists v$ such that $Pv = x$. Then $Px=P(Pv)=P^{2}v=Pv=x$.
+
+Therefore, $Px=x$ if and only if $x$ is in the column space of $P$.
+
+## Problem 2 (15 points)
+
+For this problem, you can use R to do computations, but make sure to explain each step of your work. Your final answers in each subproblem should be matrices and vectors of numbers (no symbols like $A$, $P$, or $b$); make sure to print these matrices and vectors out.
+
+### Part (a) (3 points)
+Let $A=\begin{bmatrix} ~~1 &~~2 \\ -3 & -8 \\ ~~7 & ~~9 \\ ~~2 & ~~3 \end{bmatrix}$. Find an orthogonal projection matrix $P$ such that for any $b \in \mathbb{R}^4$, $Pb$ is the vector in the column space of $A$ that is closest to $b$.  
+
+### Part (a) Solution:
+**Insert your explanation here**
+
+```{r}
+#If you use R code, put it here and uncomment below
+A = cbind(c(1, -3, 7, 2), c(2, -8, 9, 3))
+P = A %*% inv(t(A) %*% A) %*% t(A) 
+print(P)
+```
+
+### Part (b) (3 points)
+Let ${\cal W}$ be the subspace of vectors in $\mathbb{R}^4$ that are orthogonal to the column space of $A$ (i.e., ${\cal W}=\left\{y \in \mathbb{R}^4: A^T y = 0\right\}$). Find an orthonormal basis for the subspace ${\cal W}$. 
+
+### Part (b) Solution:
+**Insert your explanation here**
+
+In full QR, $\hat{Q}$ is an orthogonal complment for Col(A), so it is an orthonormal basis for W.
+
+```{r}
+#If you use R code, put it here and uncomment below
+out=qr(A)
+Q=qr.Q(out) # reduced form 
+Q.bar=qr.Q(out,complete=TRUE) # full form
+W = Q.bar[, 3:4] 
+print(W)
+```
+
+Basis is the set of column vectors above.
+
+### Part (c) (4 points)
+Find the orthogonal projection matrix $P_o$ such that $P_o b$ is the vector in the subspace ${\cal W}$ that is closest to $b$. It is always a good idea to check your answer, so let $b=\begin{bmatrix} 2 & 0& 1& 5 \end{bmatrix}^T$ and compute $P_ob$. Is it orthogonal to the columns of $A$? If not, you did something wrong! 
+
+### Part (c) Solution:
+**Insert your explanation here**
+
+```{r}
+#If you use R code, put it here and uncomment below
+P_o = W %*% inv(t(W) %*% W) %*% t(W)
+print(P_o)
+
+#Check you work below
+b = c(2, 0, 1, 5) 
+Pb = P_o %*% b
+t(A) %*% Pb
+```
+
+It is [0,0], which means it is orthorgonal to columns of A.
+
+### Part (d) (2 points)
+What is $P +P_o$? Briefly explain why the sum will always give the same output and why this makes sense. (Note: By solving the equation $P +P_o=??$ for $P_o$, this now gives you a quick way to compute the orthogonal projection matrix onto the complement!)
+
+### Part (d) Solution:
+**Insert your explanation here**
+
+P projects b onto the column space of A, and $P_{0}$ projects b onto the null space of $A^{T}$.
+
+$P_{0}b+Pb=b$<br>$(P_{0}+P)b=b$<br>$P_{0}+P=I$
+
+```{r}
+#If you use R code, put it here and uncomment below
+print(P+P_o)
+```
+
+### Part (e) (3 points)
+Find a vector $b$ satisying both of the following:
+
+i. the least squares solution to $Ax=b$ is the vector $x^*=(3,1)^T$, and
+ii. the (2-norm) distance from $b$ to the column space of $A$ is 1.
+
+Explain in words how you are doing this. My favorite picture might be helpful.
+
+### Part (e) Solution:
+**Insert your explanation here**
+
+Since 2 norm distance from b to Col(A) is 1 and $b-\hat{b}=1$, we can have: 
+
+```{r}
+#If you use R code, put it here and uncomment below
+x.star = c(3, 1)
+b.hat = A %*% x.star
+r = c(1,0,0,0)
+
+b = b.hat + r
+print(b)
+
+#Check that the distance from b to the column space of A is 1.
+vnorm(b-b.hat)
+```
+
+Therefore, b satisfies.
+
+## Problem 3 (14 points)
+The upper portion of this noble animal is to be approximated using three separate clamped (meaning the derivatives at the endpoints can differ) cubic spline interpolants. The curve is drawn on a grid from which the table of data is constructed. Set up (but you do not have to solve) the system of equations $Ax=b$ to solve for the clamped cubic spline for the dog's nose, Curve 3. (Hint: $A$ is $9 \times 9$, and $x,b \in \mathbb{R}^{9}$.)
+
+![](Dog.PNG)
+
+### Problem 3 solution:
+
+Remove the `\phantom{abcde}` in the table below and insert your nonzero answers in. You do not have to write any 0s. You do not have to show any work on this problem, but you should clearly indicate what your unknowns in $x$ represent. No clever manipulations are needed in this problem.
+
+$$A=\begin{bmatrix} \underline{0.3} & \underline{0.09} & \underline{0.027} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}}\\
+& & &&&&&&\\
+\underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{1} & \underline{1} & \underline{1} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}}\\
+& & &&&&&& \\
+\underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{1} & \underline{1} & \underline{1}\\
+& & &&&&&& \\
+\underline{1} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}}\\
+& & &&&&&&\\
+\underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{1} & \underline{1} & \underline{1}\\ \underline{\phantom{abcde}}\\
+& & &&&&&& \\
+\underline{1} & \underline{0.6} & \underline{0.27} & \underline{-1} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}}\\
+& & &&&&&& \\
+\underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{1} & \underline{2} & \underline{3} & \underline{-1} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}}\\
+& & &&&&&&\\
+\underline{\phantom{abcde}} & \underline{2} & \underline{1.8} & \underline{\phantom{abcde}} & \underline{-2} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}}\\
+& & &&&&&& \\
+\underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{\phantom{abcde}} & \underline{2} & \underline{6} & \underline{\phantom{abcde}} & \underline{-2} & \underline{\phantom{abcde}}
+\end{bmatrix}
+ \quad x =\begin{bmatrix} \underline{b_{1}}\\ \\\underline{c_{1}}\\ \\\underline{d_{1}}\\ \\\underline{b_{2}}\\ \\\underline{c_{2}}\\ \\\underline{d_{2}}\\ \\\underline{b_{3}}\\ \\\underline{c_{3}}\\ \\\underline{d_{3}}\end{bmatrix} \quad b =\begin{bmatrix} \underline{0.2}\\ \\\underline{-0.2}\\ \\\underline{-1.1}\\ \\\underline{0.33}\\ \\\underline{-1.5}\\ \\\underline{0}\\ \\\underline{0}\\\\ \underline{0}\\ \\\underline{0}\end{bmatrix}$$
+
+
+
+
+## Problem 4 (14 points)
+CLA Inc.'s rebellious son has dropped out of the small, urban, midwestern liberal arts college that he was attending to start a business designing fonts.  He currently draws them with stencils, but he has heard that it is possible to create and save his fonts using Bezier curves.  The CEO has asked you to show his son how to design a font using Bezier curves.
+
+### Part (a) (3 points)
+Explain how Bezier curves work; that is, how do the control points and endpoints function?
+
+### Part (a) Solution:
+
+**Insert your explanation here**
+reference: textbook
+
+B́ezier curves are cubic splines in which the user controls the slope at each knot point. Bezier curve gives the user the control over the smoothness of the 1st and 2nd derivative at each point. Each spline is determined by 4 points: The first and last points (x1 , y1 ), (x4 , y4 ) are endpoints, and the middle 2 points (x2 , y2 ), (x3 , y3 ) are control points. The curve leaves (x1 , y1 ) along the tangent direction (x2 − x1 , y2 − y1 ), and ends at (x4 , y4 ) along the tangent direction (x4 −x3,y4 −y3).
+
+
+### Part (b) (7 points)
+Develop a cool, interesting letter using the Bezier code in R (for example you might choose your initial). Feel free to use interesting colors for the borders or fills of your letters, although you are not required to do so if you are going for a different aesthetic. Make sure to include the R code necessary to produce your letter. The 7 points will be awarded as follows: 0 nothing; 2 something appears on the screen; 3 can tell what the letter is; 4 okay letter; 5 nice letter; 6 excellent letter; 7 totally awesome letter.
+
+### Part (b) Solution:
+
+```{r}
+#Insert your code to make your letter, make sure to display your letter when done!
+
+# My Last name initial Z:
+
+x1 = c(50,150,400,280,140,330,320,415,70,190,315)
+x2 = c(120,180,400,245,220,325,340,250,70,230,170)
+x3 = c(170,280,220,140,270,325,355,100,230,230,150)
+x4 = c(150,400,280,140,330,320,415,70,190,315,50)
+y1 = c(500,600,600,320,180,160,190,170,115,320,500)
+y2 = c(520,560,600,340,120,165,180,-100,220,320,460)
+y3 = c(570,560,340,160,150,165,165,280,260,370,520)
+y4 = c(600,600,320,180,160,190,170,115,320,500,500)
+
+z = draw.beziers(x1,x2,x3,x4,y1,y2,y3,y4,npts=100,xlab="x",ylab="y")
+with(z,polygon(x,y,col="purple"))
+```
+
+### Part (c) (4 points)
+Describe at least two interesting techniques that you have learned in designing fonts with specific pointers to pass on to the CEO's son.
+
+### Part (c) Solution:
+
+1. **The two end points determine the position of the spline, and the two control points determine the curvature. **
+
+2. **2 vectors from the end point to the control point such that they are toward the same intersection points determine if the inner curve is smooth.**
+
+
+## Problem 5 (17 points)
+
+On April 18, 2019, Zoom went public on the NASDAQ. With the coronavirus pandemic, a lot of people are now using Zoom, so I was interested in seeing how this has affected its stock price for the year. I downloaded the closing prices of the Zoom stock since it has been public, but I accidentally only downloaded the closing prices at every $10^{th}$ trading day (roughly every two weeks) for the past 247 trading days (from 4/18/2019 to 4/9/2020). Let's examine three different ways to fill in the missing data.
+
+For now, here is a plot of the data we have. Note: the prices are stored in `samp.prices`, which I have loaded for you.
+
+```{r}
+days = 1:247
+samp.days = seq(1,247,by=10) # we only have data on these days
+plot(samp.days,samp.prices,pch=20,cex=.5,ylim=c(50,160),
+     ylab = "ZM Closing Price",
+     xlab = "Consecutive trading days from 4/18/2019 to 4/9/2020",
+     main = "Zoom Stock Prices")
+points(samp.days,samp.prices,pch=20,cex=1,col='red')
+grid()
+```
+
+Here is the function we are going to use to plot the different approximation models:
+
+```{r}
+plotApproximations=function(f){
+  tt = seq(1,247,length=1001)
+  plot(tt,f(tt),col="DarkOrange",type='l',lwd=2,ylim=c(50,160),
+       ylab = "ZM Closing Price",
+       xlab = "Consecutive trading days from 4/18/2019 to 4/9/2020",
+       main = "Zoom Stock Prices")
+  points(days,f(days),pch=20,cex=1,col='black') # The points guessed by the interpolating/regressing functions
+  points(samp.days,samp.prices,pch=20,cex=1,col='red') # The sample points we have from every 10th day
+}
+```
+
+### Part (a) (4 points)
+Fit a degree 24 interpolating polynomial to this data. Call the function that evaluates the polynomial `p`. Write your code in the block below and uncomment the last line there to display your answer.
+
+### Part (a) solution:
+
+```{r}
+coeff =NewtonDD(samp.days,samp.prices)
+p = function(t){Horner(coeff,t,samp.days)}
+plotApproximations(p)
+```
+
+### Part (b) (4 points)
+
+Compute a natural cubic spline passing through the 25 stock prices. Call the function that evaluates the spline `s`. Write your code in the block below and uncomment the last line there to display your answer.
+
+### Part (b) solution:
+
+```{r} 
+s =splinefun(samp.days,samp.prices,method = "natural")
+plotApproximations(s)
+```
+
+### Part (c) (4 points)
+
+Solve the least squares problem to fit a linear function through the data. Do not use any statistical modeling commands like `lm` for this part of the problem; rather, you may want to (though you do not have to) use the function `qr.solve()` to solve the least squares problem. Write your code in the block below and uncomment the last line there to display your answer.
+
+### Part (c) solution:
+
+```{r}
+A =cbind(rep(1,25),samp.days)
+qr.solve(A,samp.prices)
+r=function(t){75.11511096 + 0.09061231*t}
+plotApproximations(r)
+```
+
+### Part (d) (3 points)
+
+Aha! I found the full data after all. Turns out it was also right here this entire time, and it is stored as `all.prices`. All the days are stored in `days`. For each of the three methods above, compute the squared 2-norm of the vector of errors between the true values of the stock price and your estimated price. Do this by completing the first three lines in the second code block below, and leave the following three lines to print the answers. Finally, on the last line, fill in the proper information to order the three methods from best to worst in terms of how they performed with the squared 2-norm.
+
+### Part (d) solution:
+
+
+```{r}
+#Uncomment and run
+tt = seq(1,247,length=1001)
+plot(tt,r(tt),col="DarkOrange",type='l',lwd=2,ylim=c(50,160),
+        ylab = "ZM Closing Price",
+        xlab = "Consecutive trading days from 4/18/2019 to 4/9/2020",
+        main = "Zoom Stock Prices")
+   lines(tt,s(tt),col="DodgerBlue",type='l',lwd=2)  
+   lines(tt,p(tt),col="Green",type='l',lwd=2) 
+   points(days,all.prices,pch=20,cex=1,col='black') # Actual data 
+   points(samp.days,samp.prices,pch=20,cex=1,col='red') # The sample points we have from every 10th day
+```
+
+```{r}
+x=seq(1,247)
+poly.err <- norm(p(x)-all.prices,"2")^2 #REPLACE 0 WITH YOUR CODE
+spline.err <- norm(s(x)-all.prices,"2")^2 #REPLACE 0 WITH YOUR CODE
+reg.err <- norm(r(x)-all.prices,"2")^2 #REPLACE 0 WITH YOUR CODE
+print(paste("Squared 2-norm of error for polynomial interpolation =",poly.err))
+print(paste("Squared 2-norm of error for spline interpolation =",spline.err))
+print(paste("Squared 2-norm of error for linear regression =",reg.err))
+print(c("BEST METHOD: Spline interpolation","NEXT BEST METHOD: Linear regressio n","WORST METHOD: Polynomial interpolation"))
+```
+
+### Part (e) (2 points)
+Which method provides the best data compression (i.e. uses the least amount of information to reconstruct the interpolant/fitted model, that is, how many unknowns are solved for in each problem)? Explain why.
+
+### Part (e) solution:
+
+```{r}
+print(c("BEST METHOD (fewest terms): Linear regression","NEXT BEST METHOD: Poly nomial interpolation","WORST METHOD (most terms): Spline interpolation"))
+```
+**Insert your explanation here**
+
+The linear regression is the best method since it only needs a 1 degree polynomial to reconstruct the model(2 terms in the worst case).
+
+The Polynomial interpolation is the next best method since it needs a 24 degree polynomial to reconstruct the model(25 terms in the worst case).
+
+The spline interpolation is the worst one since it needs twenty-four 3-degree polynomial to reconstruct the model(terms in the worst case).
+
+
+## Problem 6 (25 points)
+
+In machine learning, regularization is a process of introducing a constraint on an optimization problem in order to solve an ill-posed problem or to prevent overfitting. This question reveals the math behind an important machine learning algorithm called `Ridge Regression' or `Tikhonov regularization'. 
+
+### Part a:
+
+We will consider a dataset recording the average total SAT score of each state.
+
+```{r}
+SAT = mosaicData::SAT[,c(2,3,4,5,8)]
+SAT.S = scale(SAT) #This scales each column to have a mean 0 and variance 1
+```
+
+ I have extracted columns from the data to contain 4 input variables (expenditure per pupil in a state `expend`, pupil/teacher ratio `ratio`, teacher's average salary `salary`, and percent of eligible students taking SAT `frac`), and the 5th column is the predictor variable (total SAT score `sat`). I have also standardized the data, and called this scaled data `SAT.S`. Check out both `SAT` and `SAT.S`. We would like to model the (scaled) SAT score as a linear function of each of the (scaled) inputs:
+$$\verb!sat!=x_1 \verb!expend!+x_2\verb!ratio!+x_3\verb!salary!+x_4\verb!frac!$$
+
+### Part a(i) (2 points)
+Set up a system of equations $Ax=b$ for this model, where the $x$ represents the unknown coefficients of your model. Explain why your system is as you have determined. Note: this will be an overdetermined system.  
+
+### Part a(i) Solution:
+```{r}
+A=SAT.S[, 1:4] #Input the appropriate matrix here
+b=SAT.S[,5] #Input the appropriate vector here
+```
+
+
+### Part a(ii) (2 points)
+Use the normal equations to solve for the least squares solution of your system.
+
+### Part a(ii) Solution:
+
+```{r}
+#Insert code to solve for the least squares solution, call it sol
+sol = qr.solve(A,b)
+#Uncomment below
+print(sol)
+```
+
+### Part b:
+To set up the Tikhonov regularization, we form the optimization problem
+
+\begin{align}\label{Eq:tik}
+\min_{x \in \mathbb{R}^n} \left\{ \frac{1}{2}||Ax-b||_2^2 + \frac{\lambda}{2}||x||_2^2 \right\},
+\end{align}
+
+to solve for $x$, where $\lambda$ is a positive constant that penalizes large magnitudes of $x$, the coefficients of the model. Notice if $\lambda=0$, the solution to the ridge regression problem and the least squares solution will be the same. 
+
+### Part b(i) (6 points)
+ Using the same 3 parts as in HW 6 problem 3, explain why solving the above optimization problem can be reduced to solving the equation $(A^TA+\lambda I)x=A^Tb$ for $x$.
+	
+### Part b(i) Solution:	
+
+**Insert your explanation here**
+
+![](1.png)
+
+### Part b(ii) (3 points)
+Write a function for the ridge regression `ridge.reg` that takes in the parameters `A, b, lambda`. Find the ridge regression result when $\lambda$ is 10. 
+
+### Part b(ii) Solution:	
+
+```{r}
+ridge.reg = function(A,b,lambda){
+  # Solve the system in part b(i) and store the solution in x
+  # Insert your code here
+  A1 = t(A)%*%A+lambda*diag(nrow(t(A)%*%A))
+  b1 = t(A)%*%b
+  x = solve(A1, b1)
+  return(x)
+}
+r = ridge.reg(A,b,10) #Uncomment and run once function is written
+print(r)
+```
+
+### Part b(iii) (2 points)
+Plot the trend of each coefficient for $\lambda$ ranging from 0 to 1000 (integer values). What do you observe (i.e. how does $\lambda$ affect each coefficient)?
+
+### Part b(iii) Solution:
+```{r}
+#Insert code here to compute result, which should be a 4 x 1001 matrix for each of the coefficients
+result=matrix(, nrow = 4, ncol = 1001)
+for(i in 1:1001){
+  result[,i]=ridge.reg(A,b,i-1)
+  
+}
+##Uncomment code below to plot
+plot(result[1,],type = 'l',xlim=c(0,1000),ylim = c(-0.3,0.3),col = "red",xlab="lambda",ylab="Coefficients" )
+lines(result[2,],col = "yellow")
+lines(result[3,],col = "blue")
+lines(result[4,],col = "green")
+legend(800,0.3,legend=c("x1","x2","x3","x4"),col=c("red","yellow","blue","green"),lty=1,cex=0.8)
+grid()
+```
+**As lambda grows larger, coefficients become smaller and closer to 0.**
+
+
+### Part b(iv) (6 points)
+There is a balancing act in trying to solve this optimization problem. The $\frac{1}{2}||Ax-b||_2^2$ term wants to minimize the squared residual error, while the $\frac{\lambda}{2}||x||_2^2$ term wants to minimize the magnitude of $x$. We would like to determine the $\lambda$ that leads to the lowest minimum of the sum of both terms. One way to do this is a common method called "K-fold cross validation". Below is an outline of how to perform a K-fold cross validation:
+	
+- Choose a value $K$ and a $\lambda$. We will fix $K=10$, and vary $\lambda$ from 0 to 2 in increments of 0.001.
+- Divide the data into $K$ equal parts. For our state SAT data, we separate the 50 states into 10 groups $g_n$ where $n = 1,2,3,\ldots,10$, each having 5 data points. Typically, these groups would be selected randomly, but for this exam, just choose the different groups sequentially.
+- For each $\ell = 1,2,3,\ldots,10$, `leave out' group $g_\ell$ in your data and fit the ridge regression model to all the other groups $g_j$ where $j \neq \ell$ using parameter $\lambda$. Create the model using the coefficients that you find from the ridge regression, and use this model to predict a value for all the data points you left out in $g_\ell$. Calculate the residual sum of squares $\displaystyle \sum_{i=1}^5 (predict_i - b_i)^2$ where $b_i$ is the actual scaled SAT score of the data points in $g_\ell$.
+- Now, you will have $K$ residual sum of squares values, one for each `left out' group. Compute the mean of these $K$ values. This is called the cross validation value $CV(\lambda)$.
+- Repeat the process with a different $\lambda$.
+- The `best' $\lambda$ is the one with the lowest $CV(\lambda)$.
+
+	
+Implement $K=10$-fold cross validation to find the best (integer) $\lambda$ between 0 and 2 and its corresponding cross validation error $CV(\lambda)$.
+
+### Part b(iv) Solution:
+
+```{r}
+K = 10
+BestLambda = 0 #Update this to be the optimal choice
+bestError = 1000000 #Update this to the optimal choice (want it as close to 0 as possible)
+for (lambda in 1:100){
+  errorTotal = 0
+  for (i in 1:K){
+    ### Insert your code here
+    A.left = A[((5*(i-1)+1):(5*i)),]
+    b.left = b[((5*(i-1)+1):(5*i))]
+    A.rest = A[-((5*(i-1)+1):(5*i)),]
+    b.rest = b[-((5*(i-1)+1):(5*i))]
+    coeffs=ridge.reg(A.rest,b.rest,lambda)
+    
+    m = function(A){ A%*%coeffs }
+    b.predicted=m(A.left)
+    r1 = b.predicted-b.left
+    error =(norm(r1,"2"))^2  
+    errorTotal=errorTotal+error
+  }
+  
+  meanError = errorTotal/10
+
+  if(meanError<bestError){
+    bestError = meanError
+    BestLambda = lambda
+  }
+}
+print(list(lambda = BestLambda,error = bestError))
+```
+
+
+### Part (c) (4 points)
+
+Observe two items
+
+- $||x^*_a||^2_2 \geq ||x^*_b||^2_2$ where $x^*_a$ corresponds to the optimal least squares solution in part (a) and $x^*_b$ corresponds to the optimal ridge regression solution in part (b) using the best $\lambda$.
+- $||Ax^*_a-b||^2_2 \leq ||Ax^*_b-b||^2_2$
+
+Compute each of these quantities, and explain why this makes sense.
+
+### Part (c) Solution:
+
+```{r}
+A3 = t(A)%*%A+diag(4)
+b3 = t(A)%*%b
+sol2 = solve(A3,b3)
+
+#Update each of these four values
+norm_xa=norm(sol,"2")^2
+norm_xb=norm(sol2,"2")^2
+residual_xa=norm(A%*%sol-b,"2")^2
+residual_xb=norm(A%*%sol2-b,"2")^2
+
+print(paste("2-norm squared of least squares solution=",norm_xa))
+print(paste("2-norm squared of ridge regression solution =",norm_xb))
+print(paste("2-norm squared of residual for least squares solution =",residual_xa))
+print(paste("2-norm squared of residual for ridge regression solution =",residual_xb))
+
+```
+
+**Since the ridge regression is to minimize the magnitudes of x, the first statement makes sense. However,since the term $\frac{\lambda}{2}||x||_2^2$ deviates the R square from the least square solution, the R square will be smaller for part a than part b.**
+
+## Bonus (1 point)
+I'd love to know how you are doing, if you feel willing to share. Are you adjusting well to having classes be online? Are you feeling busy/bored/overwhelmed/relaxed/(insert any adjective)? What have you been up to? Feel free to use this space to share as much (or as little) as you would like.
+
+*I am doing welll in the campus! Since the most of my classes are using recorded videos, I can have more flexible time do study!*
+
+
+
+
+
